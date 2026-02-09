@@ -1,4 +1,4 @@
-import { Coordinate, OSRMRouteResult } from "./types";
+import { Coordinate, RouteResult } from "./types";
 import { decodePolyline } from "./polyline";
 
 const OSRM_BASE = "https://router.project-osrm.org/route/v1/bicycle";
@@ -9,7 +9,7 @@ const OSRM_BASE = "https://router.project-osrm.org/route/v1/bicycle";
  */
 export async function getRoute(
   waypoints: Coordinate[]
-): Promise<OSRMRouteResult> {
+): Promise<RouteResult> {
   if (waypoints.length < 2) {
     throw new Error("At least 2 waypoints are required for routing");
   }

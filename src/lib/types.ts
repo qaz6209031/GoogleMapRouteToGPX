@@ -17,7 +17,7 @@ export interface ParsedRoute {
   waypoints: Waypoint[];
 }
 
-export interface OSRMRouteResult {
+export interface RouteResult {
   coordinates: Coordinate[];
   distanceMeters: number;
   durationSeconds: number;

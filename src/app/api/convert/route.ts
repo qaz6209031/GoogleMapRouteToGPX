@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { parseGoogleMapsUrl, resolveWaypoints } from "@/lib/url-parser";
-import { getRoute } from "@/lib/osrm-client";
+import { getRoute } from "@/lib/google-directions-client";
 import { addElevation } from "@/lib/elevation-client";
 import { generateGpx } from "@/lib/gpx-generator";
 
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     // 2. Resolve addresses to coordinates
     const coordinates = await resolveWaypoints(parsed.waypoints);
 
-    // 3. Get bicycle route from OSRM
+    // 3. Get bicycle route from Google Directions API
     const route = await getRoute(coordinates);
 
     // 4. Add elevation data

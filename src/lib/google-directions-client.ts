@@ -1,0 +1,76 @@
+import { Coordinate, RouteResult } from "./types";
+import { decodePolyline } from "./polyline";
+
+const DIRECTIONS_BASE =
+  "https://maps.googleapis.com/maps/api/directions/json";
+
+/**
+ * Get a bicycle route from the Google Directions API between the given waypoints.
+ * Returns the exact route Google Maps would display.
+ */
+export async function getRoute(
+  waypoints: Coordinate[]
+): Promise<RouteResult> {
+  if (waypoints.length < 2) {
+    throw new Error("At least 2 waypoints are required for routing");
+  }
+
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+  if (!apiKey) {
+    throw new Error(
+      "GOOGLE_MAPS_API_KEY environment variable is not set"
+    );
+  }
+
+  const origin = `${waypoints[0].lat},${waypoints[0].lng}`;
+  const destination = `${waypoints[waypoints.length - 1].lat},${waypoints[waypoints.length - 1].lng}`;
+
+  const params = new URLSearchParams({
+    origin,
+    destination,
+    mode: "bicycling",
+    key: apiKey,
+  });
+
+  // Intermediate waypoints (everything between origin and destination)
+  if (waypoints.length > 2) {
+    const intermediates = waypoints
+      .slice(1, -1)
+      .map((w) => `${w.lat},${w.lng}`)
+      .join("|");
+    params.set("waypoints", intermediates);
+  }
+
+  const res = await fetch(`${DIRECTIONS_BASE}?${params.toString()}`);
+
+  if (!res.ok) {
+    throw new Error(`Google Directions API request failed: ${res.statusText}`);
+  }
+
+  const data = await res.json();
+
+  if (data.status !== "OK" || !data.routes?.length) {
+    throw new Error(
+      `Google Directions API error: ${data.status} — ${data.error_message || "no route found"}`
+    );
+  }
+
+  const route = data.routes[0];
+
+  // Decode the full-route polyline
+  const coordinates = decodePolyline(route.overview_polyline.points);
+
+  // Sum distance and duration across all legs
+  let distanceMeters = 0;
+  let durationSeconds = 0;
+  for (const leg of route.legs) {
+    distanceMeters += leg.distance.value;
+    durationSeconds += leg.duration.value;
+  }
+
+  return {
+    coordinates,
+    distanceMeters,
+    durationSeconds,
+  };
+}
