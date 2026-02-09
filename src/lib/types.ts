@@ -15,6 +15,7 @@ export interface Waypoint {
 
 export interface ParsedRoute {
   waypoints: Waypoint[];
+  routeIndex: number;
 }
 
 export interface RouteResult {

@@ -9,7 +9,8 @@ const DIRECTIONS_BASE =
  * Returns the exact route Google Maps would display.
  */
 export async function getRoute(
-  waypoints: Coordinate[]
+  waypoints: Coordinate[],
+  routeIndex: number = 0
 ): Promise<RouteResult> {
   if (waypoints.length < 2) {
     throw new Error("At least 2 waypoints are required for routing");
@@ -30,6 +31,7 @@ export async function getRoute(
     destination,
     mode: "bicycling",
     key: apiKey,
+    ...(routeIndex > 0 ? { alternatives: "true" } : {}),
   });
 
   // Intermediate waypoints (everything between origin and destination)
@@ -55,17 +57,26 @@ export async function getRoute(
     );
   }
 
-  const route = data.routes[0];
+  const route = data.routes[Math.min(routeIndex, data.routes.length - 1)];
 
-  // Decode the full-route polyline
-  const coordinates = decodePolyline(route.overview_polyline.points);
-
-  // Sum distance and duration across all legs
+  // Decode step-level polylines for full-resolution geometry
+  // (overview_polyline is simplified and loses detail on complex routes)
+  const coordinates: Coordinate[] = [];
   let distanceMeters = 0;
   let durationSeconds = 0;
+
   for (const leg of route.legs) {
     distanceMeters += leg.distance.value;
     durationSeconds += leg.duration.value;
+
+    for (const step of leg.steps) {
+      const stepCoords = decodePolyline(step.polyline.points);
+      // Skip the first point of each step (except the very first) to avoid duplicates
+      const startIndex = coordinates.length === 0 ? 0 : 1;
+      for (let i = startIndex; i < stepCoords.length; i++) {
+        coordinates.push(stepCoords[i]);
+      }
+    }
   }
 
   return {

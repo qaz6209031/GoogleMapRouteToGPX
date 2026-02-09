@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     const coordinates = await resolveWaypoints(parsed.waypoints);
 
     // 3. Get bicycle route from Google Directions API
-    const route = await getRoute(coordinates);
+    const route = await getRoute(coordinates, parsed.routeIndex);
 
     // 4. Add elevation data
     const { elevated, elevationGain } = await addElevation(route.coordinates);

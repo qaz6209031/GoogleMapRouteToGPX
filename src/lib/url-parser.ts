@@ -23,14 +23,15 @@ function makeWaypoint(raw: string): Waypoint {
 }
 
 /**
- * Extract coordinates embedded in the Google Maps data= parameter.
- * Format: !1d<lng>!2d<lat> pairs for each waypoint.
- * The !2d (lat) and !1d (lng) markers encode waypoint positions.
+ * Extract "named place" coordinates from the data= parameter.
+ * These are coordinates that resolve path segment addresses.
+ * Pattern: !1s<placeId>!2m2!1d<lng>!2d<lat>
  */
-function extractDataCoordinates(urlString: string): Coordinate[] {
+function extractNamedPlaceCoordinates(urlString: string): Coordinate[] {
   const coords: Coordinate[] = [];
-  // Match !2d<lng>!2d<lat> or !1d<lng>!2d<lat> patterns
-  const matches = urlString.matchAll(/!1d(-?\d+\.?\d+)!2d(-?\d+\.?\d+)/g);
+  const matches = urlString.matchAll(
+    /!1s[^!]+!2m2!1d(-?\d+\.?\d+)!2d(-?\d+\.?\d+)/g
+  );
   for (const m of matches) {
     const lng = parseFloat(m[1]);
     const lat = parseFloat(m[2]);
@@ -39,6 +40,36 @@ function extractDataCoordinates(urlString: string): Coordinate[] {
     }
   }
   return coords;
+}
+
+/**
+ * Extract "via waypoint" coordinates from the data= parameter.
+ * These are intermediate points the user dragged or added, identified by !4e1.
+ * Pattern: !1m2!1d<lng>!2d<lat>...!4e1
+ */
+function extractViaWaypoints(urlString: string): Coordinate[] {
+  const coords: Coordinate[] = [];
+  // Via waypoints have !1m2!1d<lng>!2d<lat> followed eventually by !4e1
+  const matches = urlString.matchAll(
+    /!1m2!1d(-?\d+\.?\d+)!2d(-?\d+\.?\d+)[^!]*(?:![^!]*)*?!4e1/g
+  );
+  for (const m of matches) {
+    const lng = parseFloat(m[1]);
+    const lat = parseFloat(m[2]);
+    if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+      coords.push({ lat, lng });
+    }
+  }
+  return coords;
+}
+
+/**
+ * Extract the route alternative index from the data= parameter.
+ * Google Maps encodes this as !5i<N> where N is the 0-based route index.
+ */
+function extractRouteIndex(urlString: string): number {
+  const match = urlString.match(/!5i(\d+)/);
+  return match ? parseInt(match[1], 10) : 0;
 }
 
 /**
@@ -53,8 +84,10 @@ function extractDataCoordinates(urlString: string): Coordinate[] {
 export function parseGoogleMapsUrl(urlString: string): ParsedRoute {
   const url = new URL(urlString);
 
-  // Extract any coordinates from the data= parameter for fallback use
-  const dataCoords = extractDataCoordinates(urlString);
+  // Extract coordinates from the data= parameter
+  const namedPlaceCoords = extractNamedPlaceCoordinates(urlString);
+  const viaWaypoints = extractViaWaypoints(urlString);
+  const routeIndex = extractRouteIndex(urlString);
 
   // Query-based format: ?api=1&origin=...&destination=...&waypoints=...|...
   const origin = url.searchParams.get("origin");
@@ -68,7 +101,7 @@ export function parseGoogleMapsUrl(urlString: string): ParsedRoute {
       }
     }
     waypoints.push(makeWaypoint(destination));
-    return { waypoints };
+    return { waypoints, routeIndex };
   }
 
   // Legacy query format: ?saddr=A&daddr=B+to:C+to:D
@@ -80,7 +113,7 @@ export function parseGoogleMapsUrl(urlString: string): ParsedRoute {
     for (const p of parts) {
       if (p.trim()) waypoints.push(makeWaypoint(p));
     }
-    return { waypoints };
+    return { waypoints, routeIndex };
   }
 
   // Path-based format: /maps/dir/Place1/Place2/Place3/@lat,lng,zoom
@@ -96,19 +129,32 @@ export function parseGoogleMapsUrl(urlString: string): ParsedRoute {
     }
 
     if (segments.length >= 2) {
-      const waypoints = segments.map((s, i) => {
+      // Resolve path segments to waypoints, using named place coordinates
+      // from the data parameter to resolve addresses
+      const namedCoords = [...namedPlaceCoords];
+      const waypoints: Waypoint[] = [];
+
+      for (const s of segments) {
         const wp = makeWaypoint(s);
-        // If this is an address waypoint and we have a matching data coordinate, attach it
-        if (!wp.coordinate && wp.address && dataCoords.length > 0) {
-          // Data coordinates correspond to waypoints that have place IDs (non-coordinate waypoints)
-          const coord = dataCoords.shift();
-          if (coord) {
-            return { label: wp.label, coordinate: coord } as Waypoint;
-          }
+        if (!wp.coordinate && wp.address && namedCoords.length > 0) {
+          // Use the next named place coordinate to resolve this address
+          const coord = namedCoords.shift()!;
+          waypoints.push({ label: wp.label, coordinate: coord });
+        } else {
+          waypoints.push(wp);
         }
-        return wp;
-      });
-      return { waypoints };
+      }
+
+      // Insert via waypoints (from dragged routes) before the destination
+      if (viaWaypoints.length > 0) {
+        const dest = waypoints.pop()!;
+        for (const coord of viaWaypoints) {
+          waypoints.push({ label: `${coord.lat},${coord.lng}`, coordinate: coord });
+        }
+        waypoints.push(dest);
+      }
+
+      return { waypoints, routeIndex };
     }
   }
 
