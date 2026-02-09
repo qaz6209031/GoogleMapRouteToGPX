@@ -12,13 +12,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #09090b;
-    --foreground: #fafafa;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
@@ -31,12 +24,6 @@ body {
               radial-gradient(ellipse 60% 40% at 80% 50%, rgba(16, 185, 129, 0.08), transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-  .hero-gradient {
-    background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(59, 130, 246, 0.12), transparent),
-                radial-gradient(ellipse 60% 40% at 80% 50%, rgba(16, 185, 129, 0.06), transparent);
-  }
-}
 
 /* Subtle glass card effect */
 .glass-card {
@@ -45,12 +32,6 @@ body {
   border: 1px solid rgba(228, 228, 231, 0.8);
 }
 
-@media (prefers-color-scheme: dark) {
-  .glass-card {
-    background: rgba(24, 24, 27, 0.8);
-    border: 1px solid rgba(63, 63, 70, 0.5);
-  }
-}
 
 /* Smooth pulse for progress */
 @keyframes pulse-slow {

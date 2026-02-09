@@ -154,7 +154,7 @@ export default function ConverterForm() {
               }}
               onKeyDown={(e) => e.key === "Enter" && handleConvert()}
               disabled={isLoading}
-              className="w-full pl-12 pr-4 py-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 disabled:opacity-50 transition-all text-sm"
+              className="w-full pl-12 pr-4 py-4 rounded-xl border border-zinc-200 bg-white text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 disabled:opacity-50 transition-all text-sm"
             />
           </div>
 
@@ -207,7 +207,7 @@ export default function ConverterForm() {
                 style={{ animationDelay: "0.6s" }}
               />
             </div>
-            <span className="text-sm text-zinc-500 dark:text-zinc-400">
+            <span className="text-sm text-zinc-500">
               {STEP_LABELS[step]}
             </span>
           </div>
@@ -215,7 +215,7 @@ export default function ConverterForm() {
 
         {/* Error */}
         {step === "error" && error && (
-          <div className="mt-5 p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 flex items-start gap-3">
+          <div className="mt-5 p-4 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3">
             <svg
               className="w-5 h-5 text-red-500 mt-0.5 shrink-0"
               fill="none"
@@ -229,7 +229,7 @@ export default function ConverterForm() {
                 d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
               />
             </svg>
-            <span className="text-sm text-red-700 dark:text-red-400">
+            <span className="text-sm text-red-700">
               {error}
             </span>
           </div>
@@ -239,10 +239,10 @@ export default function ConverterForm() {
         {step === "done" && stats && (
           <div className="mt-6 space-y-5">
             {/* Success banner */}
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50">
-              <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center shrink-0">
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-50 border border-emerald-200">
+              <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
                 <svg
-                  className="w-4.5 h-4.5 text-emerald-600 dark:text-emerald-400"
+                  className="w-4.5 h-4.5 text-emerald-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={2}
@@ -255,7 +255,7 @@ export default function ConverterForm() {
                   />
                 </svg>
               </div>
-              <span className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
+              <span className="text-sm font-medium text-emerald-800">
                 Route converted successfully!
               </span>
             </div>
@@ -324,7 +324,7 @@ export default function ConverterForm() {
               </button>
               <button
                 onClick={handleReset}
-                className="px-4 py-3.5 rounded-xl border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-sm font-medium"
+                className="px-4 py-3.5 rounded-xl border border-zinc-200 text-zinc-600 hover:bg-zinc-100 transition-colors text-sm font-medium"
               >
                 New
               </button>
@@ -346,14 +346,14 @@ function StatCard({
   value: string;
 }) {
   return (
-    <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-3.5 text-center border border-zinc-100 dark:border-zinc-700/50">
-      <div className="flex items-center justify-center gap-1.5 text-zinc-400 dark:text-zinc-500 mb-1">
+    <div className="bg-zinc-50 rounded-xl p-3.5 text-center border border-zinc-100">
+      <div className="flex items-center justify-center gap-1.5 text-zinc-400 mb-1">
         {icon}
         <span className="text-[11px] font-medium uppercase tracking-wider">
           {label}
         </span>
       </div>
-      <div className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+      <div className="text-lg font-bold text-zinc-900">
         {value}
       </div>
     </div>

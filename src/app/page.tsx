@@ -62,7 +62,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50">
+      <header className="w-full border-b border-zinc-200 bg-white/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
@@ -70,14 +70,14 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
               </svg>
             </div>
-            <span className="font-semibold text-zinc-900 dark:text-zinc-100 text-lg">
+            <span className="font-semibold text-zinc-900 text-lg">
               MapsToGPX
             </span>
           </div>
           <nav className="flex items-center gap-1">
             <a
               href="#how-it-works"
-              className="px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className="px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100"
             >
               How It Works
             </a>
@@ -90,21 +90,27 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-24">
           {/* Hero text */}
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 text-xs font-medium mb-6">
-              <span className="text-amber-500">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-              Loved by 2K+ cyclists in 50+ countries
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium mb-6">
+              <div className="flex -space-x-2">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" className="w-6 h-6 rounded-full border-2 border-white" />
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" className="w-6 h-6 rounded-full border-2 border-white" />
+                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" className="w-6 h-6 rounded-full border-2 border-white" />
+                <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="" className="w-6 h-6 rounded-full border-2 border-white" />
+                <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="" className="w-6 h-6 rounded-full border-2 border-white" />
+              </div>
+              <span>Loved by 2K+ cyclists in 50+ countries</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-4 leading-[1.1]">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-900 mb-4 leading-[1.1]">
               Google Maps Route
               <br />
               <span className="bg-gradient-to-r from-blue-600 to-emerald-500 bg-clip-text text-transparent">
                 to GPX File
               </span>
             </h1>
-            <p className="text-lg text-zinc-500 dark:text-zinc-400 max-w-lg mx-auto leading-relaxed">
+            <p className="text-lg text-zinc-500 max-w-lg mx-auto leading-relaxed">
               Convert any Google Maps directions URL into a GPX file
               ready for your Garmin, Bryton, or Wahoo bike computer.
-              <span className="block mt-2 text-base font-medium text-zinc-700 dark:text-zinc-300">
+              <span className="block mt-2 text-base font-medium text-zinc-700">
                 No sign-up. No email. Just paste and go.
               </span>
             </p>
@@ -114,7 +120,7 @@ export default function Home() {
           <ConverterForm />
 
           {/* Trust badges */}
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mt-10 text-xs text-zinc-400 dark:text-zinc-500">
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mt-10 text-xs text-zinc-400">
             <span className="flex items-center gap-1.5">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -143,13 +149,13 @@ export default function Home() {
         </div>
 
         {/* Features */}
-        <div className="border-t border-zinc-200 dark:border-zinc-800">
+        <div className="border-t border-zinc-200">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-20">
             <div className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-zinc-50 mb-3">
+              <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">
                 Why MapsToGPX?
               </h2>
-              <p className="text-zinc-500 dark:text-zinc-400 max-w-lg mx-auto">
+              <p className="text-zinc-500 max-w-lg mx-auto">
                 Everything you need to get your Google Maps routes onto your bike computer.
               </p>
             </div>
@@ -159,13 +165,13 @@ export default function Home() {
                   key={feature.title}
                   className="glass-card rounded-2xl p-6 hover:shadow-md transition-shadow"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
                     {feature.icon}
                   </div>
-                  <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-1.5">
+                  <h3 className="font-semibold text-zinc-900 mb-1.5">
                     {feature.title}
                   </h3>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                  <p className="text-sm text-zinc-500 leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
@@ -175,13 +181,13 @@ export default function Home() {
         </div>
 
         {/* How it works */}
-        <div id="how-it-works" className="border-t border-zinc-200 dark:border-zinc-800">
+        <div id="how-it-works" className="border-t border-zinc-200">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-20">
             <div className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-zinc-50 mb-3">
+              <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">
                 How It Works
               </h2>
-              <p className="text-zinc-500 dark:text-zinc-400 max-w-lg mx-auto">
+              <p className="text-zinc-500 max-w-lg mx-auto">
                 Three simple steps from Google Maps to your bike computer.
               </p>
             </div>
@@ -207,10 +213,10 @@ export default function Home() {
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-emerald-500 text-white font-bold text-lg flex items-center justify-center mx-auto mb-4">
                     {item.step}
                   </div>
-                  <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+                  <h3 className="font-semibold text-zinc-900 mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xs mx-auto">
+                  <p className="text-sm text-zinc-500 leading-relaxed max-w-xs mx-auto">
                     {item.description}
                   </p>
                 </div>
@@ -221,12 +227,12 @@ export default function Home() {
       </section>
 
       {/* Donate banner */}
-      <div className="border-t border-zinc-200 dark:border-zinc-800 bg-blue-50 dark:bg-blue-950/30">
+      <div className="border-t border-zinc-200 bg-blue-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 text-center">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+          <h3 className="text-lg font-semibold text-zinc-900 mb-2">
             Enjoy MapsToGPX? Buy me a coffee!
           </h3>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4 max-w-md mx-auto">
+          <p className="text-sm text-zinc-500 mb-4 max-w-md mx-auto">
             Built by a fellow cyclist who got tired of complicated tools. This app is free and always will be. If it saved you time, consider supporting its development.
           </p>
           <a
@@ -240,12 +246,12 @@ export default function Home() {
             </svg>
             Donate via Venmo
           </a>
-          <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-500">@KaiChin-Huang on Venmo</p>
+          <p className="mt-2 text-xs text-zinc-400">@KaiChin-Huang on Venmo</p>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">
+      <footer className="border-t border-zinc-200 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
           <div className="flex flex-col items-center gap-5">
             {/* Brand */}
@@ -255,17 +261,17 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
                 </svg>
               </div>
-              <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">MapsToGPX</span>
+              <span className="text-sm font-medium text-zinc-600">MapsToGPX</span>
             </div>
 
             {/* Creator info */}
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="text-sm text-zinc-500">
               Built by cyclist &amp; developer{" "}
               <a
                 href="https://kaichin.dev/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-zinc-700 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 underline underline-offset-2 transition-colors"
+                className="font-medium text-zinc-700 hover:text-blue-600 underline underline-offset-2 transition-colors"
               >
                 Kai-Chin Huang
               </a>
@@ -277,7 +283,7 @@ export default function Home() {
                 href="https://kaichin.dev/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-zinc-100 transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
@@ -288,7 +294,7 @@ export default function Home() {
                 href="https://www.linkedin.com/in/kai-chin-huang-6938b2170/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2] dark:hover:bg-[#0A66C2] dark:hover:border-[#0A66C2] transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2] transition-colors"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
@@ -297,7 +303,7 @@ export default function Home() {
               </a>
             </div>
 
-            <p className="text-xs text-zinc-400 dark:text-zinc-500">
+            <p className="text-xs text-zinc-400">
               Free forever. Trusted by cyclists worldwide.
             </p>
           </div>
