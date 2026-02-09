@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MapsToGPX
+
+Convert Google Maps directions URLs into GPX files for Garmin, Bryton, and Wahoo bike computers. No sign-up required — just paste and go.
+
+**Live site:** [maps-to-gpx-five.vercel.app](https://maps-to-gpx-five.vercel.app)
+
+## Features
+
+- **No account needed** — paste a URL, download a GPX file. No email, no sign-up.
+- **Cycling-optimized routes** — uses OSRM's bicycle profile for bike-friendly roads and paths.
+- **Elevation data included** — automatic elevation profiles so your bike computer shows climbs and descents.
+- **Universal compatibility** — GPX 1.1 format works with Garmin, Bryton, Wahoo, and any device that reads GPX.
+- **All URL formats** — supports long URLs, short links (goo.gl), addresses, coordinates, and multi-stop routes.
+
+## How It Works
+
+1. Open Google Maps and create a directions route
+2. Copy the URL from your browser's address bar
+3. Paste it on the site and click "Convert to GPX"
+4. Download the GPX file and import it into your bike computer
+
+## Tech Stack
+
+- **Next.js 15** with TypeScript and Tailwind CSS (App Router)
+- **OSRM** — free public API for bicycle routing
+- **Open-Meteo** — free elevation data
+- **Nominatim** — free geocoding for address-based waypoints
+- **Vercel** — deployment and hosting
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── layout.tsx              # Root layout + metadata
+│   ├── page.tsx                # Home page
+│   ├── globals.css             # Tailwind + custom styles
+│   └── api/
+│       ├── convert/route.ts    # Main conversion pipeline
+│       └── resolve-url/route.ts # Short URL expander
+├── lib/
+│   ├── types.ts                # Shared interfaces
+│   ├── url-parser.ts           # Parse Google Maps URLs → coordinates
+│   ├── osrm-client.ts          # OSRM bicycle routing
+│   ├── elevation-client.ts     # Open-Meteo elevation lookup
+│   ├── gpx-generator.ts        # GPX 1.1 XML generation
+│   └── polyline.ts             # Google encoded polyline decoder
+└── components/
+    └── ConverterForm.tsx        # Main UI (client component)
+```
 
-## Learn More
+## Supported Google Maps URL Formats
 
-To learn more about Next.js, take a look at the following resources:
+- **Path-based:** `google.com/maps/dir/Origin/Destination/@viewport`
+- **Query-based:** `google.com/maps/dir/?api=1&origin=A&destination=B&waypoints=C|D`
+- **Legacy:** `google.com/maps?saddr=A&daddr=B+to:C`
+- **Short URLs:** `maps.app.goo.gl/XXX`
+- **Coordinates:** `47.6228,-122.3353`
+- **Addresses:** `7405 168th Ave NE, Redmond, WA`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Author
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Built by [Kai-Chin Huang](https://kaichin.dev) — cyclist and developer.
 
-## Deploy on Vercel
+- [Website](https://kaichin.dev)
+- [LinkedIn](https://www.linkedin.com/in/kai-chin-huang-6938b2170/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Support
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If this tool saved you time, consider buying me a coffee via [Venmo (@KaiChin-Huang)](https://venmo.com/KaiChin-Huang).
