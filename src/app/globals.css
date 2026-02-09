@@ -42,3 +42,19 @@ body {
 .animate-pulse-slow {
   animation: pulse-slow 2s ease-in-out infinite;
 }
+
+/* Bicycle riding along a curved path */
+@keyframes ride-bike {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+.animate-ride-bike {
+  offset-path: path("M-40 45 C100 45, 120 20, 200 25 S350 50, 450 30 S550 20, 640 35");
+  offset-rotate: auto;
+  animation: ride-bike 6s linear infinite;
+}

@@ -116,6 +116,54 @@ export default function Home() {
             </p>
           </div>
 
+          {/* Bicycle animation */}
+          <div className="relative w-full max-w-2xl mx-auto mb-10 h-16 overflow-hidden">
+            {/* Road path */}
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 600 60" fill="none" preserveAspectRatio="none">
+              <path
+                d="M0 45 C100 45, 120 20, 200 25 S350 50, 450 30 S550 20, 600 35"
+                stroke="#e4e4e7"
+                strokeWidth="2"
+                strokeDasharray="6 4"
+                fill="none"
+              />
+            </svg>
+            {/* Bicycle riding along the path */}
+            <svg className="absolute w-10 h-10 animate-ride-bike" viewBox="0 0 64 64" fill="none" style={{ top: 0, left: 0 }}>
+              {/* Rear wheel */}
+              <circle cx="16" cy="44" r="10" stroke="#3b82f6" strokeWidth="2.5" fill="none">
+                <animateTransform attributeName="transform" type="rotate" from="0 16 44" to="360 16 44" dur="0.6s" repeatCount="indefinite" />
+              </circle>
+              <line x1="16" y1="34" x2="16" y2="54" stroke="#3b82f6" strokeWidth="1.5">
+                <animateTransform attributeName="transform" type="rotate" from="0 16 44" to="360 16 44" dur="0.6s" repeatCount="indefinite" />
+              </line>
+              <line x1="6" y1="44" x2="26" y2="44" stroke="#3b82f6" strokeWidth="1.5">
+                <animateTransform attributeName="transform" type="rotate" from="0 16 44" to="360 16 44" dur="0.6s" repeatCount="indefinite" />
+              </line>
+              {/* Front wheel */}
+              <circle cx="48" cy="44" r="10" stroke="#3b82f6" strokeWidth="2.5" fill="none">
+                <animateTransform attributeName="transform" type="rotate" from="0 48 44" to="360 48 44" dur="0.6s" repeatCount="indefinite" />
+              </circle>
+              <line x1="48" y1="34" x2="48" y2="54" stroke="#3b82f6" strokeWidth="1.5">
+                <animateTransform attributeName="transform" type="rotate" from="0 48 44" to="360 48 44" dur="0.6s" repeatCount="indefinite" />
+              </line>
+              <line x1="38" y1="44" x2="58" y2="44" stroke="#3b82f6" strokeWidth="1.5">
+                <animateTransform attributeName="transform" type="rotate" from="0 48 44" to="360 48 44" dur="0.6s" repeatCount="indefinite" />
+              </line>
+              {/* Frame */}
+              <polyline points="16,44 28,24 48,44 28,24 40,44" stroke="#1e40af" strokeWidth="2.5" strokeLinejoin="round" fill="none" />
+              {/* Handlebar */}
+              <polyline points="44,36 48,28 52,30" stroke="#1e40af" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+              {/* Seat */}
+              <line x1="24" y1="22" x2="32" y2="22" stroke="#1e40af" strokeWidth="2.5" strokeLinecap="round" />
+              {/* Rider body */}
+              <circle cx="30" cy="12" r="5" fill="#3b82f6" /> {/* Head */}
+              <line x1="30" y1="17" x2="28" y2="26" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" /> {/* Body */}
+              <polyline points="22,30 28,26 36,32" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" fill="none" /> {/* Arms */}
+              <polyline points="20,40 28,26 16,44" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" fill="none" /> {/* Legs */}
+            </svg>
+          </div>
+
           {/* Converter */}
           <ConverterForm />
 
@@ -235,18 +283,31 @@ export default function Home() {
           <p className="text-sm text-zinc-500 mb-4 max-w-md mx-auto">
             Built by a fellow cyclist who got tired of complicated tools. This app is free and always will be. If it saved you time, consider supporting its development.
           </p>
-          <a
-            href="https://venmo.com/KaiChin-Huang"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#008CFF] hover:bg-[#0074D4] text-white font-semibold text-sm transition-colors shadow-md shadow-blue-500/20"
-          >
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19.5 3.5c.8 1.3 1.2 2.7 1.2 4.3 0 5.3-4.5 12.2-8.2 17H6.2L3.3 3.9l5.6-.5 1.6 12.8c1.5-2.4 3.3-6.2 3.3-8.8 0-1.5-.3-2.5-.6-3.3l6.3-.6z" />
-            </svg>
-            Donate via Venmo
-          </a>
-          <p className="mt-2 text-xs text-zinc-400">@KaiChin-Huang on Venmo</p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="https://venmo.com/KaiChin-Huang"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#008CFF] hover:bg-[#0074D4] text-white font-semibold text-sm transition-colors shadow-md shadow-blue-500/20"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.5 3.5c.8 1.3 1.2 2.7 1.2 4.3 0 5.3-4.5 12.2-8.2 17H6.2L3.3 3.9l5.6-.5 1.6 12.8c1.5-2.4 3.3-6.2 3.3-8.8 0-1.5-.3-2.5-.6-3.3l6.3-.6z" />
+              </svg>
+              Venmo
+            </a>
+            <a
+              href="https://www.paypal.com/donate/?business=9B232DHXN8ME4&no_recurring=0&currency_code=USD"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#003087] hover:bg-[#002060] text-white font-semibold text-sm transition-colors shadow-md shadow-blue-900/20"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7.076 21.337H2.47a.641.641 0 01-.633-.74L4.944 2.56A.859.859 0 015.79 1.84h6.436c2.022 0 3.615.49 4.55 1.595.438.518.729 1.104.868 1.744.145.66.132 1.447-.04 2.405l-.01.061v.463l.36.204c.305.164.55.357.738.578.316.372.52.838.607 1.388.09.567.06 1.226-.09 1.96-.172.844-.453 1.579-.836 2.184a4.61 4.61 0 01-1.313 1.39c-.524.364-1.147.634-1.85.804-.684.164-1.46.247-2.308.247h-.548a1.15 1.15 0 00-1.135.97l-.028.16-.47 2.982-.021.115a.143.143 0 01-.141.12H7.076z" />
+              </svg>
+              PayPal
+            </a>
+          </div>
+          <p className="mt-2 text-xs text-zinc-400">@KaiChin-Huang on Venmo | @KaiChinHuang on PayPal</p>
         </div>
       </div>
 
