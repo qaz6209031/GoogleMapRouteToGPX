@@ -2,12 +2,12 @@
 
 Convert Google Maps directions URLs into GPX files for Garmin, Bryton, and Wahoo bike computers. No sign-up required — just paste and go.
 
-**Live site:** [maps-to-gpx-five.vercel.app](https://maps-to-gpx-five.vercel.app)
+**Live site:** [maptogpx.com](https://maptogpx.com)
 
 ## Features
 
 - **No account needed** — paste a URL, download a GPX file. No email, no sign-up.
-- **Cycling-optimized routes** — uses OSRM's bicycle profile for bike-friendly roads and paths.
+- **Exact Google Maps routes** — uses the Google Directions API so the GPX matches exactly what Google Maps shows.
 - **Elevation data included** — automatic elevation profiles so your bike computer shows climbs and descents.
 - **Universal compatibility** — GPX 1.1 format works with Garmin, Bryton, Wahoo, and any device that reads GPX.
 - **All URL formats** — supports long URLs, short links (goo.gl), addresses, coordinates, and multi-stop routes.
@@ -22,7 +22,7 @@ Convert Google Maps directions URLs into GPX files for Garmin, Bryton, and Wahoo
 ## Tech Stack
 
 - **Next.js 15** with TypeScript and Tailwind CSS (App Router)
-- **OSRM** — free public API for bicycle routing
+- **Google Directions API** — exact route matching with Google Maps
 - **Open-Meteo** — free elevation data
 - **Nominatim** — free geocoding for address-based waypoints
 - **Vercel** — deployment and hosting
@@ -31,6 +31,15 @@ Convert Google Maps directions URLs into GPX files for Garmin, Bryton, and Wahoo
 
 ```bash
 npm install
+```
+
+Create a `.env.local` file with your Google Maps API key:
+
+```
+GOOGLE_MAPS_API_KEY=your_api_key_here
+```
+
+```bash
 npm run dev
 ```
 
@@ -50,7 +59,7 @@ src/
 ├── lib/
 │   ├── types.ts                # Shared interfaces
 │   ├── url-parser.ts           # Parse Google Maps URLs → coordinates
-│   ├── osrm-client.ts          # OSRM bicycle routing
+│   ├── google-directions-client.ts # Google Directions API routing
 │   ├── elevation-client.ts     # Open-Meteo elevation lookup
 │   ├── gpx-generator.ts        # GPX 1.1 XML generation
 │   └── polyline.ts             # Google encoded polyline decoder
