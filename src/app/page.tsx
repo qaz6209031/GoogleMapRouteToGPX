@@ -18,7 +18,7 @@ const FEATURES = [
       </svg>
     ),
     title: "Cycling-Optimized Routes",
-    description: "Routes are generated using OSRM's bicycle profile for roads and paths suited to cycling.",
+    description: "Routes match exactly what Google Maps shows — the same roads, paths, and turns.",
   },
   {
     icon: (
@@ -179,7 +179,7 @@ export default function Home() {
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Bicycle-optimized routing
+              Exact Google Maps route
             </span>
             <span className="flex items-center gap-1.5">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -249,7 +249,7 @@ export default function Home() {
                 {
                   step: "2",
                   title: "Convert to GPX",
-                  description: "Paste the URL above and click Convert. We'll generate a cycling-optimized GPX file with elevation data.",
+                  description: "Paste the URL above and click Convert. We'll generate a GPX file with the exact same route from Google Maps, including elevation data.",
                 },
                 {
                   step: "3",
