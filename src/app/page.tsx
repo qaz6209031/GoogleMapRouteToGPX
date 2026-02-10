@@ -307,7 +307,6 @@ export default function Home() {
               PayPal
             </a>
           </div>
-          <p className="mt-2 text-xs text-zinc-400">@KaiChin-Huang on Venmo | @KaiChinHuang on PayPal</p>
         </div>
       </div>
 
