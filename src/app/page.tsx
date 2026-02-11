@@ -3,58 +3,128 @@ import ConverterForm from "@/components/ConverterForm";
 const FEATURES = [
   {
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+        />
       </svg>
     ),
     title: "No Account Needed",
-    description: "Unlike other tools, we don't ask for your email or make you create an account. Just paste a URL and download your GPX — instantly.",
+    description:
+      "Unlike other tools, we don't ask for your email or make you create an account. Just paste a URL and download your GPX — instantly.",
   },
   {
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+        />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+        />
       </svg>
     ),
     title: "Cycling-Optimized Routes",
-    description: "Routes match exactly what Google Maps shows — the same roads, paths, and turns.",
+    description:
+      "Routes match exactly what Google Maps shows — the same roads, paths, and turns.",
   },
   {
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
+        />
       </svg>
     ),
     title: "Elevation Data Included",
-    description: "Automatic elevation profiles from Open-Meteo so your bike computer shows climbs and descents.",
+    description:
+      "Automatic elevation profiles from Open-Meteo so your bike computer shows climbs and descents.",
   },
   {
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+        />
       </svg>
     ),
     title: "Universal Compatibility",
-    description: "Standard GPX 1.1 format works with Garmin, Bryton, Wahoo, and any device that reads GPX.",
+    description:
+      "Standard GPX 1.1 format works with Garmin, Bryton, Wahoo, and any device that reads GPX.",
   },
   {
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+        />
       </svg>
     ),
     title: "Trusted by Thousands",
-    description: "Used by 2,000+ cyclists worldwide. No sign-up, no tracking, no hidden costs — just GPX files.",
+    description:
+      "Used by 2,000+ cyclists worldwide. No sign-up, no tracking, no hidden costs — just GPX files.",
   },
   {
     icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
+        />
       </svg>
     ),
     title: "All URL Formats",
-    description: "Supports long URLs, short links (goo.gl), addresses, coordinates, and multi-stop routes.",
+    description:
+      "Supports long URLs, short links (goo.gl), addresses, coordinates, and multi-stop routes.",
   },
 ];
 
@@ -66,8 +136,18 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-              <svg className="w-4.5 h-4.5 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+              <svg
+                className="w-4.5 h-4.5 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"
+                />
               </svg>
             </div>
             <span className="font-semibold text-zinc-900 text-lg">
@@ -92,11 +172,31 @@ export default function Home() {
           <div className="text-center max-w-2xl mx-auto mb-12">
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium mb-6">
               <div className="flex -space-x-2">
-                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" className="w-6 h-6 rounded-full border-2 border-white" />
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" className="w-6 h-6 rounded-full border-2 border-white" />
-                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" className="w-6 h-6 rounded-full border-2 border-white" />
-                <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="" className="w-6 h-6 rounded-full border-2 border-white" />
-                <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="" className="w-6 h-6 rounded-full border-2 border-white" />
+                <img
+                  src="https://randomuser.me/api/portraits/women/44.jpg"
+                  alt=""
+                  className="w-6 h-6 rounded-full border-2 border-white"
+                />
+                <img
+                  src="https://randomuser.me/api/portraits/men/32.jpg"
+                  alt=""
+                  className="w-6 h-6 rounded-full border-2 border-white"
+                />
+                <img
+                  src="https://randomuser.me/api/portraits/women/68.jpg"
+                  alt=""
+                  className="w-6 h-6 rounded-full border-2 border-white"
+                />
+                <img
+                  src="https://randomuser.me/api/portraits/men/75.jpg"
+                  alt=""
+                  className="w-6 h-6 rounded-full border-2 border-white"
+                />
+                <img
+                  src="https://randomuser.me/api/portraits/women/90.jpg"
+                  alt=""
+                  className="w-6 h-6 rounded-full border-2 border-white"
+                />
               </div>
               <span>Loved by 2K+ cyclists in 50+ countries</span>
             </div>
@@ -108,8 +208,8 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-lg text-zinc-500 max-w-lg mx-auto leading-relaxed">
-              Convert any Google Maps directions URL into a GPX file
-              ready for your Garmin, Bryton, or Wahoo bike computer.
+              Convert any Google Maps directions URL into a GPX file ready for
+              your Garmin, Bryton, or Wahoo bike computer.
               <span className="block mt-2 text-base font-medium text-zinc-700">
                 No sign-up. No email. Just paste and go.
               </span>
@@ -119,7 +219,12 @@ export default function Home() {
           {/* Bicycle animation */}
           <div className="relative w-full max-w-2xl mx-auto mb-10 h-16 overflow-hidden">
             {/* Road path */}
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 600 60" fill="none" preserveAspectRatio="none">
+            <svg
+              className="absolute inset-0 w-full h-full"
+              viewBox="0 0 600 60"
+              fill="none"
+              preserveAspectRatio="none"
+            >
               <path
                 d="M0 45 C100 45, 120 20, 200 25 S350 50, 450 30 S550 20, 600 35"
                 stroke="#e4e4e7"
@@ -129,38 +234,171 @@ export default function Home() {
               />
             </svg>
             {/* Bicycle riding along the path */}
-            <svg className="absolute w-10 h-10 animate-ride-bike" viewBox="0 0 64 64" fill="none" style={{ top: 0, left: 0 }}>
+            <svg
+              className="absolute w-10 h-10 animate-ride-bike"
+              viewBox="0 0 64 64"
+              fill="none"
+              style={{ top: 0, left: 0 }}
+            >
               {/* Rear wheel */}
-              <circle cx="16" cy="44" r="10" stroke="#3b82f6" strokeWidth="2.5" fill="none">
-                <animateTransform attributeName="transform" type="rotate" from="0 16 44" to="360 16 44" dur="0.6s" repeatCount="indefinite" />
+              <circle
+                cx="16"
+                cy="44"
+                r="10"
+                stroke="#3b82f6"
+                strokeWidth="2.5"
+                fill="none"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 16 44"
+                  to="360 16 44"
+                  dur="0.6s"
+                  repeatCount="indefinite"
+                />
               </circle>
-              <line x1="16" y1="34" x2="16" y2="54" stroke="#3b82f6" strokeWidth="1.5">
-                <animateTransform attributeName="transform" type="rotate" from="0 16 44" to="360 16 44" dur="0.6s" repeatCount="indefinite" />
+              <line
+                x1="16"
+                y1="34"
+                x2="16"
+                y2="54"
+                stroke="#3b82f6"
+                strokeWidth="1.5"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 16 44"
+                  to="360 16 44"
+                  dur="0.6s"
+                  repeatCount="indefinite"
+                />
               </line>
-              <line x1="6" y1="44" x2="26" y2="44" stroke="#3b82f6" strokeWidth="1.5">
-                <animateTransform attributeName="transform" type="rotate" from="0 16 44" to="360 16 44" dur="0.6s" repeatCount="indefinite" />
+              <line
+                x1="6"
+                y1="44"
+                x2="26"
+                y2="44"
+                stroke="#3b82f6"
+                strokeWidth="1.5"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 16 44"
+                  to="360 16 44"
+                  dur="0.6s"
+                  repeatCount="indefinite"
+                />
               </line>
               {/* Front wheel */}
-              <circle cx="48" cy="44" r="10" stroke="#3b82f6" strokeWidth="2.5" fill="none">
-                <animateTransform attributeName="transform" type="rotate" from="0 48 44" to="360 48 44" dur="0.6s" repeatCount="indefinite" />
+              <circle
+                cx="48"
+                cy="44"
+                r="10"
+                stroke="#3b82f6"
+                strokeWidth="2.5"
+                fill="none"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 48 44"
+                  to="360 48 44"
+                  dur="0.6s"
+                  repeatCount="indefinite"
+                />
               </circle>
-              <line x1="48" y1="34" x2="48" y2="54" stroke="#3b82f6" strokeWidth="1.5">
-                <animateTransform attributeName="transform" type="rotate" from="0 48 44" to="360 48 44" dur="0.6s" repeatCount="indefinite" />
+              <line
+                x1="48"
+                y1="34"
+                x2="48"
+                y2="54"
+                stroke="#3b82f6"
+                strokeWidth="1.5"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 48 44"
+                  to="360 48 44"
+                  dur="0.6s"
+                  repeatCount="indefinite"
+                />
               </line>
-              <line x1="38" y1="44" x2="58" y2="44" stroke="#3b82f6" strokeWidth="1.5">
-                <animateTransform attributeName="transform" type="rotate" from="0 48 44" to="360 48 44" dur="0.6s" repeatCount="indefinite" />
+              <line
+                x1="38"
+                y1="44"
+                x2="58"
+                y2="44"
+                stroke="#3b82f6"
+                strokeWidth="1.5"
+              >
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 48 44"
+                  to="360 48 44"
+                  dur="0.6s"
+                  repeatCount="indefinite"
+                />
               </line>
               {/* Frame */}
-              <polyline points="16,44 28,24 48,44 28,24 40,44" stroke="#1e40af" strokeWidth="2.5" strokeLinejoin="round" fill="none" />
+              <polyline
+                points="16,44 28,24 48,44 28,24 40,44"
+                stroke="#1e40af"
+                strokeWidth="2.5"
+                strokeLinejoin="round"
+                fill="none"
+              />
               {/* Handlebar */}
-              <polyline points="44,36 48,28 52,30" stroke="#1e40af" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+              <polyline
+                points="44,36 48,28 52,30"
+                stroke="#1e40af"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
               {/* Seat */}
-              <line x1="24" y1="22" x2="32" y2="22" stroke="#1e40af" strokeWidth="2.5" strokeLinecap="round" />
+              <line
+                x1="24"
+                y1="22"
+                x2="32"
+                y2="22"
+                stroke="#1e40af"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
               {/* Rider body */}
               <circle cx="30" cy="12" r="5" fill="#3b82f6" /> {/* Head */}
-              <line x1="30" y1="17" x2="28" y2="26" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" /> {/* Body */}
-              <polyline points="22,30 28,26 36,32" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" fill="none" /> {/* Arms */}
-              <polyline points="20,40 28,26 16,44" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" fill="none" /> {/* Legs */}
+              <line
+                x1="30"
+                y1="17"
+                x2="28"
+                y2="26"
+                stroke="#3b82f6"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />{" "}
+              {/* Body */}
+              <polyline
+                points="22,30 28,26 36,32"
+                stroke="#3b82f6"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                fill="none"
+              />{" "}
+              {/* Arms */}
+              <polyline
+                points="20,40 28,26 16,44"
+                stroke="#3b82f6"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                fill="none"
+              />{" "}
+              {/* Legs */}
             </svg>
           </div>
 
@@ -170,26 +408,66 @@ export default function Home() {
           {/* Trust badges */}
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mt-10 text-xs text-zinc-400">
             <span className="flex items-center gap-1.5">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               GPX 1.1 Standard
             </span>
             <span className="flex items-center gap-1.5">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               Exact Google Maps route
             </span>
             <span className="flex items-center gap-1.5">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               Elevation data included
             </span>
             <span className="flex items-center gap-1.5">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               No sign-up required
             </span>
@@ -204,7 +482,8 @@ export default function Home() {
                 Why MapsToGPX?
               </h2>
               <p className="text-zinc-500 max-w-lg mx-auto">
-                Everything you need to get your Google Maps routes onto your bike computer.
+                Everything you need to get your Google Maps routes onto your
+                bike computer.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -244,17 +523,20 @@ export default function Home() {
                 {
                   step: "1",
                   title: "Plan your route",
-                  description: "Open Google Maps, create a directions route, and copy the URL from your browser's address bar.",
+                  description:
+                    "Open Google Maps, create a directions route, and copy the URL from your browser's address bar.",
                 },
                 {
                   step: "2",
                   title: "Convert to GPX",
-                  description: "Paste the URL above and click Convert. We'll generate a GPX file with the exact same route from Google Maps, including elevation data.",
+                  description:
+                    "Paste the URL above and click Convert. We'll generate a GPX file with the exact same route from Google Maps, including elevation data.",
                 },
                 {
                   step: "3",
                   title: "Ride!",
-                  description: "Download the GPX file and import it into Garmin Connect, Bryton Active, Wahoo app, or any compatible device.",
+                  description:
+                    "Download the GPX file and import it into Garmin Connect, Bryton Active, Wahoo app, or any compatible device.",
                 },
               ].map((item) => (
                 <div key={item.step} className="text-center">
@@ -281,7 +563,9 @@ export default function Home() {
             Enjoy MapsToGPX? Buy me a coffee!
           </h3>
           <p className="text-sm text-zinc-500 mb-4 max-w-md mx-auto">
-            Built by a fellow cyclist who got tired of complicated tools. This app is free and always will be. If it saved you time, consider supporting its development.
+            Built by a fellow cyclist who got tired of complicated tools. This
+            app is free and always will be. If it saved you time, consider
+            supporting this site.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <a
@@ -317,11 +601,23 @@ export default function Home() {
             {/* Brand */}
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded-md bg-blue-600 flex items-center justify-center">
-                <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+                <svg
+                  className="w-3.5 h-3.5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"
+                  />
                 </svg>
               </div>
-              <span className="text-sm font-medium text-zinc-600">MapsToGPX</span>
+              <span className="text-sm font-medium text-zinc-600">
+                MapsToGPX
+              </span>
             </div>
 
             {/* Creator info */}
@@ -345,8 +641,18 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-zinc-100 transition-colors"
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
+                  />
                 </svg>
                 kaichin.dev
               </a>
@@ -356,7 +662,11 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2] transition-colors"
               >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <svg
+                  className="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
                   <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                 </svg>
                 LinkedIn
