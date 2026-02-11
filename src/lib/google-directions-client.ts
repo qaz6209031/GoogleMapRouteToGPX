@@ -1,16 +1,17 @@
-import { Coordinate, RouteResult } from "./types";
+import { Coordinate, RouteResult, TravelMode } from "./types";
 import { decodePolyline } from "./polyline";
 
 const DIRECTIONS_BASE =
   "https://maps.googleapis.com/maps/api/directions/json";
 
 /**
- * Get a bicycle route from the Google Directions API between the given waypoints.
+ * Get a route from the Google Directions API between the given waypoints.
  * Returns the exact route Google Maps would display.
  */
 export async function getRoute(
   waypoints: Coordinate[],
-  routeIndex: number = 0
+  routeIndex: number = 0,
+  travelMode: TravelMode = "driving"
 ): Promise<RouteResult> {
   if (waypoints.length < 2) {
     throw new Error("At least 2 waypoints are required for routing");
@@ -29,7 +30,7 @@ export async function getRoute(
   const params = new URLSearchParams({
     origin,
     destination,
-    mode: "bicycling",
+    mode: travelMode,
     key: apiKey,
     ...(routeIndex > 0 ? { alternatives: "true" } : {}),
   });

@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Google Maps Route to GPX Converter",
   description:
-    "Convert Google Maps directions URLs into GPX files for Garmin, Bryton, and Wahoo bike computers. Free, no API key needed.",
+    "Convert Google Maps directions URLs into GPX files. Supports driving, cycling, and walking routes. Free, no sign-up needed.",
 };
 
 export default function RootLayout({

@@ -42,9 +42,9 @@ const FEATURES = [
         />
       </svg>
     ),
-    title: "Cycling-Optimized Routes",
+    title: "Exact Google Maps Routes",
     description:
-      "Routes match exactly what Google Maps shows — the same roads, paths, and turns.",
+      "Routes match exactly what Google Maps shows — driving, cycling, or walking. Same roads, paths, and turns.",
   },
   {
     icon: (
@@ -62,9 +62,9 @@ const FEATURES = [
         />
       </svg>
     ),
-    title: "Elevation Data Included",
+    title: "All Travel Modes",
     description:
-      "Automatic elevation profiles from Open-Meteo so your bike computer shows climbs and descents.",
+      "Works with driving, cycling, walking, and transit routes. The travel mode is detected automatically from your URL.",
   },
   {
     icon: (
@@ -104,7 +104,7 @@ const FEATURES = [
     ),
     title: "Trusted by Thousands",
     description:
-      "Used by 2,000+ cyclists worldwide. No sign-up, no tracking, no hidden costs — just GPX files.",
+      "Used by 2,000+ users worldwide. No sign-up, no tracking, no hidden costs — just GPX files.",
   },
   {
     icon: (
@@ -198,7 +198,7 @@ export default function Home() {
                   className="w-6 h-6 rounded-full border-2 border-white"
                 />
               </div>
-              <span>Loved by 2K+ cyclists in 50+ countries</span>
+              <span>Loved by 2K+ users in 50+ countries</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-900 mb-4 leading-[1.1]">
               Google Maps Route
@@ -208,8 +208,8 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-lg text-zinc-500 max-w-lg mx-auto leading-relaxed">
-              Convert any Google Maps directions URL into a GPX file ready for
-              your Garmin, Bryton, or Wahoo bike computer.
+              Convert any Google Maps directions URL into a GPX file for your
+              GPS device — driving, cycling, or walking.
               <span className="block mt-2 text-base font-medium text-zinc-700">
                 No sign-up. No email. Just paste and go.
               </span>
@@ -453,7 +453,7 @@ export default function Home() {
                   d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              Elevation data included
+              All travel modes
             </span>
             <span className="flex items-center gap-1.5">
               <svg
@@ -482,8 +482,8 @@ export default function Home() {
                 Why MapsToGPX?
               </h2>
               <p className="text-zinc-500 max-w-lg mx-auto">
-                Everything you need to get your Google Maps routes onto your
-                bike computer.
+                Everything you need to get your Google Maps routes into a GPX
+                file.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -515,7 +515,7 @@ export default function Home() {
                 How It Works
               </h2>
               <p className="text-zinc-500 max-w-lg mx-auto">
-                Three simple steps from Google Maps to your bike computer.
+                Three simple steps from Google Maps to GPX.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -530,7 +530,7 @@ export default function Home() {
                   step: "2",
                   title: "Convert to GPX",
                   description:
-                    "Paste the URL above and click Convert. We'll generate a GPX file with the exact same route from Google Maps, including elevation data.",
+                    "Paste the URL above and click Convert. We'll generate a GPX file with the exact same route from Google Maps.",
                 },
                 {
                   step: "3",
@@ -563,9 +563,8 @@ export default function Home() {
             Enjoy MapsToGPX? Buy me a coffee!
           </h3>
           <p className="text-sm text-zinc-500 mb-4 max-w-md mx-auto">
-            Built by a fellow cyclist who got tired of complicated tools. This
-            app is free and always will be. If it saved you time, consider
-            supporting this site.
+            This app is free and always will be. If it saved you time, consider
+            supporting the project.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <a
@@ -622,7 +621,7 @@ export default function Home() {
 
             {/* Creator info */}
             <p className="text-sm text-zinc-500">
-              Built by cyclist &amp; developer{" "}
+              Built by{" "}
               <a
                 href="https://kaichin.dev/"
                 target="_blank"
@@ -674,7 +673,7 @@ export default function Home() {
             </div>
 
             <p className="text-xs text-zinc-400">
-              Free forever. Trusted by cyclists worldwide.
+              Free forever. Trusted by users worldwide.
             </p>
           </div>
         </div>

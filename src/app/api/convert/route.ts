@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     const coordinates = await resolveWaypoints(parsed.waypoints);
 
     // 3. Get bicycle route from Google Directions API
-    const route = await getRoute(coordinates, parsed.routeIndex);
+    const route = await getRoute(coordinates, parsed.routeIndex, parsed.travelMode);
 
     // 4. Generate GPX
     const gpx = generateGpx(route.coordinates);

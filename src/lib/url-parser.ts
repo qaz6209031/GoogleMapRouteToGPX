@@ -1,4 +1,4 @@
-import { Coordinate, ParsedRoute, Waypoint } from "./types";
+import { Coordinate, ParsedRoute, TravelMode, Waypoint } from "./types";
 
 const COORD_REGEX = /^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/;
 
@@ -73,6 +73,33 @@ function extractRouteIndex(urlString: string): number {
 }
 
 /**
+ * Extract travel mode from a Google Maps URL.
+ * Data parameter: !3e0 = driving, !3e1 = bicycling, !3e2 = walking, !3e3 = transit
+ * Query parameter: travelmode=driving|bicycling|walking|transit
+ */
+function extractTravelMode(url: URL, urlString: string): TravelMode {
+  // Check query parameter first (used in API-style URLs)
+  const queryMode = url.searchParams.get("travelmode");
+  if (queryMode && ["driving", "bicycling", "walking", "transit"].includes(queryMode)) {
+    return queryMode as TravelMode;
+  }
+
+  // Check data parameter encoding: !3e<N>
+  const dataMatch = urlString.match(/!3e(\d)/);
+  if (dataMatch) {
+    const modeMap: Record<string, TravelMode> = {
+      "0": "driving",
+      "1": "bicycling",
+      "2": "walking",
+      "3": "transit",
+    };
+    return modeMap[dataMatch[1]] ?? "driving";
+  }
+
+  return "driving";
+}
+
+/**
  * Parse a Google Maps directions URL into waypoints.
  *
  * Supported formats:
@@ -88,6 +115,7 @@ export function parseGoogleMapsUrl(urlString: string): ParsedRoute {
   const namedPlaceCoords = extractNamedPlaceCoordinates(urlString);
   const viaWaypoints = extractViaWaypoints(urlString);
   const routeIndex = extractRouteIndex(urlString);
+  const travelMode = extractTravelMode(url, urlString);
 
   // Query-based format: ?api=1&origin=...&destination=...&waypoints=...|...
   const origin = url.searchParams.get("origin");
@@ -101,7 +129,7 @@ export function parseGoogleMapsUrl(urlString: string): ParsedRoute {
       }
     }
     waypoints.push(makeWaypoint(destination));
-    return { waypoints, routeIndex };
+    return { waypoints, routeIndex, travelMode };
   }
 
   // Legacy query format: ?saddr=A&daddr=B+to:C+to:D
@@ -113,7 +141,7 @@ export function parseGoogleMapsUrl(urlString: string): ParsedRoute {
     for (const p of parts) {
       if (p.trim()) waypoints.push(makeWaypoint(p));
     }
-    return { waypoints, routeIndex };
+    return { waypoints, routeIndex, travelMode };
   }
 
   // Path-based format: /maps/dir/Place1/Place2/Place3/@lat,lng,zoom
@@ -154,7 +182,7 @@ export function parseGoogleMapsUrl(urlString: string): ParsedRoute {
         waypoints.push(dest);
       }
 
-      return { waypoints, routeIndex };
+      return { waypoints, routeIndex, travelMode };
     }
   }
 

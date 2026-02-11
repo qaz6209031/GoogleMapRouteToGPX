@@ -9,9 +9,12 @@ export interface Waypoint {
   address?: string;
 }
 
+export type TravelMode = "driving" | "bicycling" | "walking" | "transit";
+
 export interface ParsedRoute {
   waypoints: Waypoint[];
   routeIndex: number;
+  travelMode: TravelMode;
 }
 
 export interface RouteResult {
