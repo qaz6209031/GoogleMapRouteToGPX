@@ -1,4 +1,4 @@
-import { ElevatedCoordinate } from "./types";
+import { Coordinate } from "./types";
 
 function escapeXml(str: string): string {
   return str
@@ -10,20 +10,18 @@ function escapeXml(str: string): string {
 }
 
 /**
- * Generate a GPX 1.1 XML string from elevated coordinates.
+ * Generate a GPX 1.1 XML string from coordinates.
  * Compatible with Garmin, Bryton, and Wahoo devices.
  */
 export function generateGpx(
-  coordinates: ElevatedCoordinate[],
+  coordinates: Coordinate[],
   name: string = "Google Maps Route"
 ): string {
   const timestamp = new Date().toISOString();
 
   const trackpoints = coordinates
     .map((c) => {
-      const ele =
-        c.ele !== undefined ? `\n        <ele>${c.ele.toFixed(1)}</ele>` : "";
-      return `      <trkpt lat="${c.lat.toFixed(7)}" lon="${c.lng.toFixed(7)}">${ele}\n      </trkpt>`;
+      return `      <trkpt lat="${c.lat.toFixed(7)}" lon="${c.lng.toFixed(7)}">\n      </trkpt>`;
     })
     .join("\n");
 

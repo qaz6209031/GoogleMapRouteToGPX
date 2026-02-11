@@ -3,10 +3,6 @@ export interface Coordinate {
   lng: number;
 }
 
-export interface ElevatedCoordinate extends Coordinate {
-  ele?: number;
-}
-
 export interface Waypoint {
   label: string;
   coordinate?: Coordinate;
@@ -27,8 +23,6 @@ export interface RouteResult {
 export interface ConversionResult {
   gpx: string;
   distanceKm: number;
-  elevationGainM: number;
-  pointCount: number;
 }
 
 export interface ConversionProgress {

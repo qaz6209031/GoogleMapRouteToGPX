@@ -4,8 +4,6 @@ import { useState } from "react";
 
 interface Stats {
   distanceKm: number;
-  elevationGainM: number;
-  pointCount: number;
   waypointCount: number;
 }
 
@@ -261,7 +259,7 @@ export default function ConverterForm() {
             </div>
 
             {/* Stats grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               <StatCard
                 icon={
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -270,24 +268,6 @@ export default function ConverterForm() {
                 }
                 label="Distance"
                 value={`${stats.distanceKm} km`}
-              />
-              <StatCard
-                icon={
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22" />
-                  </svg>
-                }
-                label="Elev. Gain"
-                value={`${stats.elevationGainM} m`}
-              />
-              <StatCard
-                icon={
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
-                  </svg>
-                }
-                label="Points"
-                value={`${stats.pointCount.toLocaleString()}`}
               />
               <StatCard
                 icon={
