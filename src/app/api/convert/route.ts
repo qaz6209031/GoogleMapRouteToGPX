@@ -3,8 +3,26 @@ import { parseGoogleMapsUrl, resolveWaypoints } from "@/lib/url-parser";
 import { getRoute } from "@/lib/google-directions-client";
 import { generateGpx } from "@/lib/gpx-generator";
 
+function isSameOriginRequest(request: NextRequest): boolean {
+  const origin = request.headers.get("origin");
+  if (!origin) return false;
+
+  try {
+    return new URL(origin).origin === request.nextUrl.origin;
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
+    if (!isSameOriginRequest(request)) {
+      return NextResponse.json(
+        { error: "Forbidden" },
+        { status: 403 }
+      );
+    }
+
     const { url } = await request.json();
 
     if (!url || typeof url !== "string") {
