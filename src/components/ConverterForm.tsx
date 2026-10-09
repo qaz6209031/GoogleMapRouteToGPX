@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 interface Stats {
   distanceKm: number;
@@ -94,6 +95,7 @@ export default function ConverterForm() {
       setGpxData(data.gpx);
       setStats(data.stats);
       setStep("done");
+      trackEvent("route_conversion");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Conversion failed");
       setStep("error");
@@ -107,6 +109,7 @@ export default function ConverterForm() {
     a.href = URL.createObjectURL(blob);
     a.download = "route.gpx";
     a.click();
+    trackEvent("gpx_download");
     URL.revokeObjectURL(a.href);
   }
 

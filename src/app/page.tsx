@@ -104,7 +104,7 @@ const FEATURES = [
     ),
     title: "Trusted by Thousands",
     description:
-      "Used by 2,000+ users worldwide. No sign-up, no tracking, no hidden costs — just GPX files.",
+      "Used by 2,000+ users worldwide. No sign-up, no hidden costs — just GPX files.",
   },
   {
     icon: (

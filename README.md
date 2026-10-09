@@ -67,6 +67,29 @@ src/
     └── ConverterForm.tsx        # Main UI (client component)
 ```
 
+## Analytics
+
+Google Analytics 4 uses measurement ID `G-E4P5HTG25D` for the **MapsToGPX** property
+and **MapsToGPX Web** stream. No extra environment variable is required.
+
+The tag loads after hydration in production builds. Collection is restricted to
+`maptogpx.com` and `www.maptogpx.com`, excluding localhost and Vercel preview domains.
+Existing Vercel Analytics and Speed Insights remain enabled.
+
+Alongside automatic page views, scrolls, and outbound clicks, the app sends:
+
+| Event | Trigger |
+| --- | --- |
+| `route_conversion` | A route conversion finishes successfully. |
+| `gpx_download` | The user clicks to download the generated GPX file. |
+
+Custom events contain no pasted Maps URLs, coordinates, route data, or error messages.
+Google signals and ad personalization signals are disabled. The site's generated GPX
+download uses an explicit event because it isn't a standard file link.
+
+After deploying, open Google Analytics **Reports → Realtime**, visit the live site,
+convert a route, and download its GPX file to verify the events.
+
 ## Supported Google Maps URL Formats
 
 - **Path-based:** `google.com/maps/dir/Origin/Destination/@viewport`
