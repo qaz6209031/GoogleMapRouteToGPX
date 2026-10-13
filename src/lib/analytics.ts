@@ -1,7 +1,7 @@
 export const GA_MEASUREMENT_ID = "G-E4P5HTG25D";
 export const ANALYTICS_HOSTS = ["maptogpx.com", "www.maptogpx.com"];
 
-type AnalyticsEvent = "route_conversion" | "gpx_download";
+type AnalyticsEvent = "route_conversion" | "gpx_download" | "feedback_submit";
 
 declare global {
   interface Window {

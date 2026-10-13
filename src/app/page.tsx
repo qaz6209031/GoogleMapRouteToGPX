@@ -1,4 +1,5 @@
 import ConverterForm from "@/components/ConverterForm";
+import FeedbackForm from "@/components/FeedbackForm";
 
 const FEATURES = [
   {
@@ -160,6 +161,12 @@ export default function Home() {
               className="px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100"
             >
               How It Works
+            </a>
+            <a
+              href="#feedback"
+              className="px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100"
+            >
+              Feedback
             </a>
           </nav>
         </div>
@@ -552,6 +559,21 @@ export default function Home() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Feedback */}
+        <div id="feedback" className="border-t border-zinc-200 scroll-mt-16">
+          <div className="max-w-xl mx-auto px-4 sm:px-6 py-20">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">
+                Share Your Feedback
+              </h2>
+              <p className="text-zinc-500">
+                Found a bug or have an idea? Let us know.
+              </p>
+            </div>
+            <FeedbackForm />
           </div>
         </div>
       </section>

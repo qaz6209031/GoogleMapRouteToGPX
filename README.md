@@ -1,6 +1,6 @@
 # MapsToGPX
 
-Convert Google Maps directions URLs into GPX files for Garmin, Bryton, and Wahoo bike computers. No sign-up required — just paste and go.
+Convert Google Maps directions URLs into GPX files for Garmin, Bryton, Wahoo, and other GPS devices. Works with driving, cycling, and walking routes. No sign-up required — just paste and go.
 
 **Live site:** [maptogpx.com](https://maptogpx.com)
 
@@ -8,7 +8,7 @@ Convert Google Maps directions URLs into GPX files for Garmin, Bryton, and Wahoo
 
 - **No account needed** — paste a URL, download a GPX file. No email, no sign-up.
 - **Exact Google Maps routes** — uses the Google Directions API so the GPX matches exactly what Google Maps shows.
-- **Elevation data included** — automatic elevation profiles so your bike computer shows climbs and descents.
+- **Travel mode detection** — uses the driving, cycling, walking, or transit mode selected in Google Maps, plus the alternative route you picked.
 - **Universal compatibility** — GPX 1.1 format works with Garmin, Bryton, Wahoo, and any device that reads GPX.
 - **All URL formats** — supports long URLs, short links (goo.gl), addresses, coordinates, and multi-stop routes.
 
@@ -17,15 +17,15 @@ Convert Google Maps directions URLs into GPX files for Garmin, Bryton, and Wahoo
 1. Open Google Maps and create a directions route
 2. Copy the URL from your browser's address bar
 3. Paste it on the site and click "Convert to GPX"
-4. Download the GPX file and import it into your bike computer
+4. Download the GPX file and import it into your GPS device or app
 
 ## Tech Stack
 
-- **Next.js 15** with TypeScript and Tailwind CSS (App Router)
+- **Next.js 16** (App Router) with React 19, TypeScript, and Tailwind CSS 4
 - **Google Directions API** — exact route matching with Google Maps
-- **Open-Meteo** — free elevation data
 - **Nominatim** — free geocoding for address-based waypoints
-- **Vercel** — deployment and hosting
+- **Supabase** — stores feedback submitted through the site
+- **Vercel** — deployment, hosting, Analytics, and Speed Insights
 
 ## Getting Started
 
@@ -33,11 +33,16 @@ Convert Google Maps directions URLs into GPX files for Garmin, Bryton, and Wahoo
 npm install
 ```
 
-Create a `.env.local` file with your Google Maps API key:
+Create a `.env.local` file with your Google Maps API key and Supabase credentials:
 
 ```
 GOOGLE_MAPS_API_KEY=your_api_key_here
+SUPABASE_URL=https://<project-ref>.supabase.co
+SUPABASE_SECRET_KEY=sb_secret_...
 ```
+
+The Supabase values are only needed for the feedback form. Get the secret key with
+`supabase projects api-keys --project-ref <project-ref> --reveal`.
 
 ```bash
 npm run dev
@@ -55,16 +60,41 @@ src/
 │   ├── globals.css             # Tailwind + custom styles
 │   └── api/
 │       ├── convert/route.ts    # Main conversion pipeline
+│       ├── feedback/route.ts   # Validates and stores user feedback
 │       └── resolve-url/route.ts # Short URL expander
 ├── lib/
 │   ├── types.ts                # Shared interfaces
+│   ├── analytics.ts            # GA4 config + event tracking
+│   ├── feedback-store.ts       # Supabase REST insert for feedback
+│   ├── same-origin.ts          # Same-origin check for API routes
 │   ├── url-parser.ts           # Parse Google Maps URLs → coordinates
 │   ├── google-directions-client.ts # Google Directions API routing
-│   ├── elevation-client.ts     # Open-Meteo elevation lookup
 │   ├── gpx-generator.ts        # GPX 1.1 XML generation
 │   └── polyline.ts             # Google encoded polyline decoder
 └── components/
-    └── ConverterForm.tsx        # Main UI (client component)
+    ├── ConverterForm.tsx        # Main UI (client component)
+    ├── FeedbackForm.tsx         # Rating + message + optional email form
+    └── GoogleAnalytics.tsx      # GA4 tag loader
+supabase/
+└── migrations/                  # Database schema (feedback table)
+```
+
+## Feedback
+
+The **Share Your Feedback** section on the home page collects a 1–5 star rating, a
+message, and an optional email (at least a rating or a message is required). Submissions go
+through `POST /api/feedback`, which only accepts same-origin requests, validates the input,
+drops bot submissions caught by a hidden honeypot field, and inserts the row into the
+`feedback` table in Supabase using the secret key.
+
+The table has row-level security enabled with no policies, so the public (anon) key can't read
+or write it. View submissions in the Supabase dashboard's Table Editor.
+
+Schema changes live in `supabase/migrations/`. To apply new migrations:
+
+```bash
+supabase migration new <name>   # create a migration file
+supabase db push                # apply it to the linked project
 ```
 
 ## Analytics
@@ -82,8 +112,9 @@ Alongside automatic page views, scrolls, and outbound clicks, the app sends:
 | --- | --- |
 | `route_conversion` | A route conversion finishes successfully. |
 | `gpx_download` | The user clicks to download the generated GPX file. |
+| `feedback_submit` | The user successfully submits the feedback form. |
 
-Custom events contain no pasted Maps URLs, coordinates, route data, or error messages.
+Custom events contain no pasted Maps URLs, coordinates, route data, feedback content, or error messages.
 Google signals and ad personalization signals are disabled. The site's generated GPX
 download uses an explicit event because it isn't a standard file link.
 

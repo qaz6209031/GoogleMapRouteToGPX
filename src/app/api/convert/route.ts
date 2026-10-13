@@ -2,17 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { parseGoogleMapsUrl, resolveWaypoints } from "@/lib/url-parser";
 import { getRoute } from "@/lib/google-directions-client";
 import { generateGpx } from "@/lib/gpx-generator";
-
-function isSameOriginRequest(request: NextRequest): boolean {
-  const origin = request.headers.get("origin");
-  if (!origin) return false;
-
-  try {
-    return new URL(origin).origin === request.nextUrl.origin;
-  } catch {
-    return false;
-  }
-}
+import { isSameOriginRequest } from "@/lib/same-origin";
 
 export async function POST(request: NextRequest) {
   try {
