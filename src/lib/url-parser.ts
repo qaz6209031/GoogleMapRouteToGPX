@@ -1,4 +1,11 @@
-import { Coordinate, ParsedRoute, TravelMode, Waypoint } from "./types";
+import {
+  AvoidOption,
+  Coordinate,
+  ParsedRoute,
+  RoutePoint,
+  TravelMode,
+  Waypoint,
+} from "./types";
 
 const COORD_REGEX = /^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/;
 
@@ -23,80 +30,139 @@ function makeWaypoint(raw: string): Waypoint {
 }
 
 /**
- * Extract "named place" coordinates from the data= parameter.
- * These are coordinates that resolve path segment addresses.
- * Pattern: !1s<placeId>!2m2!1d<lng>!2d<lat>
+ * A node in Google Maps' protobuf-like data= encoding.
+ * Each token is !<field><type><value>; type "m" is a nested message whose
+ * value is the total number of tokens it contains.
  */
-function extractNamedPlaceCoordinates(urlString: string): Coordinate[] {
-  const coords: Coordinate[] = [];
-  const matches = urlString.matchAll(
-    /!1s[^!]+!2m2!1d(-?\d+\.?\d+)!2d(-?\d+\.?\d+)/g
-  );
-  for (const m of matches) {
-    const lng = parseFloat(m[1]);
-    const lat = parseFloat(m[2]);
-    if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
-      coords.push({ lat, lng });
-    }
-  }
-  return coords;
+interface DataNode {
+  field: number;
+  type: string;
+  value: string;
+  children: DataNode[];
 }
 
-/**
- * Extract "via waypoint" coordinates from the data= parameter.
- * These are intermediate points the user dragged or added, identified by !4e1.
- * Pattern: !1m2!1d<lng>!2d<lat>...!4e1
- */
-function extractViaWaypoints(urlString: string): Coordinate[] {
-  const coords: Coordinate[] = [];
-  // Via waypoints have !1m2!1d<lng>!2d<lat> followed eventually by !4e1
-  const matches = urlString.matchAll(
-    /!1m2!1d(-?\d+\.?\d+)!2d(-?\d+\.?\d+)[^!]*(?:![^!]*)*?!4e1/g
-  );
-  for (const m of matches) {
-    const lng = parseFloat(m[1]);
-    const lat = parseFloat(m[2]);
-    if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
-      coords.push({ lat, lng });
+function parseDataTokens(tokens: string[], start: number, count: number): DataNode[] {
+  const nodes: DataNode[] = [];
+  let i = start;
+  while (i < start + count && i < tokens.length) {
+    const match = tokens[i].match(/^(\d+)([a-z])(.*)$/);
+    i++;
+    if (!match) continue;
+    const node: DataNode = {
+      field: parseInt(match[1], 10),
+      type: match[2],
+      value: match[3],
+      children: [],
+    };
+    if (node.type === "m") {
+      const size = parseInt(node.value, 10) || 0;
+      node.children = parseDataTokens(tokens, i, size);
+      i += size;
     }
+    nodes.push(node);
   }
-  return coords;
+  return nodes;
 }
 
+function child(node: DataNode | undefined, field: number, type: string) {
+  return node?.children.find((c) => c.field === field && c.type === type);
+}
+
+function children(node: DataNode | undefined, field: number, type: string) {
+  return node?.children.filter((c) => c.field === field && c.type === type) ?? [];
+}
+
+/** Read a !1d<lng>!2d<lat> pair from a message node. */
+function nodeCoordinate(node: DataNode | undefined): Coordinate | null {
+  const lng = parseFloat(child(node, 1, "d")?.value ?? "");
+  const lat = parseFloat(child(node, 2, "d")?.value ?? "");
+  if (lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+    return { lat, lng };
+  }
+  return null;
+}
+
+interface DataWaypoint {
+  /** Coordinate of a named place (!2m2!1d<lng>!2d<lat>), if present */
+  coordinate: Coordinate | null;
+  /** Points dragged onto the leg that starts at this waypoint */
+  vias: Coordinate[];
+}
+
+interface DirectionsData {
+  waypoints: DataWaypoint[];
+  routeIndex?: number;
+  travelMode?: TravelMode;
+  avoid: AvoidOption[];
+}
+
+const DATA_TRAVEL_MODES: Record<string, TravelMode> = {
+  "0": "driving",
+  "1": "bicycling",
+  "2": "walking",
+  "3": "transit",
+};
+
 /**
- * Extract the route alternative index from the data= parameter.
- * Google Maps encodes this as !5i<N> where N is the 0-based route index.
+ * Parse the directions part of a path-based URL's data= segment:
+ *   !4m<n>!4m<n>                       directions message
+ *     !1m<n>...                        one per waypoint, in path order
+ *       !2m2!1d<lng>!2d<lat>           named place coordinate
+ *       !3m4!1m2!1d<lng>!2d<lat>!3s..  via point dragged on the following leg
+ *     !2m<n>!1b1!2b1!3b1               avoid highways / tolls / ferries
+ *     !3e<N>                           travel mode
+ *     !5i<N>                           selected alternative route
  */
-function extractRouteIndex(urlString: string): number {
-  const match = urlString.match(/!5i(\d+)/);
-  return match ? parseInt(match[1], 10) : 0;
+function parseDirectionsData(url: URL): DirectionsData | null {
+  const segment = url.pathname.split("/").find((s) => s.startsWith("data="));
+  if (!segment) return null;
+
+  const tokens = decodeURIComponent(segment.slice("data=".length))
+    .split("!")
+    .filter(Boolean);
+  const root = parseDataTokens(tokens, 0, tokens.length);
+  const directions = child(
+    root.find((n) => n.field === 4 && n.type === "m"),
+    4,
+    "m"
+  );
+  if (!directions) return null;
+
+  const waypoints = children(directions, 1, "m").map((wp) => ({
+    coordinate: nodeCoordinate(child(wp, 2, "m")),
+    vias: children(wp, 3, "m")
+      .map((via) => nodeCoordinate(child(via, 1, "m")))
+      .filter((c): c is Coordinate => c !== null),
+  }));
+
+  const options = child(directions, 2, "m");
+  const avoid: AvoidOption[] = [];
+  if (child(options, 1, "b")?.value === "1") avoid.push("highways");
+  if (child(options, 2, "b")?.value === "1") avoid.push("tolls");
+  if (child(options, 3, "b")?.value === "1") avoid.push("ferries");
+
+  const mode = child(directions, 3, "e")?.value;
+  const routeIndex = child(directions, 5, "i")?.value;
+
+  return {
+    waypoints,
+    routeIndex: routeIndex ? parseInt(routeIndex, 10) : undefined,
+    travelMode: mode ? DATA_TRAVEL_MODES[mode] : undefined,
+    avoid,
+  };
 }
 
 /**
  * Extract travel mode from a Google Maps URL.
- * Data parameter: !3e0 = driving, !3e1 = bicycling, !3e2 = walking, !3e3 = transit
- * Query parameter: travelmode=driving|bicycling|walking|transit
+ * Query parameter (travelmode=driving|bicycling|walking|transit) takes
+ * precedence over the data= encoding (!3e<N>).
  */
-function extractTravelMode(url: URL, urlString: string): TravelMode {
-  // Check query parameter first (used in API-style URLs)
+function extractTravelMode(url: URL, data: DirectionsData | null): TravelMode {
   const queryMode = url.searchParams.get("travelmode");
   if (queryMode && ["driving", "bicycling", "walking", "transit"].includes(queryMode)) {
     return queryMode as TravelMode;
   }
-
-  // Check data parameter encoding: !3e<N>
-  const dataMatch = urlString.match(/!3e(\d)/);
-  if (dataMatch) {
-    const modeMap: Record<string, TravelMode> = {
-      "0": "driving",
-      "1": "bicycling",
-      "2": "walking",
-      "3": "transit",
-    };
-    return modeMap[dataMatch[1]] ?? "driving";
-  }
-
-  return "driving";
+  return data?.travelMode ?? "driving";
 }
 
 /**
@@ -111,11 +177,12 @@ function extractTravelMode(url: URL, urlString: string): TravelMode {
 export function parseGoogleMapsUrl(urlString: string): ParsedRoute {
   const url = new URL(urlString);
 
-  // Extract coordinates from the data= parameter
-  const namedPlaceCoords = extractNamedPlaceCoordinates(urlString);
-  const viaWaypoints = extractViaWaypoints(urlString);
-  const routeIndex = extractRouteIndex(urlString);
-  const travelMode = extractTravelMode(url, urlString);
+  // Extract waypoint coordinates, dragged via points and route options
+  // from the data= parameter
+  const data = parseDirectionsData(url);
+  const routeIndex = data?.routeIndex ?? 0;
+  const travelMode = extractTravelMode(url, data);
+  const avoid = data?.avoid ?? [];
 
   // Query-based format: ?api=1&origin=...&destination=...&waypoints=...|...
   const origin = url.searchParams.get("origin");
@@ -129,7 +196,7 @@ export function parseGoogleMapsUrl(urlString: string): ParsedRoute {
       }
     }
     waypoints.push(makeWaypoint(destination));
-    return { waypoints, routeIndex, travelMode };
+    return { waypoints, routeIndex, travelMode, avoid };
   }
 
   // Legacy query format: ?saddr=A&daddr=B+to:C+to:D
@@ -141,7 +208,7 @@ export function parseGoogleMapsUrl(urlString: string): ParsedRoute {
     for (const p of parts) {
       if (p.trim()) waypoints.push(makeWaypoint(p));
     }
-    return { waypoints, routeIndex, travelMode };
+    return { waypoints, routeIndex, travelMode, avoid };
   }
 
   // Path-based format: /maps/dir/Place1/Place2/Place3/@lat,lng,zoom
@@ -157,32 +224,43 @@ export function parseGoogleMapsUrl(urlString: string): ParsedRoute {
     }
 
     if (segments.length >= 2) {
-      // Resolve path segments to waypoints, using named place coordinates
-      // from the data parameter to resolve addresses
-      const namedCoords = [...namedPlaceCoords];
+      const dataWaypoints = data?.waypoints ?? [];
+      // The data= waypoint blocks normally line up 1:1 with the path
+      // segments; if they don't, fall back to using their coordinates in order
+      // and appending every via point to the last leg.
+      const aligned = dataWaypoints.length === segments.length;
+      const namedCoords = dataWaypoints
+        .map((d) => d.coordinate)
+        .filter((c): c is Coordinate => c !== null);
       const waypoints: Waypoint[] = [];
 
-      for (const s of segments) {
+      const pushVias = (vias: Coordinate[]) => {
+        for (const coord of vias) {
+          waypoints.push({ label: `${coord.lat},${coord.lng}`, coordinate: coord, via: true });
+        }
+      };
+
+      segments.forEach((s, i) => {
         const wp = makeWaypoint(s);
-        if (!wp.coordinate && wp.address && namedCoords.length > 0) {
-          // Use the next named place coordinate to resolve this address
-          const coord = namedCoords.shift()!;
-          waypoints.push({ label: wp.label, coordinate: coord });
+        if (!wp.coordinate && wp.address) {
+          const coord = aligned ? dataWaypoints[i].coordinate : namedCoords.shift();
+          waypoints.push(coord ? { label: wp.label, coordinate: coord } : wp);
         } else {
           waypoints.push(wp);
         }
-      }
-
-      // Insert via waypoints (from dragged routes) before the destination
-      if (viaWaypoints.length > 0) {
-        const dest = waypoints.pop()!;
-        for (const coord of viaWaypoints) {
-          waypoints.push({ label: `${coord.lat},${coord.lng}`, coordinate: coord });
+        // Via points belong to the leg that starts at this waypoint
+        if (aligned && i < segments.length - 1) {
+          pushVias(dataWaypoints[i].vias);
         }
+      });
+
+      if (!aligned) {
+        const dest = waypoints.pop()!;
+        pushVias(dataWaypoints.flatMap((d) => d.vias));
         waypoints.push(dest);
       }
 
-      return { waypoints, routeIndex, travelMode };
+      return { waypoints, routeIndex, travelMode, avoid };
     }
   }
 
@@ -251,14 +329,14 @@ export async function geocodeAddress(address: string): Promise<Coordinate> {
  */
 export async function resolveWaypoints(
   waypoints: Waypoint[]
-): Promise<Coordinate[]> {
-  const resolved: Coordinate[] = [];
+): Promise<RoutePoint[]> {
+  const resolved: RoutePoint[] = [];
   for (const wp of waypoints) {
     if (wp.coordinate) {
-      resolved.push(wp.coordinate);
+      resolved.push({ ...wp.coordinate, via: wp.via });
     } else if (wp.address) {
       const coord = await geocodeAddress(wp.address);
-      resolved.push(coord);
+      resolved.push({ ...coord, via: wp.via });
     }
   }
   return resolved;

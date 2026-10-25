@@ -29,11 +29,13 @@ MapsToGPX (maptogpx.com) is a Next.js 16 App Router app (React 19, Tailwind v4) 
 
 ### Google Maps `data=` parameter decoding
 
-Path-based URLs carry extra info in the protobuf-like `data=` segment, parsed with regexes in `url-parser.ts`:
-- `!1s<placeId>!2m2!1d<lng>!2d<lat>` — coordinates for named places; consumed in order to resolve path segments that are addresses (avoids geocoding).
-- `!1m2!1d<lng>!2d<lat>...!4e1` — "via" points from dragging the route; inserted before the destination.
-- `!5i<N>` — selected alternative route index (triggers `alternatives=true` in the Directions request).
+Path-based URLs carry extra info in the protobuf-like `data=` segment. `url-parser.ts` parses it structurally (`!<field><type><value>`, where `m` is a nested message whose value is its token count) and reads the directions message at `!4m..!4m..`:
+- `!1m<n>` — one block per path segment, in order (`!1m0` for a dropped-pin segment).
+  - `!2m2!1d<lng>!2d<lat>` — coordinates for a named place; used instead of geocoding the segment's address.
+  - `!3m4!1m2!1d<lng>!2d<lat>!3s<id>` — a point dragged onto the leg that *starts* at this waypoint (repeated per drag). Sent to the Directions API as `via:` waypoints so they shape the route without becoming stops.
+- `!2m<n>!1b1!2b1!3b1` — avoid highways / tolls / ferries (Directions `avoid=`).
 - `!3e<N>` — travel mode (0 driving, 1 bicycling, 2 walking, 3 transit); `travelmode=` query param takes precedence. Default is driving.
+- `!5i<N>` — selected alternative route index (triggers `alternatives=true` in the Directions request).
 
 Note the `lng`-before-`lat` ordering in these patterns.
 

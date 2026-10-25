@@ -409,6 +409,18 @@ export default function Home() {
             </svg>
           </div>
 
+          {/* Announcement */}
+          <div className="w-full max-w-2xl mx-auto mb-4 flex items-start gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200">
+            <span className="shrink-0 mt-0.5 px-2 py-0.5 rounded-full bg-blue-600 text-white text-[11px] font-semibold uppercase tracking-wider">
+              Fixed
+            </span>
+            <p className="text-sm text-blue-900 leading-relaxed">
+              Routes you reshape by dragging on Google Maps are now kept in the
+              GPX, along with &ldquo;avoid highways / tolls / ferries&rdquo;
+              options. Thanks for the feedback!
+            </p>
+          </div>
+
           {/* Converter */}
           <ConverterForm />
 

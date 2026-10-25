@@ -1,4 +1,4 @@
-import { Coordinate, RouteResult, TravelMode } from "./types";
+import { AvoidOption, Coordinate, RouteResult, RoutePoint, TravelMode } from "./types";
 import { decodePolyline } from "./polyline";
 
 const DIRECTIONS_BASE =
@@ -9,9 +9,10 @@ const DIRECTIONS_BASE =
  * Returns the exact route Google Maps would display.
  */
 export async function getRoute(
-  waypoints: Coordinate[],
+  waypoints: RoutePoint[],
   routeIndex: number = 0,
-  travelMode: TravelMode = "driving"
+  travelMode: TravelMode = "driving",
+  avoid: AvoidOption[] = []
 ): Promise<RouteResult> {
   if (waypoints.length < 2) {
     throw new Error("At least 2 waypoints are required for routing");
@@ -33,13 +34,16 @@ export async function getRoute(
     mode: travelMode,
     key: apiKey,
     ...(routeIndex > 0 ? { alternatives: "true" } : {}),
+    ...(avoid.length > 0 ? { avoid: avoid.join("|") } : {}),
   });
 
-  // Intermediate waypoints (everything between origin and destination)
+  // Intermediate waypoints (everything between origin and destination).
+  // Points dragged onto the route use via: so they shape the route without
+  // becoming stops, matching how Google Maps treats them.
   if (waypoints.length > 2) {
     const intermediates = waypoints
       .slice(1, -1)
-      .map((w) => `${w.lat},${w.lng}`)
+      .map((w) => `${w.via ? "via:" : ""}${w.lat},${w.lng}`)
       .join("|");
     params.set("waypoints", intermediates);
   }

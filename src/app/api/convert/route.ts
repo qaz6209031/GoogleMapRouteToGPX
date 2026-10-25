@@ -43,8 +43,13 @@ export async function POST(request: NextRequest) {
     // 2. Resolve addresses to coordinates
     const coordinates = await resolveWaypoints(parsed.waypoints);
 
-    // 3. Get bicycle route from Google Directions API
-    const route = await getRoute(coordinates, parsed.routeIndex, parsed.travelMode);
+    // 3. Get route from Google Directions API
+    const route = await getRoute(
+      coordinates,
+      parsed.routeIndex,
+      parsed.travelMode,
+      parsed.avoid
+    );
 
     // 4. Generate GPX
     const gpx = generateGpx(route.coordinates);
@@ -53,7 +58,7 @@ export async function POST(request: NextRequest) {
       gpx,
       stats: {
         distanceKm: Math.round(route.distanceMeters / 100) / 10,
-        waypointCount: parsed.waypoints.length,
+        waypointCount: parsed.waypoints.filter((w) => !w.via).length,
       },
     });
   } catch (e) {
