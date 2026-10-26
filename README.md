@@ -50,6 +50,12 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+Run the test suite (no network calls, no env vars needed) with:
+
+```bash
+npm test
+```
+
 ## Project Structure
 
 ```
@@ -67,6 +73,9 @@ src/
 │   ├── analytics.ts            # GA4 config + event tracking
 │   ├── feedback-store.ts       # Supabase REST insert for feedback
 │   ├── same-origin.ts          # Same-origin check for API routes
+│   ├── rate-limit.ts           # Per-IP in-memory rate limiter
+│   ├── errors.ts               # UserInputError (safe-to-show error messages)
+│   ├── google-hosts.ts         # Shared client/server Google Maps host matching
 │   ├── url-parser.ts           # Parse Google Maps URLs → coordinates
 │   ├── google-directions-client.ts # Google Directions API routing
 │   ├── gpx-generator.ts        # GPX 1.1 XML generation
