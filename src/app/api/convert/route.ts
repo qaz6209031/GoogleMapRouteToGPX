@@ -62,14 +62,17 @@ export async function POST(request: NextRequest) {
     // 4. Generate GPX
     const gpx = generateGpx(route.coordinates);
 
-    return NextResponse.json({
-      gpx,
-      stats: {
-        distanceKm: Math.round(route.distanceMeters / 100) / 10,
-        waypointCount: parsed.waypoints.filter((w) => !w.via).length,
-        ...(route.warnings.length ? { warnings: route.warnings } : {}),
+    return NextResponse.json(
+      {
+        gpx,
+        stats: {
+          distanceKm: Math.round(route.distanceMeters / 100) / 10,
+          waypointCount: parsed.waypoints.filter((w) => !w.via).length,
+          ...(route.warnings.length ? { warnings: route.warnings } : {}),
+        },
       },
-    });
+      { headers: { "x-cache": route.cacheStatus } }
+    );
   } catch (e) {
     if (e instanceof UserInputError) {
       return NextResponse.json({ error: e.message }, { status: 400 });

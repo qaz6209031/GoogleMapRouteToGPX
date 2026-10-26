@@ -7,6 +7,7 @@ import {
   Waypoint,
 } from "./types";
 import { UserInputError } from "./errors";
+import { buildCacheKey, cachedFetch } from "./route-cache";
 
 const COORD_REGEX = /^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/;
 
@@ -407,12 +408,26 @@ async function nominatimSearch(query: string): Promise<Coordinate | null> {
   };
 }
 
+/** Addresses rarely move, and Nominatim's usage policy asks clients to cache results. */
+const GEOCODE_CACHE_TTL_SECONDS = 7 * 24 * 60 * 60;
+
+function geocodeCacheKey(address: string): string {
+  return buildCacheKey("geocode", { q: address.trim().toLowerCase().replace(/\s+/g, " ") });
+}
+
 /**
  * Geocode an address using Nominatim (OpenStreetMap).
  * Retries by stripping the business name prefix if the full query fails,
  * since Nominatim often can't resolve "Business Name, 123 Street..." format.
  */
 export async function geocodeAddress(address: string): Promise<Coordinate> {
+  const { value } = await cachedFetch(geocodeCacheKey(address), GEOCODE_CACHE_TTL_SECONDS, () =>
+    geocodeAddressUncached(address)
+  );
+  return value;
+}
+
+async function geocodeAddressUncached(address: string): Promise<Coordinate> {
   // Try full address first
   const result = await nominatimSearch(address);
   if (result) return result;

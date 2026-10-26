@@ -34,4 +34,8 @@ export interface RouteResult {
   distanceMeters: number;
   durationSeconds: number;
   warnings: string[];
+  cacheStatus: CacheStatus;
 }
+
+/** Whether a cached external API result was reused, missed, or the cache layer was skipped entirely. */
+export type CacheStatus = "HIT" | "MISS" | "BYPASS";

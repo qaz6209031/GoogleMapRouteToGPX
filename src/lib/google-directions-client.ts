@@ -1,12 +1,62 @@
 import { AvoidOption, Coordinate, RouteResult, RoutePoint, TravelMode } from "./types";
 import { decodePolyline } from "./polyline";
 import { UserInputError } from "./errors";
+import { buildCacheKey, cachedFetch } from "./route-cache";
 
 const DIRECTIONS_BASE =
   "https://maps.googleapis.com/maps/api/directions/json";
 
 /** Google Directions allows at most this many intermediate waypoints. */
 export const MAX_INTERMEDIATE_WAYPOINTS = 25;
+
+/**
+ * How long a Directions response may stay cached. Google's Maps Platform
+ * Service Specific Terms (Directions API > Caching) allow caching lat/lng
+ * values from this API for up to 30 consecutive calendar days; we use a
+ * much shorter TTL both to stay well inside that limit and because
+ * traffic/road conditions can make a day-old route stale.
+ */
+export const DIRECTIONS_CACHE_TTL_SECONDS = 24 * 60 * 60;
+
+/** Coordinates are rounded to this many decimal places (~0.1m) before hashing into a cache key. */
+const COORD_CACHE_PRECISION = 6;
+
+function roundForCacheKey(n: number): number {
+  const factor = 10 ** COORD_CACHE_PRECISION;
+  return Math.round(n * factor) / factor;
+}
+
+/**
+ * Cache key covers exactly what determines the Directions request/response:
+ * the ordered waypoints (stops and vias), travel mode, avoid options, and
+ * whether alternatives were requested. `routeIndex` is deliberately
+ * excluded — it only selects which already-fetched route to return.
+ */
+export function buildDirectionsCacheKey(
+  waypoints: RoutePoint[],
+  travelMode: TravelMode,
+  avoid: AvoidOption[],
+  wantsAlternatives: boolean
+): string {
+  return buildCacheKey("directions", {
+    points: waypoints.map(
+      (w) => `${w.via ? "via:" : ""}${roundForCacheKey(w.lat)},${roundForCacheKey(w.lng)}`
+    ),
+    mode: travelMode,
+    avoid: [...avoid].sort(),
+    alt: wantsAlternatives,
+  });
+}
+
+interface GoogleDirectionsLeg {
+  distance: { value: number };
+  duration: { value: number };
+  steps: { polyline: { points: string } }[];
+}
+
+interface GoogleDirectionsRoute {
+  legs: GoogleDirectionsLeg[];
+}
 
 /**
  * Keep every stop and fit as many via points as possible within the
@@ -61,8 +111,8 @@ export async function getRoute(
     throw new Error("Server is missing routing configuration");
   }
 
-  const origin = `${waypoints[0].lat},${waypoints[0].lng}`;
-  const destination = `${waypoints[waypoints.length - 1].lat},${waypoints[waypoints.length - 1].lng}`;
+  const origin = waypoints[0];
+  const destination = waypoints[waypoints.length - 1];
 
   // Google doesn't return alternative routes when intermediate waypoints are
   // present, so only ask for alternatives when there's nothing in between.
@@ -73,53 +123,36 @@ export async function getRoute(
     warnings.push("Selected alternative route isn't supported with stops; used the main route.");
   }
 
-  const params = new URLSearchParams({
-    origin,
-    destination,
-    mode: travelMode,
-    key: apiKey,
-    ...(wantsAlternatives ? { alternatives: "true" } : {}),
-    ...(avoid.length > 0 ? { avoid: avoid.join("|") } : {}),
-  });
-
   // Intermediate waypoints (everything between origin and destination).
   // Points dragged onto the route use via: so they shape the route without
   // becoming stops, matching how Google Maps treats them.
-  if (hasIntermediates) {
-    const intermediates = limitIntermediateWaypoints(waypoints.slice(1, -1));
-    const intermediateParam = intermediates
-      .map((w) => `${w.via ? "via:" : ""}${w.lat},${w.lng}`)
-      .join("|");
-    params.set("waypoints", intermediateParam);
-  }
+  const intermediates = limitIntermediateWaypoints(waypoints.slice(1, -1));
 
-  const res = await fetch(`${DIRECTIONS_BASE}?${params.toString()}`);
+  const cacheKey = buildDirectionsCacheKey(
+    [origin, ...intermediates, destination],
+    travelMode,
+    avoid,
+    wantsAlternatives
+  );
 
-  if (!res.ok) {
-    console.error(`Google Directions API request failed: ${res.statusText}`);
-    throw new Error("Failed to get directions from Google Maps");
-  }
-
-  const data = await res.json();
-
-  if (data.status === "NOT_FOUND" || data.status === "ZERO_RESULTS") {
-    throw new UserInputError("Google could not find a route between these locations.");
-  }
-
-  if (data.status !== "OK" || !data.routes?.length) {
-    console.error(
-      `Google Directions API error: ${data.status} — ${data.error_message || "no route found"}`
-    );
-    throw new Error("Failed to get directions from Google Maps");
-  }
+  // fetchDirectionsRoutes throws on anything other than status "OK" (including
+  // ZERO_RESULTS/NOT_FOUND), so those responses never reach cachedFetch's cache
+  // write and are simply never cached, not even briefly.
+  const { value: routes, status: cacheStatus } = await cachedFetch(
+    cacheKey,
+    DIRECTIONS_CACHE_TTL_SECONDS,
+    () =>
+      fetchDirectionsRoutes(origin, destination, intermediates, travelMode, avoid, wantsAlternatives, apiKey),
+    (routes) => routes.length > 0
+  );
 
   let effectiveIndex = wantsAlternatives ? routeIndex : 0;
-  if (effectiveIndex >= data.routes.length) {
+  if (effectiveIndex >= routes.length) {
     warnings.push("Selected alternative route isn't available; used the main route.");
     effectiveIndex = 0;
   }
 
-  const route = data.routes[effectiveIndex];
+  const route = routes[effectiveIndex];
 
   // Decode step-level polylines for full-resolution geometry
   // (overview_polyline is simplified and loses detail on complex routes)
@@ -146,5 +179,55 @@ export async function getRoute(
     distanceMeters,
     durationSeconds,
     warnings,
+    cacheStatus,
   };
+}
+
+/** Issues the actual Directions API request. Only called on a cache miss. */
+async function fetchDirectionsRoutes(
+  origin: RoutePoint,
+  destination: RoutePoint,
+  intermediates: RoutePoint[],
+  travelMode: TravelMode,
+  avoid: AvoidOption[],
+  wantsAlternatives: boolean,
+  apiKey: string
+): Promise<GoogleDirectionsRoute[]> {
+  const params = new URLSearchParams({
+    origin: `${origin.lat},${origin.lng}`,
+    destination: `${destination.lat},${destination.lng}`,
+    mode: travelMode,
+    key: apiKey,
+    ...(wantsAlternatives ? { alternatives: "true" } : {}),
+    ...(avoid.length > 0 ? { avoid: avoid.join("|") } : {}),
+  });
+
+  if (intermediates.length > 0) {
+    const intermediateParam = intermediates
+      .map((w) => `${w.via ? "via:" : ""}${w.lat},${w.lng}`)
+      .join("|");
+    params.set("waypoints", intermediateParam);
+  }
+
+  const res = await fetch(`${DIRECTIONS_BASE}?${params.toString()}`);
+
+  if (!res.ok) {
+    console.error(`Google Directions API request failed: ${res.statusText}`);
+    throw new Error("Failed to get directions from Google Maps");
+  }
+
+  const data = await res.json();
+
+  if (data.status === "NOT_FOUND" || data.status === "ZERO_RESULTS") {
+    throw new UserInputError("Google could not find a route between these locations.");
+  }
+
+  if (data.status !== "OK" || !data.routes?.length) {
+    console.error(
+      `Google Directions API error: ${data.status} — ${data.error_message || "no route found"}`
+    );
+    throw new Error("Failed to get directions from Google Maps");
+  }
+
+  return data.routes;
 }
