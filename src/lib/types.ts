@@ -25,20 +25,13 @@ export interface ParsedRoute {
   routeIndex: number;
   travelMode: TravelMode;
   avoid: AvoidOption[];
+  /** Dragged via points that couldn't be matched to a path segment while parsing. */
+  pendingVias?: Coordinate[];
 }
 
 export interface RouteResult {
   coordinates: Coordinate[];
   distanceMeters: number;
   durationSeconds: number;
-}
-
-export interface ConversionResult {
-  gpx: string;
-  distanceKm: number;
-}
-
-export interface ConversionProgress {
-  step: string;
-  detail: string;
+  warnings: string[];
 }

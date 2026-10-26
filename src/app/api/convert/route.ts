@@ -1,19 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
-import { parseGoogleMapsUrl, resolveWaypoints } from "@/lib/url-parser";
+import { assignViasToNearestLeg, parseGoogleMapsUrl, resolveWaypoints } from "@/lib/url-parser";
 import { getRoute } from "@/lib/google-directions-client";
 import { generateGpx } from "@/lib/gpx-generator";
 import { isSameOriginRequest } from "@/lib/same-origin";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { UserInputError } from "@/lib/errors";
+
+const RATE_LIMIT_PER_MINUTE = 10;
 
 export async function POST(request: NextRequest) {
   try {
     if (!isSameOriginRequest(request)) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const rate = checkRateLimit("convert", getClientIp(request), RATE_LIMIT_PER_MINUTE);
+    if (!rate.allowed) {
       return NextResponse.json(
-        { error: "Forbidden" },
-        { status: 403 }
+        { error: "Too many requests. Please try again in a moment." },
+        { status: 429, headers: { "Retry-After": String(rate.retryAfterSeconds) } }
       );
     }
 
-    const { url } = await request.json();
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    }
+
+    const { url } = body as { url?: unknown };
 
     if (!url || typeof url !== "string") {
       return NextResponse.json(
@@ -23,25 +39,17 @@ export async function POST(request: NextRequest) {
     }
 
     // 1. Parse the URL into waypoints
-    let parsed;
-    try {
-      parsed = parseGoogleMapsUrl(url);
-    } catch (e) {
-      return NextResponse.json(
-        { error: e instanceof Error ? e.message : "Failed to parse URL" },
-        { status: 400 }
-      );
-    }
+    const parsed = parseGoogleMapsUrl(url);
 
     if (parsed.waypoints.length < 2) {
-      return NextResponse.json(
-        { error: "Need at least an origin and destination" },
-        { status: 400 }
-      );
+      throw new UserInputError("Need at least an origin and destination");
     }
 
     // 2. Resolve addresses to coordinates
-    const coordinates = await resolveWaypoints(parsed.waypoints);
+    let coordinates = await resolveWaypoints(parsed.waypoints);
+    if (parsed.pendingVias?.length) {
+      coordinates = assignViasToNearestLeg(coordinates, parsed.pendingVias);
+    }
 
     // 3. Get route from Google Directions API
     const route = await getRoute(
@@ -59,11 +67,17 @@ export async function POST(request: NextRequest) {
       stats: {
         distanceKm: Math.round(route.distanceMeters / 100) / 10,
         waypointCount: parsed.waypoints.filter((w) => !w.via).length,
+        ...(route.warnings.length ? { warnings: route.warnings } : {}),
       },
     });
   } catch (e) {
-    const message =
-      e instanceof Error ? e.message : "An unexpected error occurred";
-    return NextResponse.json({ error: message }, { status: 500 });
+    if (e instanceof UserInputError) {
+      return NextResponse.json({ error: e.message }, { status: 400 });
+    }
+    console.error("Conversion failed", e);
+    return NextResponse.json(
+      { error: "An unexpected error occurred. Please try again." },
+      { status: 500 }
+    );
   }
 }

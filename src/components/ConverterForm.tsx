@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { isGoogleMapsUrl, isShortUrl } from "@/lib/google-hosts";
 
 interface Stats {
   distanceKm: number;
   waypointCount: number;
+  warnings?: string[];
 }
 
 type Step =
@@ -22,29 +24,6 @@ const STEP_LABELS: Record<Step, string> = {
   done: "Done!",
   error: "Error",
 };
-
-function isGoogleMapsUrl(url: string): boolean {
-  try {
-    const u = new URL(url);
-    return (
-      u.hostname.includes("google.com") ||
-      u.hostname.includes("google.co") ||
-      u.hostname.includes("goo.gl") ||
-      u.hostname.includes("maps.app.goo.gl")
-    );
-  } catch {
-    return false;
-  }
-}
-
-function isShortUrl(url: string): boolean {
-  try {
-    const u = new URL(url);
-    return u.hostname.includes("goo.gl");
-  } catch {
-    return false;
-  }
-}
 
 export default function ConverterForm() {
   const [url, setUrl] = useState("");
@@ -105,12 +84,16 @@ export default function ConverterForm() {
   function handleDownload() {
     if (!gpxData) return;
     const blob = new Blob([gpxData], { type: "application/gpx+xml" });
+    const objectUrl = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
+    a.href = objectUrl;
     a.download = "route.gpx";
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
     trackEvent("gpx_download");
-    URL.revokeObjectURL(a.href);
+    // Delay revocation so Firefox has time to start the download before the blob URL dies.
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
   }
 
   function handleReset() {
@@ -283,6 +266,17 @@ export default function ConverterForm() {
                 value={`${stats.waypointCount}`}
               />
             </div>
+
+            {/* Warnings */}
+            {stats.warnings && stats.warnings.length > 0 && (
+              <div className="space-y-1">
+                {stats.warnings.map((warning, i) => (
+                  <p key={i} className="text-xs text-amber-600">
+                    {warning}
+                  </p>
+                ))}
+              </div>
+            )}
 
             {/* Action buttons */}
             <div className="flex gap-3">
