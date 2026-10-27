@@ -115,6 +115,8 @@ export const en: Dictionary = {
       error: "Error",
     },
     invalidUrlError: "Please enter a valid Google Maps URL",
+    networkError: "Network error. Please try again.",
+    nonJsonError: "Conversion failed. Please try again.",
     conversionFailedFallback: "Conversion failed",
     successBanner: "Route converted successfully!",
     distanceLabel: "Distance",

@@ -114,6 +114,8 @@ export const id: Dictionary = {
       error: "Kesalahan",
     },
     invalidUrlError: "Masukkan URL Google Maps yang valid",
+    networkError: "Terjadi masalah jaringan. Silakan coba lagi.",
+    nonJsonError: "Konversi gagal. Silakan coba lagi.",
     conversionFailedFallback: "Konversi gagal",
     successBanner: "Rute berhasil dikonversi!",
     distanceLabel: "Jarak",

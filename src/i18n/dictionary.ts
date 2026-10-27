@@ -74,6 +74,8 @@ export interface Dictionary {
       error: string;
     };
     invalidUrlError: string;
+    networkError: string;
+    nonJsonError: string;
     conversionFailedFallback: string;
     successBanner: string;
     distanceLabel: string;

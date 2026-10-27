@@ -135,10 +135,12 @@ export default function PrivacyPage() {
               production — not in local development or preview deployments.
               Google Signals and ads personalization are turned off. We only
               send a small, fixed set of events: a route was converted, a GPX
-              file was downloaded, feedback was submitted, and a donate link
-              was clicked (with which link). We never send the URL you
-              pasted, any address or coordinate, or your feedback text to
-              analytics. Google Analytics sets first-party
+              file was downloaded, feedback was submitted, a donate link was
+              clicked (with which link), and — if a conversion fails — a
+              short error-category code (e.g. &ldquo;rate limited&rdquo; or
+              &ldquo;location not found&rdquo;). We never send the URL you
+              pasted, any address or coordinate, your feedback text, or raw
+              error messages to analytics. Google Analytics sets first-party
               cookies on <code>maptogpx.com</code> (such as{" "}
               <code>_ga</code>) to distinguish visitors; see Google&apos;s{" "}
               <a
