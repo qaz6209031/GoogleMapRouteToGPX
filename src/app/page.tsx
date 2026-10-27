@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ConverterForm from "@/components/ConverterForm";
 import FeedbackForm from "@/components/FeedbackForm";
 import DonateLinks from "@/components/DonateLinks";
@@ -169,6 +170,12 @@ export default function Home() {
             >
               Feedback
             </a>
+            <Link
+              href="/faq"
+              className="px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100"
+            >
+              FAQ
+            </Link>
           </nav>
         </div>
       </header>
@@ -598,8 +605,7 @@ export default function Home() {
             Enjoy MapsToGPX? Buy me a coffee!
           </h3>
           <p className="text-sm text-zinc-500 mb-4 max-w-md mx-auto">
-            This app is free and always will be. If it saved you time, consider
-            supporting the project.
+            MapsToGPX is free. Donations help cover Google Maps API costs.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <DonateLinks />
@@ -684,6 +690,16 @@ export default function Home() {
                 </svg>
                 LinkedIn
               </a>
+            </div>
+
+            {/* Legal links */}
+            <div className="flex items-center gap-4 text-sm text-zinc-500">
+              <Link href="/faq" className="hover:text-blue-600 transition-colors">
+                FAQ
+              </Link>
+              <Link href="/privacy" className="hover:text-blue-600 transition-colors">
+                Privacy Policy
+              </Link>
             </div>
 
             <p className="text-xs text-zinc-400">
