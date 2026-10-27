@@ -114,6 +114,8 @@ export const ja: Dictionary = {
       error: "エラー",
     },
     invalidUrlError: "有効なGoogle MapsのURLを入力してください",
+    networkError: "ネットワークエラーが発生しました。もう一度お試しください。",
+    nonJsonError: "変換に失敗しました。もう一度お試しください。",
     conversionFailedFallback: "変換に失敗しました",
     successBanner: "ルートの変換が完了しました!",
     distanceLabel: "距離",

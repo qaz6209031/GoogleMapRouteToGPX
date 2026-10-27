@@ -5,7 +5,8 @@ type AnalyticsEvent =
   | "route_conversion"
   | "gpx_download"
   | "feedback_submit"
-  | "donate_click";
+  | "donate_click"
+  | "conversion_error";
 
 // Params must stay short, static strings (e.g. a site or link name) — never URLs or coordinates.
 type AnalyticsParams = Record<string, string>;

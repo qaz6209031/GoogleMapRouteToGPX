@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { classifyConversionError } from "@/lib/conversion-error";
 import { isGoogleMapsUrl, isShortUrl } from "@/lib/google-hosts";
 import type { Dictionary } from "@/i18n/dictionary";
 
@@ -27,12 +28,52 @@ export default function ConverterForm({ dict }: { dict: Dictionary["converterFor
   const [gpxData, setGpxData] = useState("");
   const [stats, setStats] = useState<Stats | null>(null);
 
+  async function postJson(
+    path: string,
+    body: unknown
+  ): Promise<{ ok: boolean; status?: number; data: { error?: string } & Record<string, unknown> }> {
+    let res: Response;
+    try {
+      res = await fetch(path, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+    } catch {
+      // The request itself failed (offline, DNS, CORS, etc.) — there's no
+      // response or status to report.
+      return { ok: false, data: { error: dict.networkError } };
+    }
+    try {
+      // API error messages (and conversion warnings) intentionally remain English.
+      const data = await res.json();
+      return { ok: res.ok, status: res.status, data };
+    } catch {
+      // Got a response but couldn't parse it as JSON (e.g. a non-JSON error
+      // page) — keep the status so classification isn't treated as "network".
+      return {
+        ok: false,
+        status: res.status,
+        data: { error: dict.nonJsonError },
+      };
+    }
+  }
+
+  function failConversion(status: number | undefined, message: string | undefined) {
+    trackEvent("conversion_error", {
+      reason: classifyConversionError({ status, message }),
+    });
+    setError(message || dict.conversionFailedFallback);
+    setStep("error");
+  }
+
   async function handleConvert() {
     if (!url.trim()) return;
 
     if (!isGoogleMapsUrl(url.trim())) {
       setError(dict.invalidUrlError);
       setStep("error");
+      trackEvent("conversion_error", { reason: "invalid_url" });
       return;
     }
 
@@ -40,40 +81,30 @@ export default function ConverterForm({ dict }: { dict: Dictionary["converterFor
     setGpxData("");
     setStats(null);
 
-    try {
-      let resolvedUrl = url.trim();
+    let resolvedUrl = url.trim();
 
-      if (isShortUrl(resolvedUrl)) {
-        setStep("resolving");
-        const res = await fetch("/api/resolve-url", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url: resolvedUrl }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
-        resolvedUrl = data.url;
+    if (isShortUrl(resolvedUrl)) {
+      setStep("resolving");
+      const resolved = await postJson("/api/resolve-url", { url: resolvedUrl });
+      if (!resolved.ok) {
+        failConversion(resolved.status, resolved.data.error);
+        return;
       }
-
-      setStep("routing");
-
-      const res = await fetch("/api/convert", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: resolvedUrl }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-
-      setGpxData(data.gpx);
-      setStats(data.stats);
-      setStep("done");
-      trackEvent("route_conversion");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : dict.conversionFailedFallback);
-      setStep("error");
+      resolvedUrl = resolved.data.url as string;
     }
+
+    setStep("routing");
+
+    const converted = await postJson("/api/convert", { url: resolvedUrl });
+    if (!converted.ok) {
+      failConversion(converted.status, converted.data.error);
+      return;
+    }
+
+    setGpxData(converted.data.gpx as string);
+    setStats(converted.data.stats as Stats);
+    setStep("done");
+    trackEvent("route_conversion");
   }
 
   function handleDownload() {
