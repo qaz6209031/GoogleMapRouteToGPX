@@ -15,6 +15,11 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // Required for app/global-not-found.tsx: with two root layouts
+    // ((en) and [locale]), there's no single layout to compose a 404 from.
+    globalNotFound: true,
+  },
   async headers() {
     return [
       {

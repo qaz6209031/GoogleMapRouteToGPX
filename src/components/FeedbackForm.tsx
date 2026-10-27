@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import type { Dictionary } from "@/i18n/dictionary";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-const RATING_LABELS = ["Poor", "Fair", "Good", "Great", "Excellent"];
-
-export default function FeedbackForm() {
+export default function FeedbackForm({ dict }: { dict: Dictionary["feedbackForm"] }) {
+  const RATING_LABELS = dict.ratingLabels;
   const [rating, setRating] = useState<number | null>(null);
   const [hoverRating, setHoverRating] = useState<number | null>(null);
   const [message, setMessage] = useState("");
@@ -32,13 +32,14 @@ export default function FeedbackForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ rating, message, email, website }),
       });
+      // API error messages (and conversion warnings) intentionally remain English.
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
 
       setStatus("sent");
       trackEvent("feedback_submit");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not send feedback");
+      setError(e instanceof Error ? e.message : dict.errorFallback);
       setStatus("error");
     }
   }
@@ -70,16 +71,16 @@ export default function FeedbackForm() {
           </svg>
         </div>
         <h3 className="font-semibold text-zinc-900 mb-1.5">
-          Thanks for your feedback!
+          {dict.thanksHeading}
         </h3>
         <p className="text-sm text-zinc-500 mb-5">
-          Every message is read and helps make MapsToGPX better.
+          {dict.thanksSubtext}
         </p>
         <button
           onClick={handleReset}
           className="px-4 py-2 rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-100 transition-colors text-sm font-medium"
         >
-          Send more feedback
+          {dict.sendMoreButton}
         </button>
       </div>
     );
@@ -95,8 +96,8 @@ export default function FeedbackForm() {
       {/* Rating */}
       <div>
         <label className="block text-sm font-medium text-zinc-700 mb-2">
-          How was your experience?{" "}
-          <span className="font-normal text-zinc-400">(optional)</span>
+          {dict.ratingQuestion}{" "}
+          <span className="font-normal text-zinc-400">{dict.optionalHint}</span>
         </label>
         <div className="flex items-center gap-3">
           <div
@@ -107,7 +108,10 @@ export default function FeedbackForm() {
               <button
                 key={value}
                 type="button"
-                aria-label={`${value} star${value > 1 ? "s" : ""}`}
+                aria-label={(value > 1 ? dict.starAriaLabelMany : dict.starAriaLabelOne).replace(
+                  "{n}",
+                  String(value)
+                )}
                 aria-pressed={rating === value}
                 onClick={() => setRating(rating === value ? null : value)}
                 onMouseEnter={() => setHoverRating(value)}
@@ -141,9 +145,9 @@ export default function FeedbackForm() {
           htmlFor="feedback-message"
           className="block text-sm font-medium text-zinc-700 mb-2"
         >
-          What could be better?{" "}
+          {dict.messageLabel}{" "}
           <span className="font-normal text-zinc-400">
-            (bugs, routes that didn&apos;t convert, feature ideas)
+            {dict.messageHint}
           </span>
         </label>
         <textarea
@@ -152,7 +156,7 @@ export default function FeedbackForm() {
           maxLength={2000}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Tell us what you think..."
+          placeholder={dict.messagePlaceholder}
           className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-white text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all text-sm resize-y"
         />
       </div>
@@ -163,9 +167,9 @@ export default function FeedbackForm() {
           htmlFor="feedback-email"
           className="block text-sm font-medium text-zinc-700 mb-2"
         >
-          Email{" "}
+          {dict.emailLabel}{" "}
           <span className="font-normal text-zinc-400">
-            (optional, only if you&apos;d like a reply)
+            {dict.emailHint}
           </span>
         </label>
         <input
@@ -174,7 +178,7 @@ export default function FeedbackForm() {
           maxLength={320}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
+          placeholder={dict.emailPlaceholder}
           className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-white text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all text-sm"
         />
       </div>
@@ -202,7 +206,7 @@ export default function FeedbackForm() {
         disabled={!canSubmit}
         className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 active:scale-[0.99]"
       >
-        {status === "sending" ? "Sending..." : "Send Feedback"}
+        {status === "sending" ? dict.sendingButton : dict.sendButton}
       </button>
     </form>
   );

@@ -5,7 +5,7 @@ export interface FaqEntry {
 
 /**
  * FAQ content, kept as plain data so it can be rendered into both the page
- * body and FAQPage JSON-LD, unit-tested, and (in a later PR) localized.
+ * body and FAQPage JSON-LD, unit-tested, and used as the English dictionary’s source.
  */
 export const FAQ_ENTRIES: FaqEntry[] = [
   {
