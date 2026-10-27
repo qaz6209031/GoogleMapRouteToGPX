@@ -25,4 +25,10 @@ export const PUBLIC_ROUTES: SiteRoute[] = [
   { path: "/", changeFrequency: "monthly", priority: 1 },
   { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
   { path: "/faq", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/guides", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/guides/bryton", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/guides/wahoo", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/guides/garmin", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/guides/karoo", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/guides/coros", changeFrequency: "monthly", priority: 0.6 },
 ];

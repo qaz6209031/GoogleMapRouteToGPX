@@ -1,6 +1,41 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FAQ_ENTRIES } from "@/lib/faq";
+import { DEVICE_GUIDES } from "@/lib/guides";
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+const DEVICE_NAME_PATTERN = new RegExp(
+  `(${DEVICE_GUIDES.map((guide) => escapeRegExp(guide.device))
+    .sort((a, b) => b.length - a.length)
+    .join("|")})`,
+  "g"
+);
+
+/**
+ * Links device names in an FAQ answer to their guide page without changing
+ * the visible text, so it still matches the plain-text answer used in the
+ * FAQPage JSON-LD below.
+ */
+function renderAnswer(answer: string) {
+  return answer.split(DEVICE_NAME_PATTERN).map((part, index) => {
+    const guide = DEVICE_GUIDES.find((candidate) => candidate.device === part);
+    if (!guide) {
+      return part;
+    }
+    return (
+      <Link
+        key={index}
+        href={`/guides/${guide.slug}`}
+        className="text-blue-600 hover:underline"
+      >
+        {part}
+      </Link>
+    );
+  });
+}
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -61,7 +96,9 @@ export default function FaqPage() {
               <h2 className="text-lg font-semibold text-zinc-900 mb-2">
                 {entry.question}
               </h2>
-              <p className="text-zinc-600 leading-relaxed">{entry.answer}</p>
+              <p className="text-zinc-600 leading-relaxed">
+                {renderAnswer(entry.answer)}
+              </p>
             </div>
           ))}
         </div>
