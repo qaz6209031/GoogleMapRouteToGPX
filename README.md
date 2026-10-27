@@ -122,6 +122,7 @@ Alongside automatic page views, scrolls, and outbound clicks, the app sends:
 | `route_conversion` | A route conversion finishes successfully. |
 | `gpx_download` | The user clicks to download the generated GPX file. |
 | `feedback_submit` | The user successfully submits the feedback form. |
+| `donate_click` | The user clicks a donate link (Venmo or PayPal) in the donate banner. |
 
 Custom events contain no pasted Maps URLs, coordinates, route data, feedback content, or error messages.
 Google signals and ad personalization signals are disabled. The site's generated GPX
