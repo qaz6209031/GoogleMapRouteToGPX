@@ -2,136 +2,106 @@ import Link from "next/link";
 import ConverterForm from "@/components/ConverterForm";
 import FeedbackForm from "@/components/FeedbackForm";
 import DonateLinks from "@/components/DonateLinks";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import type { Dictionary } from "@/i18n/dictionary";
+import type { Locale } from "@/i18n/locales";
+import { localizedPath } from "@/i18n/paths";
 
-const FEATURES = [
-  {
-    icon: (
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-        />
-      </svg>
-    ),
-    title: "No Account Needed",
-    description:
-      "Unlike other tools, we don't ask for your email or make you create an account. Just paste a URL and download your GPX — instantly.",
-  },
-  {
-    icon: (
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-        />
-      </svg>
-    ),
-    title: "Exact Google Maps Routes",
-    description:
-      "Routes match exactly what Google Maps shows — driving, cycling, or walking. Same roads, paths, and turns.",
-  },
-  {
-    icon: (
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
-        />
-      </svg>
-    ),
-    title: "All Travel Modes",
-    description:
-      "Works with driving, cycling, walking, and transit routes. The travel mode is detected automatically from your URL.",
-  },
-  {
-    icon: (
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-        />
-      </svg>
-    ),
-    title: "Universal Compatibility",
-    description:
-      "Standard GPX 1.1 format works with Garmin, Bryton, Wahoo, and any device that reads GPX.",
-  },
-  {
-    icon: (
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
-        />
-      </svg>
-    ),
-    title: "Trusted by Thousands",
-    description:
-      "Used by 2,000+ users worldwide. No sign-up, no hidden costs — just GPX files.",
-  },
-  {
-    icon: (
-      <svg
-        className="w-6 h-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
-        />
-      </svg>
-    ),
-    title: "All URL Formats",
-    description:
-      "Supports long URLs, short links (goo.gl), addresses, coordinates, and multi-stop routes.",
-  },
+const FEATURE_ICONS = [
+  <svg
+    key="account"
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+    />
+  </svg>,
+  <svg
+    key="exact"
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+    />
+  </svg>,
+  <svg
+    key="modes"
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
+    />
+  </svg>,
+  <svg
+    key="compat"
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+    />
+  </svg>,
+  <svg
+    key="trusted"
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+    />
+  </svg>,
+  <svg
+    key="formats"
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
+    />
+  </svg>,
 ];
 
-export default function Home() {
+export default function HomePage({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const faqHref = localizedPath(locale, "/faq");
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
@@ -162,19 +132,19 @@ export default function Home() {
               href="#how-it-works"
               className="px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100"
             >
-              How It Works
+              {dict.nav.howItWorks}
             </a>
             <a
               href="#feedback"
               className="px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100"
             >
-              Feedback
+              {dict.nav.feedback}
             </a>
             <Link
-              href="/faq"
+              href={faqHref}
               className="px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100"
             >
-              FAQ
+              {dict.nav.faq}
             </Link>
           </nav>
         </div>
@@ -213,20 +183,19 @@ export default function Home() {
                   className="w-6 h-6 rounded-full border-2 border-white"
                 />
               </div>
-              <span>Loved by 2K+ users in 50+ countries</span>
+              <span>{dict.hero.badge}</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-900 mb-4 leading-[1.1]">
-              Google Maps Route
+              {dict.hero.titleLine1}
               <br />
               <span className="bg-gradient-to-r from-blue-600 to-emerald-500 bg-clip-text text-transparent">
-                to GPX File
+                {dict.hero.titleLine2}
               </span>
             </h1>
             <p className="text-lg text-zinc-500 max-w-lg mx-auto leading-relaxed">
-              Convert any Google Maps directions URL into a GPX file for your
-              GPS device — driving, cycling, or walking.
+              {dict.hero.subtitle}
               <span className="block mt-2 text-base font-medium text-zinc-700">
-                No sign-up. No email. Just paste and go.
+                {dict.hero.subtitleBold}
               </span>
             </p>
           </div>
@@ -420,17 +389,15 @@ export default function Home() {
           {/* Announcement */}
           <div className="w-full max-w-2xl mx-auto mb-4 flex items-start gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200">
             <span className="shrink-0 mt-0.5 px-2 py-0.5 rounded-full bg-blue-600 text-white text-[11px] font-semibold uppercase tracking-wider">
-              Fixed
+              {dict.announcement.badge}
             </span>
             <p className="text-sm text-blue-900 leading-relaxed">
-              Routes you reshape by dragging on Google Maps are now kept in the
-              GPX, along with &ldquo;avoid highways / tolls / ferries&rdquo;
-              options. Thanks for the feedback!
+              {dict.announcement.text}
             </p>
           </div>
 
           {/* Converter */}
-          <ConverterForm />
+          <ConverterForm dict={dict.converterForm} />
 
           {/* Trust badges */}
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mt-10 text-xs text-zinc-400">
@@ -448,7 +415,7 @@ export default function Home() {
                   d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              GPX 1.1 Standard
+              {dict.trustBadges.gpxStandard}
             </span>
             <span className="flex items-center gap-1.5">
               <svg
@@ -464,7 +431,7 @@ export default function Home() {
                   d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              Exact Google Maps route
+              {dict.trustBadges.exactRoute}
             </span>
             <span className="flex items-center gap-1.5">
               <svg
@@ -480,7 +447,7 @@ export default function Home() {
                   d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              All travel modes
+              {dict.trustBadges.allModes}
             </span>
             <span className="flex items-center gap-1.5">
               <svg
@@ -496,7 +463,7 @@ export default function Home() {
                   d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              No sign-up required
+              {dict.trustBadges.noSignup}
             </span>
           </div>
         </div>
@@ -506,21 +473,20 @@ export default function Home() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-20">
             <div className="text-center mb-12">
               <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">
-                Why MapsToGPX?
+                {dict.features.heading}
               </h2>
               <p className="text-zinc-500 max-w-lg mx-auto">
-                Everything you need to get your Google Maps routes into a GPX
-                file.
+                {dict.features.subheading}
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {FEATURES.map((feature) => (
+              {dict.features.items.map((feature, i) => (
                 <div
                   key={feature.title}
                   className="glass-card rounded-2xl p-6 hover:shadow-md transition-shadow"
                 >
                   <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
-                    {feature.icon}
+                    {FEATURE_ICONS[i]}
                   </div>
                   <h3 className="font-semibold text-zinc-900 mb-1.5">
                     {feature.title}
@@ -539,33 +505,14 @@ export default function Home() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-20">
             <div className="text-center mb-12">
               <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">
-                How It Works
+                {dict.howItWorks.heading}
               </h2>
               <p className="text-zinc-500 max-w-lg mx-auto">
-                Three simple steps from Google Maps to GPX.
+                {dict.howItWorks.subheading}
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  step: "1",
-                  title: "Plan your route",
-                  description:
-                    "Open Google Maps, create a directions route, and copy the URL from your browser's address bar.",
-                },
-                {
-                  step: "2",
-                  title: "Convert to GPX",
-                  description:
-                    "Paste the URL above and click Convert. We'll generate a GPX file with the exact same route from Google Maps.",
-                },
-                {
-                  step: "3",
-                  title: "Ride!",
-                  description:
-                    "Download the GPX file and import it into Garmin Connect, Bryton Active, Wahoo app, or any compatible device.",
-                },
-              ].map((item) => (
+              {dict.howItWorks.steps.map((item) => (
                 <div key={item.step} className="text-center">
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-emerald-500 text-white font-bold text-lg flex items-center justify-center mx-auto mb-4">
                     {item.step}
@@ -587,13 +534,13 @@ export default function Home() {
           <div className="max-w-xl mx-auto px-4 sm:px-6 py-20">
             <div className="text-center mb-10">
               <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">
-                Share Your Feedback
+                {dict.feedbackSection.heading}
               </h2>
               <p className="text-zinc-500">
-                Found a bug or have an idea? Let us know.
+                {dict.feedbackSection.subheading}
               </p>
             </div>
-            <FeedbackForm />
+            <FeedbackForm dict={dict.feedbackForm} />
           </div>
         </div>
       </section>
@@ -602,13 +549,13 @@ export default function Home() {
       <div className="border-t border-zinc-200 bg-blue-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 text-center">
           <h3 className="text-lg font-semibold text-zinc-900 mb-2">
-            Enjoy MapsToGPX? Buy me a coffee!
+            {dict.donate.heading}
           </h3>
           <p className="text-sm text-zinc-500 mb-4 max-w-md mx-auto">
-            MapsToGPX is free. Donations help cover Google Maps API costs.
+            {dict.donate.description}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <DonateLinks />
+            <DonateLinks dict={dict.donateLinks} />
           </div>
         </div>
       </div>
@@ -641,7 +588,7 @@ export default function Home() {
 
             {/* Creator info */}
             <p className="text-sm text-zinc-500">
-              Built by{" "}
+              {dict.footer.builtBy}{" "}
               <a
                 href="https://kaichin.dev/"
                 target="_blank"
@@ -694,16 +641,18 @@ export default function Home() {
 
             {/* Legal links */}
             <div className="flex items-center gap-4 text-sm text-zinc-500">
-              <Link href="/faq" className="hover:text-blue-600 transition-colors">
-                FAQ
+              <Link href={faqHref} className="hover:text-blue-600 transition-colors">
+                {dict.footer.faqLink}
               </Link>
               <Link href="/privacy" className="hover:text-blue-600 transition-colors">
-                Privacy Policy
+                {dict.footer.privacyLink}
               </Link>
             </div>
 
+            <LanguageSwitcher currentLocale={locale} page="/" label={dict.languageSwitcherLabel} />
+
             <p className="text-xs text-zinc-400">
-              Free forever. Trusted by users worldwide.
+              {dict.footer.tagline}
             </p>
           </div>
         </div>

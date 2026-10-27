@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 import { isGoogleMapsUrl, isShortUrl } from "@/lib/google-hosts";
+import type { Dictionary } from "@/i18n/dictionary";
 
 interface Stats {
   distanceKm: number;
@@ -17,15 +18,9 @@ type Step =
   | "done"
   | "error";
 
-const STEP_LABELS: Record<Step, string> = {
-  idle: "",
-  resolving: "Resolving short URL...",
-  routing: "Converting route — this may take a few seconds...",
-  done: "Done!",
-  error: "Error",
-};
+export default function ConverterForm({ dict }: { dict: Dictionary["converterForm"] }) {
+  const STEP_LABELS: Record<Step, string> = dict.stepLabels;
 
-export default function ConverterForm() {
   const [url, setUrl] = useState("");
   const [step, setStep] = useState<Step>("idle");
   const [error, setError] = useState("");
@@ -36,7 +31,7 @@ export default function ConverterForm() {
     if (!url.trim()) return;
 
     if (!isGoogleMapsUrl(url.trim())) {
-      setError("Please enter a valid Google Maps URL");
+      setError(dict.invalidUrlError);
       setStep("error");
       return;
     }
@@ -76,7 +71,7 @@ export default function ConverterForm() {
       setStep("done");
       trackEvent("route_conversion");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Conversion failed");
+      setError(e instanceof Error ? e.message : dict.conversionFailedFallback);
       setStep("error");
     }
   }
@@ -130,7 +125,7 @@ export default function ConverterForm() {
             <input
               id="maps-url"
               type="url"
-              placeholder="Paste your Google Maps directions URL here..."
+              placeholder={dict.placeholder}
               value={url}
               onChange={(e) => {
                 setUrl(e.target.value);
@@ -169,10 +164,10 @@ export default function ConverterForm() {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                   />
                 </svg>
-                Converting...
+                {dict.convertingButton}
               </span>
             ) : (
-              "Convert to GPX"
+              dict.convertButton
             )}
           </button>
         </div>
@@ -240,7 +235,7 @@ export default function ConverterForm() {
                 </svg>
               </div>
               <span className="text-sm font-medium text-emerald-800">
-                Route converted successfully!
+                {dict.successBanner}
               </span>
             </div>
 
@@ -252,7 +247,7 @@ export default function ConverterForm() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
                   </svg>
                 }
-                label="Distance"
+                label={dict.distanceLabel}
                 value={`${stats.distanceKm} km`}
               />
               <StatCard
@@ -262,7 +257,7 @@ export default function ConverterForm() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                   </svg>
                 }
-                label="Waypoints"
+                label={dict.waypointsLabel}
                 value={`${stats.waypointCount}`}
               />
             </div>
@@ -297,13 +292,13 @@ export default function ConverterForm() {
                     d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
                   />
                 </svg>
-                Download GPX
+                {dict.downloadButton}
               </button>
               <button
                 onClick={handleReset}
                 className="px-4 py-3.5 rounded-xl border border-zinc-200 text-zinc-600 hover:bg-zinc-100 transition-colors text-sm font-medium"
               >
-                New
+                {dict.newButton}
               </button>
             </div>
           </div>
