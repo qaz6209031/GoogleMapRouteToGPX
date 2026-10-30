@@ -145,7 +145,7 @@ export const en: Dictionary = {
     errorFallback: "Could not send feedback",
   },
   homeMeta: {
-    title: "Google Maps Route to GPX Converter",
+    title: "Map to GPX – Convert Google Maps Route to GPX (Free)",
     description:
       "Convert Google Maps directions URLs into GPX files. Supports driving, cycling, and walking routes. Free, no sign-up needed.",
   },
