@@ -27,7 +27,7 @@ export const en: Dictionary = {
     noSignup: "No sign-up required",
   },
   features: {
-    heading: "Why MapsToGPX?",
+    heading: "Why Map to GPX?",
     subheading:
       "Everything you need to get your Google Maps routes into a GPX file.",
     items: [
@@ -92,9 +92,9 @@ export const en: Dictionary = {
     subheading: "Found a bug or have an idea? Let us know.",
   },
   donate: {
-    heading: "Enjoy MapsToGPX? Buy me a coffee!",
+    heading: "Enjoy Map to GPX? Buy me a coffee!",
     description:
-      "MapsToGPX is free. Donations help cover Google Maps API costs.",
+      "Map to GPX is free. Donations help cover Google Maps API costs.",
   },
   donateLinks: { venmo: "Venmo", paypal: "PayPal" },
   footer: {
@@ -141,7 +141,7 @@ export const en: Dictionary = {
     sendMoreButton: "Send more feedback",
     thanksHeading: "Thanks for your feedback!",
     thanksSubtext:
-      "Every message is read and helps make MapsToGPX better.",
+      "Every message is read and helps make Map to GPX better.",
     errorFallback: "Could not send feedback",
   },
   homeMeta: {

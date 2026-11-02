@@ -15,7 +15,7 @@ The repo is linked to the `maptogpx` Supabase project (ref `njzrhztlmvhcpjglnuut
 
 ## Architecture
 
-MapsToGPX (maptogpx.com) is a Next.js 16 App Router app (React 19, Tailwind v4) deployed on Vercel. It turns a pasted Google Maps directions URL into a downloadable GPX 1.1 track.
+Map to GPX (maptogpx.com) is a Next.js 16 App Router app (React 19, Tailwind v4) deployed on Vercel. It turns a pasted Google Maps directions URL into a downloadable GPX 1.1 track.
 
 ### Request flow
 

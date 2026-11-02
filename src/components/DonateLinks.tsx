@@ -19,7 +19,7 @@ export default function DonateLinks({ dict }: { dict: Dictionary["donateLinks"] 
         {dict.venmo}
       </a>
       <a
-        href="https://www.paypal.com/donate/?business=9B232DHXN8ME4&no_recurring=0&currency_code=USD&item_name=MapsToGPX"
+        href="https://www.paypal.com/donate/?business=9B232DHXN8ME4&no_recurring=0&currency_code=USD&item_name=Map%20to%20GPX"
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => trackEvent("donate_click", { site: "maptogpx", link: "paypal" })}

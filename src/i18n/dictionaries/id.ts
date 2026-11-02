@@ -27,7 +27,7 @@ export const id: Dictionary = {
     noSignup: "Tanpa perlu daftar",
   },
   features: {
-    heading: "Mengapa MapsToGPX?",
+    heading: "Mengapa Map to GPX?",
     subheading:
       "Semua yang Anda butuhkan untuk mengubah rute Google Maps menjadi file GPX.",
     items: [
@@ -92,8 +92,8 @@ export const id: Dictionary = {
     subheading: "Menemukan bug atau punya ide? Beri tahu kami.",
   },
   donate: {
-    heading: "Suka MapsToGPX? Belikan saya kopi!",
-    description: "MapsToGPX gratis. Donasi membantu menutupi biaya Google Maps API.",
+    heading: "Suka Map to GPX? Belikan saya kopi!",
+    description: "Map to GPX gratis. Donasi membantu menutupi biaya Google Maps API.",
   },
   donateLinks: { venmo: "Venmo", paypal: "PayPal" },
   footer: {
@@ -139,7 +139,7 @@ export const id: Dictionary = {
     sendingButton: "Mengirim...",
     sendMoreButton: "Kirim masukan lagi",
     thanksHeading: "Terima kasih atas masukan Anda!",
-    thanksSubtext: "Setiap pesan kami baca dan membantu membuat MapsToGPX lebih baik.",
+    thanksSubtext: "Setiap pesan kami baca dan membantu membuat Map to GPX lebih baik.",
     errorFallback: "Masukan gagal dikirim",
   },
   homeMeta: {
@@ -163,7 +163,7 @@ export const id: Dictionary = {
     backButton: "← Kembali ke konverter",
     entries: [
       {
-        question: "Format URL Google Maps apa yang didukung MapsToGPX?",
+        question: "Format URL Google Maps apa yang didukung Map to GPX?",
         answer:
           "URL rute panjang yang disalin dari address bar, tautan pendek (goo.gl dan maps.app.goo.gl — ini diperluas secara otomatis), URL yang dibuat dari alamat atau nama tempat, URL dengan koordinat lintang/bujur mentah, dan rute multi-titik dengan beberapa titik henti.",
       },
@@ -184,7 +184,7 @@ export const id: Dictionary = {
           "Aplikasi atau perangkat GPS apa pun yang mendukung impor track GPX 1.1 standar — termasuk Garmin, Wahoo, Bryton, Hammerhead Karoo, dan perangkat COROS, di antara lainnya. Cukup impor atau salin file .gpx yang diunduh sama seperti track GPX lainnya.",
       },
       {
-        question: "Apakah MapsToGPX gratis? Apakah saya perlu membuat akun?",
+        question: "Apakah Map to GPX gratis? Apakah saya perlu membuat akun?",
         answer:
           "Ya, sepenuhnya gratis, tanpa perlu akun, daftar, atau login. Tempel URL dan unduh file GPX Anda.",
       },
@@ -216,7 +216,7 @@ export const id: Dictionary = {
           "Gunakan formulir masukan di halaman utama — Anda dapat memberikan rating bintang, pesan, atau keduanya, dan opsional alamat email jika Anda ingin dibalas.",
       },
       {
-        question: "Apakah MapsToGPX menyimpan rute atau data pribadi saya?",
+        question: "Apakah Map to GPX menyimpan rute atau data pribadi saya?",
         answer:
           "Tidak — rute, URL, dan alamat tidak disimpan dalam database; hanya cache berumur pendek yang digunakan untuk menghindari pencarian berulang. Lihat kebijakan privasi untuk detail lengkap tentang apa yang dikumpulkan dan tidak.",
       },

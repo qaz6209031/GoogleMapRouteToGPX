@@ -29,7 +29,8 @@ for (const locale of LOCALES) {
     expect(html).toContain(`placeholder="${dict.converterForm.placeholder}"`);
     expect(html).toContain(dict.converterForm.convertButton);
     expect(html).toContain(dict.feedbackForm.sendButton);
-    expect(html).toContain(dict.donate.description);
+    // Donate prompt is now rendered inside ConverterForm only after a download.
+    expect(html).not.toContain(dict.donate.description);
   });
   for (const page of ["/", "/faq"] as const) {
     it(`${locale} ${page} switcher links to every equivalent page`, () => {

@@ -5,7 +5,7 @@ import { GA_MEASUREMENT_ID } from "@/lib/analytics";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "What MapsToGPX collects when you convert a route, submit feedback, or visit the site — and what it doesn't.",
+    "What Map to GPX collects when you convert a route, submit feedback, or visit the site — and what it doesn't.",
   alternates: {
     canonical: "/privacy",
   },
@@ -20,7 +20,7 @@ export default function PrivacyPage() {
             href="/"
             className="font-semibold text-zinc-900 text-lg hover:text-blue-600 transition-colors"
           >
-            MapsToGPX
+            Map to GPX
           </Link>
         </div>
       </header>
@@ -33,7 +33,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-semibold text-zinc-900 mb-3">Overview</h2>
             <p>
-              MapsToGPX converts a Google Maps directions URL into a GPX file.
+              Map to GPX converts a Google Maps directions URL into a GPX file.
               There are no user accounts, no sign-up, and no login — you paste a
               URL and get a file back. This page explains exactly what data is
               processed to make that happen, and what we deliberately don&apos;t
@@ -174,7 +174,7 @@ export default function PrivacyPage() {
               No accounts
             </h2>
             <p>
-              MapsToGPX doesn&apos;t have user accounts, logins, or
+              Map to GPX doesn&apos;t have user accounts, logins, or
               passwords. The only cookies set on the production site are
               those set by Google Analytics (such as <code>_ga</code>) —
               see the Analytics section above for details. Vercel Web

@@ -27,7 +27,7 @@ export const ja: Dictionary = {
     noSignup: "登録不要",
   },
   features: {
-    heading: "MapsToGPXが選ばれる理由",
+    heading: "Map to GPXが選ばれる理由",
     subheading:
       "Google MapsのルートをGPXファイルに変換するために必要なすべてが揃っています。",
     items: [
@@ -92,8 +92,8 @@ export const ja: Dictionary = {
     subheading: "不具合を見つけた、またはアイデアがありますか?ぜひお知らせください。",
   },
   donate: {
-    heading: "MapsToGPXはいかがですか?コーヒーをご馳走してください!",
-    description: "MapsToGPXは無料です。寄付はGoogle MapsAPIの費用に充てられます。",
+    heading: "Map to GPXはいかがですか?コーヒーをご馳走してください!",
+    description: "Map to GPXは無料です。寄付はGoogle MapsAPIの費用に充てられます。",
   },
   donateLinks: { venmo: "Venmo", paypal: "PayPal" },
   footer: {
@@ -139,7 +139,7 @@ export const ja: Dictionary = {
     sendingButton: "送信中...",
     sendMoreButton: "さらにフィードバックを送る",
     thanksHeading: "フィードバックをありがとうございました!",
-    thanksSubtext: "いただいたメッセージはすべて確認し、MapsToGPXの改善に活用しています。",
+    thanksSubtext: "いただいたメッセージはすべて確認し、Map to GPXの改善に活用しています。",
     errorFallback: "フィードバックを送信できませんでした",
   },
   homeMeta: {
@@ -163,7 +163,7 @@ export const ja: Dictionary = {
     backButton: "← コンバーターに戻る",
     entries: [
       {
-        question: "MapsToGPXが対応するGoogle MapsのURL形式は何ですか?",
+        question: "Map to GPXが対応するGoogle MapsのURL形式は何ですか?",
         answer:
           "アドレスバーからコピーした長いルートURL、短縮リンク(goo.glおよびmaps.app.goo.gl — 自動的に展開されます)、住所や地名から作成されたURL、緯度・経度の座標を含むURL、複数の経由地を持つマルチストップルートに対応しています。",
       },
@@ -183,7 +183,7 @@ export const ja: Dictionary = {
           "標準のGPX 1.1トラックをインポートできるアプリやGPSデバイスであれば利用可能です — Garmin、Wahoo、Bryton、Hammerhead Karoo、COROSのデバイスなどが含まれます。ダウンロードした.gpxファイルを、他のGPXトラックと同じようにインポートまたはコピーするだけです。",
       },
       {
-        question: "MapsToGPXは無料ですか?アカウント作成は必要ですか?",
+        question: "Map to GPXは無料ですか?アカウント作成は必要ですか?",
         answer:
           "はい、完全に無料で、アカウント・登録・ログインは一切不要です。URLを貼り付けてGPXファイルをダウンロードするだけです。",
       },
@@ -213,7 +213,7 @@ export const ja: Dictionary = {
           "ホームページのフィードバックフォームをご利用ください — 星による評価、メッセージ、またはその両方を送信でき、返信が必要な場合は任意でメールアドレスを入力できます。",
       },
       {
-        question: "MapsToGPXはルートや個人データを保存しますか?",
+        question: "Map to GPXはルートや個人データを保存しますか?",
         answer:
           "いいえ — ルート、URL、住所はデータベースに保存されません。重複した検索を避けるために、短期間のキャッシュのみが使用されます。収集される情報と収集されない情報の詳細は、プライバシーポリシーをご覧ください。",
       },
