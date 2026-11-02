@@ -9,7 +9,7 @@ export interface FaqEntry {
  */
 export const FAQ_ENTRIES: FaqEntry[] = [
   {
-    question: "What Google Maps URL formats does MapsToGPX support?",
+    question: "What Google Maps URL formats does Map to GPX support?",
     answer:
       "Long directions URLs copied from the address bar, short links (goo.gl and maps.app.goo.gl — these are expanded automatically), URLs built from addresses or place names, URLs with raw latitude/longitude coordinates, and multi-stop routes with several waypoints.",
   },
@@ -29,7 +29,7 @@ export const FAQ_ENTRIES: FaqEntry[] = [
       "Any app or GPS device that imports standard GPX 1.1 tracks — this includes Garmin, Wahoo, Bryton, Hammerhead Karoo, and COROS devices, among others. Just import or copy the downloaded .gpx file the same way you would any other GPX track.",
   },
   {
-    question: "Is MapsToGPX free? Do I need to create an account?",
+    question: "Is Map to GPX free? Do I need to create an account?",
     answer:
       "Yes, it's completely free, with no account, sign-up, or login required. Paste a URL and download your GPX file.",
   },
@@ -59,7 +59,7 @@ export const FAQ_ENTRIES: FaqEntry[] = [
       "Use the feedback form on the home page — you can leave a star rating, a message, or both, and optionally an email address if you'd like a reply.",
   },
   {
-    question: "Does MapsToGPX store my routes or personal data?",
+    question: "Does Map to GPX store my routes or personal data?",
     answer:
       "No — routes, URLs, and addresses aren't stored in a database; only short-lived caches are used to avoid repeat lookups. See the privacy policy for the full details of what is and isn't collected.",
   },

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import ConverterForm from "@/components/ConverterForm";
 import FeedbackForm from "@/components/FeedbackForm";
-import DonateLinks from "@/components/DonateLinks";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import type { Dictionary } from "@/i18n/dictionary";
 import type { Locale } from "@/i18n/locales";
@@ -124,7 +123,7 @@ export default function HomePage({ locale, dict }: { locale: Locale; dict: Dicti
               </svg>
             </div>
             <span className="font-semibold text-zinc-900 text-lg">
-              MapsToGPX
+              Map to GPX
             </span>
           </div>
           <nav className="flex items-center gap-1">
@@ -397,7 +396,7 @@ export default function HomePage({ locale, dict }: { locale: Locale; dict: Dicti
           </div>
 
           {/* Converter */}
-          <ConverterForm dict={dict.converterForm} />
+          <ConverterForm dict={dict.converterForm} donate={dict.donate} donateLinks={dict.donateLinks} />
 
           {/* Trust badges */}
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mt-10 text-xs text-zinc-400">
@@ -545,21 +544,6 @@ export default function HomePage({ locale, dict }: { locale: Locale; dict: Dicti
         </div>
       </section>
 
-      {/* Donate banner */}
-      <div className="border-t border-zinc-200 bg-blue-50">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 text-center">
-          <h3 className="text-lg font-semibold text-zinc-900 mb-2">
-            {dict.donate.heading}
-          </h3>
-          <p className="text-sm text-zinc-500 mb-4 max-w-md mx-auto">
-            {dict.donate.description}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <DonateLinks dict={dict.donateLinks} />
-          </div>
-        </div>
-      </div>
-
       {/* Footer */}
       <footer className="border-t border-zinc-200 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
@@ -582,7 +566,7 @@ export default function HomePage({ locale, dict }: { locale: Locale; dict: Dicti
                 </svg>
               </div>
               <span className="text-sm font-medium text-zinc-600">
-                MapsToGPX
+                Map to GPX
               </span>
             </div>
 

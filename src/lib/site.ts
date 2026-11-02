@@ -3,7 +3,7 @@ import { DEFAULT_LOCALE, LOCALES } from "@/i18n/locales";
 import { LocalizablePath, localizedPath } from "@/i18n/paths";
 
 export const SITE_URL = "https://www.maptogpx.com";
-export const SITE_NAME = "MapsToGPX";
+export const SITE_NAME = "Map to GPX";
 
 /** Explicit because the shared image lives outside the locale root layouts. */
 export const SOCIAL_IMAGE = {
@@ -62,4 +62,8 @@ export const PUBLIC_ROUTES: SiteRoute[] = [
   { path: "/id/faq", changeFrequency: "monthly", priority: 0.6, languages: hreflangFor("/faq") },
   { path: "/es/faq", changeFrequency: "monthly", priority: 0.6, languages: hreflangFor("/faq") },
   { path: "/ja/faq", changeFrequency: "monthly", priority: 0.6, languages: hreflangFor("/faq") },
+  { path: "/google-maps-to-garmin", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/google-maps-to-wahoo", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/google-maps-to-bryton", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/google-maps-to-strava", changeFrequency: "monthly", priority: 0.8 },
 ];

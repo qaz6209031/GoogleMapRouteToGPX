@@ -27,7 +27,7 @@ export const es: Dictionary = {
     noSignup: "No necesitas registrarte",
   },
   features: {
-    heading: "¿Por qué MapsToGPX?",
+    heading: "¿Por qué Map to GPX?",
     subheading:
       "Todo lo que necesitas para convertir tus rutas de Google Maps en un archivo GPX.",
     items: [
@@ -92,9 +92,9 @@ export const es: Dictionary = {
     subheading: "¿Encontraste un error o tienes una idea? Cuéntanos.",
   },
   donate: {
-    heading: "¿Te gusta MapsToGPX? ¡Invítame un café!",
+    heading: "¿Te gusta Map to GPX? ¡Invítame un café!",
     description:
-      "MapsToGPX es gratis. Las donaciones ayudan a cubrir los costos de la API de Google Maps.",
+      "Map to GPX es gratis. Las donaciones ayudan a cubrir los costos de la API de Google Maps.",
   },
   donateLinks: { venmo: "Venmo", paypal: "PayPal" },
   footer: {
@@ -140,7 +140,7 @@ export const es: Dictionary = {
     sendingButton: "Enviando...",
     sendMoreButton: "Enviar más comentarios",
     thanksHeading: "¡Gracias por tus comentarios!",
-    thanksSubtext: "Leemos cada mensaje y nos ayuda a mejorar MapsToGPX.",
+    thanksSubtext: "Leemos cada mensaje y nos ayuda a mejorar Map to GPX.",
     errorFallback: "No se pudo enviar el comentario",
   },
   homeMeta: {
@@ -164,7 +164,7 @@ export const es: Dictionary = {
     backButton: "← Volver al conversor",
     entries: [
       {
-        question: "¿Qué formatos de URL de Google Maps admite MapsToGPX?",
+        question: "¿Qué formatos de URL de Google Maps admite Map to GPX?",
         answer:
           "URLs largas de rutas copiadas desde la barra de direcciones, enlaces cortos (goo.gl y maps.app.goo.gl — se expanden automáticamente), URLs creadas a partir de direcciones o nombres de lugares, URLs con coordenadas de latitud/longitud sin procesar, y rutas con varias paradas y múltiples puntos de ruta.",
       },
@@ -184,7 +184,7 @@ export const es: Dictionary = {
           "Cualquier aplicación o dispositivo GPS que importe pistas GPX 1.1 estándar — esto incluye dispositivos Garmin, Wahoo, Bryton, Hammerhead Karoo y COROS, entre otros. Solo importa o copia el archivo .gpx descargado igual que harías con cualquier otra pista GPX.",
       },
       {
-        question: "¿MapsToGPX es gratis? ¿Necesito crear una cuenta?",
+        question: "¿Map to GPX es gratis? ¿Necesito crear una cuenta?",
         answer:
           "Sí, es completamente gratis, sin necesidad de cuenta, registro ni inicio de sesión. Pega una URL y descarga tu archivo GPX.",
       },
@@ -214,7 +214,7 @@ export const es: Dictionary = {
           "Usa el formulario de comentarios en la página principal — puedes dejar una calificación con estrellas, un mensaje, o ambos, y opcionalmente un correo electrónico si quieres recibir una respuesta.",
       },
       {
-        question: "¿MapsToGPX guarda mis rutas o datos personales?",
+        question: "¿Map to GPX guarda mis rutas o datos personales?",
         answer:
           "No — las rutas, URLs y direcciones no se guardan en una base de datos; solo se usan cachés de corta duración para evitar búsquedas repetidas. Consulta la política de privacidad para conocer todos los detalles sobre qué se recopila y qué no.",
       },

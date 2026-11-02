@@ -39,7 +39,11 @@ describe("localized content and routes", () => {
   }
   it("keeps privacy English-only and excludes device guides", () => {
     expect(PUBLIC_ROUTES.find((route) => route.path === "/privacy")?.languages).toBeUndefined();
-    expect(PUBLIC_ROUTES).toHaveLength(9);
+    expect(PUBLIC_ROUTES).toHaveLength(13);
+    for (const slug of ["garmin", "wahoo", "bryton", "strava"]) {
+      const route = PUBLIC_ROUTES.find((r) => r.path === `/google-maps-to-${slug}`);
+      expect(route?.languages).toBeUndefined();
+    }
     expect(PUBLIC_ROUTES.some((route) => route.path.includes("guides"))).toBe(false);
   });
 });

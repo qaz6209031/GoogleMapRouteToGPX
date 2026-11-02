@@ -5,6 +5,7 @@ import { trackEvent } from "@/lib/analytics";
 import { classifyConversionError } from "@/lib/conversion-error";
 import { isGoogleMapsUrl, isShortUrl } from "@/lib/google-hosts";
 import type { Dictionary } from "@/i18n/dictionary";
+import DonateLinks from "@/components/DonateLinks";
 
 interface Stats {
   distanceKm: number;
@@ -19,7 +20,15 @@ type Step =
   | "done"
   | "error";
 
-export default function ConverterForm({ dict }: { dict: Dictionary["converterForm"] }) {
+export default function ConverterForm({
+  dict,
+  donate,
+  donateLinks,
+}: {
+  dict: Dictionary["converterForm"];
+  donate?: Dictionary["donate"];
+  donateLinks?: Dictionary["donateLinks"];
+}) {
   const STEP_LABELS: Record<Step, string> = dict.stepLabels;
 
   const [url, setUrl] = useState("");
@@ -27,6 +36,7 @@ export default function ConverterForm({ dict }: { dict: Dictionary["converterFor
   const [error, setError] = useState("");
   const [gpxData, setGpxData] = useState("");
   const [stats, setStats] = useState<Stats | null>(null);
+  const [downloaded, setDownloaded] = useState(false);
 
   async function postJson(
     path: string,
@@ -118,6 +128,7 @@ export default function ConverterForm({ dict }: { dict: Dictionary["converterFor
     a.click();
     document.body.removeChild(a);
     trackEvent("gpx_download");
+    setDownloaded(true);
     // Delay revocation so Firefox has time to start the download before the blob URL dies.
     setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
   }
@@ -128,6 +139,7 @@ export default function ConverterForm({ dict }: { dict: Dictionary["converterFor
     setError("");
     setGpxData("");
     setStats(null);
+    setDownloaded(false);
   }
 
   const isLoading = !["idle", "done", "error"].includes(step);
@@ -332,6 +344,17 @@ export default function ConverterForm({ dict }: { dict: Dictionary["converterFor
                 {dict.newButton}
               </button>
             </div>
+
+            {/* Donate prompt, shown only after a successful download */}
+            {downloaded && donate && donateLinks && (
+              <div className="mt-2 p-4 rounded-xl bg-blue-50 border border-blue-200 text-center">
+                <p className="text-sm font-semibold text-zinc-900 mb-1">{donate.heading}</p>
+                <p className="text-xs text-zinc-500 mb-3">{donate.description}</p>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <DonateLinks dict={donateLinks} />
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

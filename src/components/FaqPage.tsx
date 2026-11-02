@@ -31,7 +31,7 @@ export default function FaqPage({ locale, dict }: { locale: Locale; dict: Dictio
             href={localizedPath(locale, "/")}
             className="font-semibold text-zinc-900 text-lg hover:text-blue-600 transition-colors"
           >
-            MapsToGPX
+            Map to GPX
           </Link>
         </div>
       </header>
