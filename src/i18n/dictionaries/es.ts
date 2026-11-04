@@ -8,17 +8,12 @@ export const es: Dictionary = {
     faq: "FAQ",
   },
   hero: {
-    badge: "Con la confianza de 2K+ usuarios en 50+ países",
+    badge: "Con la confianza de 10K+ usuarios en 50+ países",
     titleLine1: "Ruta de Google Maps",
     titleLine2: "a archivo GPX",
     subtitle:
       "Convierte cualquier URL de rutas de Google Maps en un archivo GPX para tu dispositivo GPS — en coche, bicicleta o a pie.",
     subtitleBold: "Sin registro. Sin correo. Solo pega y listo.",
-  },
-  announcement: {
-    badge: "Corregido",
-    text:
-      "Las rutas que modificas arrastrando en Google Maps ahora se conservan en el GPX, junto con las opciones “evitar autopistas / peajes / ferris”. ¡Gracias por tus comentarios!",
   },
   trustBadges: {
     gpxStandard: "Estándar GPX 1.1",
@@ -54,7 +49,7 @@ export const es: Dictionary = {
       {
         title: "La confianza de miles de usuarios",
         description:
-          "Usado por 2,000+ usuarios en todo el mundo. Sin registro, sin costos ocultos — solo archivos GPX.",
+          "Usado por 10,000+ usuarios en todo el mundo. Sin registro, sin costos ocultos — solo archivos GPX.",
       },
       {
         title: "Todos los formatos de URL",
@@ -104,7 +99,7 @@ export const es: Dictionary = {
     tagline: "Gratis para siempre. Con la confianza de usuarios en todo el mundo.",
   },
   converterForm: {
-    placeholder: "Pega aquí la URL de tu ruta de Google Maps...",
+    placeholder: "Pega el enlace de tu ruta",
     convertButton: "Convertir a GPX",
     convertingButton: "Convirtiendo...",
     stepLabels: {
@@ -123,6 +118,16 @@ export const es: Dictionary = {
     waypointsLabel: "Puntos de ruta",
     downloadButton: "Descargar GPX",
     newButton: "Nueva",
+    legendTitle: "Tu ruta",
+    map: {
+      sampleLabel: "Ruta de ejemplo",
+      yourRoute: "Tu ruta",
+      start: "Salida",
+      finish: "Llegada",
+      sampleAlt: "Ilustración de una ruta de ejemplo impresa en una hoja de mapa",
+      routeAlt: "Tu ruta convertida, con el norte arriba, {km} km",
+      caption: "Norte arriba. El terreno detrás de tu ruta es decorativo.",
+    },
   },
   feedbackForm: {
     ratingQuestion: "¿Cómo fue tu experiencia?",
@@ -142,6 +147,7 @@ export const es: Dictionary = {
     thanksHeading: "¡Gracias por tus comentarios!",
     thanksSubtext: "Leemos cada mensaje y nos ayuda a mejorar MapsToGPX.",
     errorFallback: "No se pudo enviar el comentario",
+    emptyError: "Elige una valoración o escribe un mensaje primero.",
   },
   homeMeta: {
     title: "Conversor de Rutas de Google Maps a GPX",

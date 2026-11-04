@@ -1,9 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import DonateLinks from "@/components/DonateLinks";
+import {
+  Closure,
+  Download,
+  FinishFlag,
+  RouteLine,
+  StartRing,
+  Tick,
+  Warning,
+} from "@/components/sheet/symbols";
 import { trackEvent } from "@/lib/analytics";
 import { classifyConversionError } from "@/lib/conversion-error";
 import { isGoogleMapsUrl, isShortUrl } from "@/lib/google-hosts";
+import { parseGpxTrack, projectRoute, type Point } from "@/lib/route-shape";
 import type { Dictionary } from "@/i18n/dictionary";
 
 interface Stats {
@@ -12,21 +23,34 @@ interface Stats {
   warnings?: string[];
 }
 
-type Step =
-  | "idle"
-  | "resolving"
-  | "routing"
-  | "done"
-  | "error";
+type Step = "idle" | "resolving" | "routing" | "done" | "error";
 
-export default function ConverterForm({ dict }: { dict: Dictionary["converterForm"] }) {
-  const STEP_LABELS: Record<Step, string> = dict.stepLabels;
+/** Map box the route is drawn into; the SVG scales it to the column. */
+const MAP_W = 800;
+const MAP_H = 600;
+const MAP_PAD = 64;
 
+const SAMPLE_ROUTE =
+  "M118 438C188 468 204 366 284 352S404 398 432 314S470 196 560 204S690 282 700 362S652 470 594 484";
+
+export default function ConverterForm({
+  dict,
+  donate,
+  donateLinks,
+  children,
+}: {
+  dict: Dictionary["converterForm"];
+  donate: Dictionary["donate"];
+  donateLinks: Dictionary["donateLinks"];
+  /** The sheet's headline block, set above the legend box. */
+  children: ReactNode;
+}) {
   const [url, setUrl] = useState("");
   const [step, setStep] = useState<Step>("idle");
   const [error, setError] = useState("");
   const [gpxData, setGpxData] = useState("");
   const [stats, setStats] = useState<Stats | null>(null);
+  const [routeKey, setRouteKey] = useState(0);
 
   async function postJson(
     path: string,
@@ -67,10 +91,10 @@ export default function ConverterForm({ dict }: { dict: Dictionary["converterFor
     setStep("error");
   }
 
-  async function handleConvert() {
-    if (!url.trim()) return;
+  async function handleConvert(e?: React.FormEvent) {
+    e?.preventDefault();
 
-    if (!isGoogleMapsUrl(url.trim())) {
+    if (!url.trim() || !isGoogleMapsUrl(url.trim())) {
       setError(dict.invalidUrlError);
       setStep("error");
       trackEvent("conversion_error", { reason: "invalid_url" });
@@ -82,7 +106,6 @@ export default function ConverterForm({ dict }: { dict: Dictionary["converterFor
     setStats(null);
 
     let resolvedUrl = url.trim();
-
     if (isShortUrl(resolvedUrl)) {
       setStep("resolving");
       const resolved = await postJson("/api/resolve-url", { url: resolvedUrl });
@@ -103,6 +126,7 @@ export default function ConverterForm({ dict }: { dict: Dictionary["converterFor
 
     setGpxData(converted.data.gpx as string);
     setStats(converted.data.stats as Stats);
+    setRouteKey((k) => k + 1);
     setStep("done");
     trackEvent("route_conversion");
   }
@@ -130,235 +154,275 @@ export default function ConverterForm({ dict }: { dict: Dictionary["converterFor
     setStats(null);
   }
 
-  const isLoading = !["idle", "done", "error"].includes(step);
+  const isLoading = step === "resolving" || step === "routing";
+  const track = useMemo(() => (gpxData ? parseGpxTrack(gpxData) : []), [gpxData]);
+  const shape = useMemo(() => projectRoute(track, MAP_W, MAP_H, MAP_PAD), [track]);
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div className="glass-card rounded-2xl shadow-xl p-6 sm:p-8">
-        {/* Input area */}
-        <div className="space-y-4">
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <svg
-                className="w-5 h-5 text-zinc-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.688a4.5 4.5 0 00-1.242-7.244l-4.5-4.5a4.5 4.5 0 00-6.364 6.364L4.757 8.25"
-                />
-              </svg>
-            </div>
-            <input
-              id="maps-url"
-              type="url"
-              placeholder={dict.placeholder}
-              value={url}
-              onChange={(e) => {
-                setUrl(e.target.value);
-                if (step === "error") setStep("idle");
-              }}
-              onKeyDown={(e) => e.key === "Enter" && handleConvert()}
-              disabled={isLoading}
-              className="w-full pl-12 pr-4 py-4 rounded-xl border border-zinc-200 bg-white text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 disabled:opacity-50 transition-all text-sm"
-            />
-          </div>
+    <div className="relative grid gap-10 lg:grid-cols-[minmax(0,35rem)_minmax(0,1fr)] lg:gap-12">
+      <div className="flex flex-col">
+        {children}
 
-          <button
-            onClick={handleConvert}
-            disabled={isLoading || !url.trim()}
-            className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 active:scale-[0.99]"
-          >
-            {isLoading ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg
-                  className="animate-spin h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                  />
-                </svg>
-                {dict.convertingButton}
-              </span>
-            ) : (
-              dict.convertButton
-            )}
-          </button>
-        </div>
-
-        {/* Progress */}
-        {isLoading && (
-          <div className="mt-5 flex items-center gap-3">
-            <div className="flex gap-1">
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse-slow" />
-              <span
-                className="w-2 h-2 rounded-full bg-blue-500 animate-pulse-slow"
-                style={{ animationDelay: "0.3s" }}
-              />
-              <span
-                className="w-2 h-2 rounded-full bg-blue-500 animate-pulse-slow"
-                style={{ animationDelay: "0.6s" }}
-              />
-            </div>
-            <span className="text-sm text-zinc-500">
-              {STEP_LABELS[step]}
-            </span>
-          </div>
-        )}
-
-        {/* Error */}
-        {step === "error" && error && (
-          <div className="mt-5 p-4 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3">
-            <svg
-              className="w-5 h-5 text-red-500 mt-0.5 shrink-0"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
+        <section
+          aria-labelledby="legend-title"
+          className="mt-8 border-[1.5px] border-ink bg-paper"
+        >
+          <div className="flex items-center justify-between gap-4 border-b-[1.5px] border-ink px-4 py-2.5 sm:px-5">
+            <h2
+              id="legend-title"
+              className="font-lettering text-[14px] font-bold uppercase tracking-[0.16em]"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
-              />
-            </svg>
-            <span className="text-sm text-red-700">
-              {error}
-            </span>
+              {dict.legendTitle}
+            </h2>
+            <RouteLine className="h-3 w-9" />
           </div>
-        )}
 
-        {/* Success */}
-        {step === "done" && stats && (
-          <div className="mt-6 space-y-5">
-            {/* Success banner */}
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-50 border border-emerald-200">
-              <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-                <svg
-                  className="w-4.5 h-4.5 text-emerald-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
+          <div className="px-4 py-4 sm:px-5 sm:py-5">
+            {step !== "done" && (
+              <form
+                onSubmit={handleConvert}
+                className="flex flex-col gap-1.5 border-[1.5px] border-ink bg-white p-1.5 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-route sm:flex-row"
+              >
+                <input
+                  id="maps-url"
+                  type="url"
+                  inputMode="url"
+                  autoComplete="off"
+                  aria-label={dict.placeholder}
+                  placeholder={dict.placeholder}
+                  value={url}
+                  onChange={(e) => {
+                    setUrl(e.target.value);
+                    if (step === "error") setStep("idle");
+                  }}
+                  disabled={isLoading}
+                  className="h-12 min-w-0 flex-1 bg-transparent px-3 text-base text-ink placeholder:text-ink-soft focus-visible:outline-none disabled:opacity-60"
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="h-12 shrink-0 bg-route px-6 font-lettering text-[19px] font-bold uppercase tracking-[0.06em] text-white transition-colors hover:bg-route-deep disabled:cursor-wait disabled:bg-route-deep"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 12.75l6 6 9-13.5"
-                  />
-                </svg>
-              </div>
-              <span className="text-sm font-medium text-emerald-800">
-                {dict.successBanner}
-              </span>
-            </div>
+                  {isLoading ? dict.convertingButton : dict.convertButton}
+                </button>
+              </form>
+            )}
 
-            {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-3">
-              <StatCard
-                icon={
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-                  </svg>
-                }
-                label={dict.distanceLabel}
-                value={`${stats.distanceKm} km`}
-              />
-              <StatCard
-                icon={
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                  </svg>
-                }
-                label={dict.waypointsLabel}
-                value={`${stats.waypointCount}`}
-              />
-            </div>
+            <p className="sr-only" aria-live="polite">
+              {step === "error" ? dict.stepLabels.error : dict.stepLabels[step]}
+            </p>
 
-            {/* Warnings */}
-            {stats.warnings && stats.warnings.length > 0 && (
-              <div className="space-y-1">
-                {stats.warnings.map((warning, i) => (
-                  <p key={i} className="text-xs text-amber-600">
-                    {warning}
-                  </p>
-                ))}
+            {step === "error" && error && (
+              <div
+                role="alert"
+                className="mt-4 flex items-start gap-3 border-[1.5px] border-closure bg-white px-4 py-3"
+              >
+                <Closure className="mt-0.5 h-5 w-5 shrink-0 text-closure" />
+                <p className="text-[15px] leading-relaxed text-ink">{error}</p>
               </div>
             )}
 
-            {/* Action buttons */}
-            <div className="flex gap-3">
-              <button
-                onClick={handleDownload}
-                className="flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold transition-all shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/30 active:scale-[0.99] flex items-center justify-center gap-2"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-                  />
-                </svg>
-                {dict.downloadButton}
-              </button>
-              <button
-                onClick={handleReset}
-                className="px-4 py-3.5 rounded-xl border border-zinc-200 text-zinc-600 hover:bg-zinc-100 transition-colors text-sm font-medium"
-              >
-                {dict.newButton}
-              </button>
-            </div>
+            {step === "done" && stats && (
+              <div className="space-y-4">
+                <p className="mt-4 flex items-center gap-2 font-lettering text-[19px] font-bold uppercase tracking-[0.04em]">
+                  <Tick className="h-5 w-5 text-route" />
+                  {dict.successBanner}
+                </p>
+
+                <dl className="grid grid-cols-2 border-y-[1.5px] border-ink">
+                  <div className="py-3 pr-4">
+                    <dt className="font-lettering text-[13px] font-semibold uppercase tracking-[0.14em] text-ink-soft">
+                      {dict.distanceLabel}
+                    </dt>
+                    <dd className="mt-1 font-lettering text-[30px] font-bold leading-none tabular-nums">
+                      {stats.distanceKm} km
+                    </dd>
+                  </div>
+                  <div className="border-l border-ink/30 py-3 pl-4">
+                    <dt className="font-lettering text-[13px] font-semibold uppercase tracking-[0.14em] text-ink-soft">
+                      {dict.waypointsLabel}
+                    </dt>
+                    <dd className="mt-1 font-lettering text-[30px] font-bold leading-none tabular-nums">
+                      {stats.waypointCount}
+                    </dd>
+                  </div>
+                </dl>
+
+                {stats.warnings && stats.warnings.length > 0 && (
+                  <ul className="space-y-1.5">
+                    {stats.warnings.map((warning, i) => (
+                      <li key={i} className="flex items-start gap-2 text-[14px] leading-snug text-ink-soft">
+                        <Warning className="mt-px h-4 w-4 shrink-0 text-ink" />
+                        {warning}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={handleDownload}
+                    className="flex h-12 flex-1 items-center justify-center gap-2 bg-route px-6 font-lettering text-[19px] font-bold uppercase tracking-[0.06em] text-white transition-colors hover:bg-route-deep"
+                  >
+                    <Download className="h-5 w-5" />
+                    {dict.downloadButton}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    className="h-12 border-[1.5px] border-ink px-5 font-lettering text-[16px] font-semibold uppercase tracking-[0.08em] transition-colors hover:bg-land"
+                  >
+                    {dict.newButton}
+                  </button>
+                </div>
+
+                <div className="border-t-[1.5px] border-dashed border-ink/50 pt-4">
+                  <p className="font-lettering text-[17px] font-bold uppercase tracking-[0.03em]">
+                    {donate.heading}
+                  </p>
+                  <p className="mt-1 text-[14px] leading-relaxed text-ink-soft">{donate.description}</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <DonateLinks dict={donateLinks} />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </section>
       </div>
+
+      <RouteMap key={routeKey} dict={dict.map} shape={step === "done" ? shape : null} distanceKm={stats?.distanceKm} />
     </div>
   );
 }
 
-function StatCard({
-  icon,
-  label,
-  value,
+function RouteMap({
+  dict,
+  shape,
+  distanceKm,
 }: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
+  dict: Dictionary["converterForm"]["map"];
+  shape: ReturnType<typeof projectRoute>;
+  distanceKm?: number;
 }) {
+  const pathRef = useRef<SVGPathElement>(null);
+  const [sampleTicks, setSampleTicks] = useState<Point[]>([]);
+
+  useEffect(() => {
+    if (shape || !pathRef.current) return;
+    const path = pathRef.current;
+    const length = path.getTotalLength();
+    const ticks: Point[] = [];
+    for (let i = 1; i < 8; i++) {
+      const p = path.getPointAtLength((length * i) / 8);
+      ticks.push({ x: p.x, y: p.y });
+    }
+    setSampleTicks(ticks);
+  }, [shape]);
+
+  const d = shape ? shape.d : SAMPLE_ROUTE;
+  const start = shape ? shape.start : { x: 118, y: 438 };
+  const end = shape ? shape.end : { x: 594, y: 484 };
+  const ticks = shape ? shape.ticks : sampleTicks;
+  const label = shape
+    ? dict.routeAlt.replace("{km}", String(distanceKm ?? ""))
+    : dict.sampleAlt;
+
   return (
-    <div className="bg-zinc-50 rounded-xl p-3.5 text-center border border-zinc-100">
-      <div className="flex items-center justify-center gap-1.5 text-zinc-400 mb-1">
-        {icon}
-        <span className="text-[11px] font-medium uppercase tracking-wider">
-          {label}
-        </span>
+    <figure className="relative sm:h-[26rem] lg:h-auto lg:min-h-[30rem]">
+      <div className="relative -mx-4 h-[20rem] sm:absolute sm:inset-0 sm:mx-0 sm:h-auto">
+      <svg
+        role="img"
+        aria-label={label}
+        viewBox={`0 0 ${MAP_W} ${MAP_H}`}
+        preserveAspectRatio="xMidYMid meet"
+        className="absolute inset-0 h-full w-full"
+      >
+        <path
+          d={d}
+          pathLength={1}
+          className="route-draw"
+          fill="none"
+          stroke="var(--color-paper)"
+          strokeWidth={13}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity={0.9}
+        />
+        <path
+          ref={pathRef}
+          d={d}
+          pathLength={1}
+          className="route-draw"
+          fill="none"
+          stroke="var(--color-route)"
+          strokeWidth={6}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <g className="route-after">
+          {ticks.map((t, i) => (
+            <circle key={i} cx={t.x} cy={t.y} r={3.2} fill="var(--color-paper)" />
+          ))}
+          <path
+            d={`M${end.x} ${end.y}V${end.y - 38}l22 9-22 9`}
+            fill="var(--color-ink)"
+            stroke="var(--color-ink)"
+            strokeWidth={3}
+            strokeLinejoin="round"
+          />
+        </g>
+        <circle cx={start.x} cy={start.y} r={10} fill="var(--color-paper)" stroke="var(--color-ink)" strokeWidth={3.5} />
+
+        {shape && (
+          <g className="route-after" transform={`translate(${MAP_PAD} ${MAP_H - 30})`}>
+            {[0, 1, 2, 3].map((i) => (
+              <rect
+                key={i}
+                x={(shape.scaleWidth / 4) * i}
+                y={0}
+                width={shape.scaleWidth / 4}
+                height={8}
+                fill={i % 2 === 0 ? "var(--color-ink)" : "var(--color-paper)"}
+                stroke="var(--color-ink)"
+                strokeWidth={1.5}
+              />
+            ))}
+            <text
+              x={shape.scaleWidth + 10}
+              y={8}
+              fill="var(--color-ink)"
+              style={{ font: "600 15px var(--font-lettering)", letterSpacing: "0.08em" }}
+            >
+              {shape.scaleKm} km
+            </text>
+          </g>
+        )}
+      </svg>
       </div>
-      <div className="text-lg font-bold text-zinc-900">
-        {value}
-      </div>
-    </div>
+
+      <figcaption className="mt-3 w-fit border-[1.5px] border-ink bg-paper px-4 py-3 sm:absolute sm:bottom-0 sm:right-0 sm:mt-0 lg:bottom-auto lg:top-0">
+        <ul className="grid grid-cols-[2.25rem_auto] justify-start items-center gap-x-3 gap-y-2 font-lettering text-[14px] font-semibold uppercase tracking-[0.1em]">
+          <li className="contents">
+            <RouteLine className="h-3 w-9" />
+            <span>{shape ? dict.yourRoute : dict.sampleLabel}</span>
+          </li>
+          <li className="contents">
+            <StartRing className="mx-auto h-5 w-5" />
+            <span>{dict.start}</span>
+          </li>
+          <li className="contents">
+            <FinishFlag className="mx-auto h-5 w-5" />
+            <span>{dict.finish}</span>
+          </li>
+        </ul>
+        {shape && (
+          <p className="mt-2 max-w-[15rem] border-t border-ink/30 pt-2 text-[12px] leading-snug text-ink-soft">
+            {dict.caption}
+          </p>
+        )}
+      </figcaption>
+    </figure>
   );
 }

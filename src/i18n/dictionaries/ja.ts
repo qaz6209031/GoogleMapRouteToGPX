@@ -8,17 +8,12 @@ export const ja: Dictionary = {
     faq: "FAQ",
   },
   hero: {
-    badge: "50+か国の2K+ユーザーが利用しています",
+    badge: "50+か国の10K+ユーザーが利用しています",
     titleLine1: "Google Mapsのルートを",
     titleLine2: "GPXファイルに変換",
     subtitle:
       "Google MapsのルートURLを、GPSデバイス用のGPXファイルに変換します — 車、自転車、徒歩に対応。",
     subtitleBold: "登録不要。メール不要。貼り付けるだけ。",
-  },
-  announcement: {
-    badge: "修正済み",
-    text:
-      "Google Mapsでドラッグして変更したルートも、GPXにそのまま保持されるようになりました。「高速道路/有料道路/フェリーを避ける」設定も同様です。フィードバックをありがとうございました!",
   },
   trustBadges: {
     gpxStandard: "GPX 1.1 標準規格",
@@ -54,7 +49,7 @@ export const ja: Dictionary = {
       {
         title: "多くのユーザーに利用されています",
         description:
-          "全世界で2,000+人のユーザーに利用されています。登録不要、隠れたコストもなく、GPXファイルだけをお届けします。",
+          "全世界で10,000+人のユーザーに利用されています。登録不要、隠れたコストもなく、GPXファイルだけをお届けします。",
       },
       {
         title: "すべてのURL形式に対応",
@@ -103,7 +98,7 @@ export const ja: Dictionary = {
     tagline: "永久に無料。世界中のユーザーに利用されています。",
   },
   converterForm: {
-    placeholder: "ここにGoogle MapsのルートURLを貼り付けてください...",
+    placeholder: "ルートのリンクを貼り付け",
     convertButton: "GPXに変換",
     convertingButton: "変換中...",
     stepLabels: {
@@ -122,6 +117,16 @@ export const ja: Dictionary = {
     waypointsLabel: "経由地点",
     downloadButton: "GPXをダウンロード",
     newButton: "新規",
+    legendTitle: "あなたのルート",
+    map: {
+      sampleLabel: "サンプルルート",
+      yourRoute: "あなたのルート",
+      start: "スタート",
+      finish: "ゴール",
+      sampleAlt: "地図に印刷されたサンプルルートのイラスト",
+      routeAlt: "変換したルート（北が上）、{km} km",
+      caption: "北が上です。ルートの背景の地形は装飾です。",
+    },
   },
   feedbackForm: {
     ratingQuestion: "ご利用の感想はいかがですか?",
@@ -141,6 +146,7 @@ export const ja: Dictionary = {
     thanksHeading: "フィードバックをありがとうございました!",
     thanksSubtext: "いただいたメッセージはすべて確認し、MapsToGPXの改善に活用しています。",
     errorFallback: "フィードバックを送信できませんでした",
+    emptyError: "星の評価を選ぶか、メッセージを入力してください。",
   },
   homeMeta: {
     title: "Google Mapsルート→GPX変換ツール",

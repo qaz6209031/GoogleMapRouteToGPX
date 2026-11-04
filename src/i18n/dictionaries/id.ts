@@ -8,17 +8,12 @@ export const id: Dictionary = {
     faq: "FAQ",
   },
   hero: {
-    badge: "Dipercaya oleh 2K+ pengguna di 50+ negara",
+    badge: "Dipercaya oleh 10K+ pengguna di 50+ negara",
     titleLine1: "Rute Google Maps",
     titleLine2: "ke File GPX",
     subtitle:
       "Ubah URL rute Google Maps apa pun menjadi file GPX untuk perangkat GPS Anda — mengemudi, bersepeda, atau berjalan kaki.",
     subtitleBold: "Tanpa daftar. Tanpa email. Cukup tempel dan jalan.",
-  },
-  announcement: {
-    badge: "Diperbaiki",
-    text:
-      "Rute yang Anda ubah bentuknya dengan menyeret di Google Maps kini tetap tersimpan di GPX, bersama opsi “hindari jalan raya / tol / feri”. Terima kasih atas masukannya!",
   },
   trustBadges: {
     gpxStandard: "Standar GPX 1.1",
@@ -54,7 +49,7 @@ export const id: Dictionary = {
       {
         title: "Dipercaya oleh Ribuan Pengguna",
         description:
-          "Digunakan oleh 2,000+ pengguna di seluruh dunia. Tanpa daftar, tanpa biaya tersembunyi — hanya file GPX.",
+          "Digunakan oleh 10,000+ pengguna di seluruh dunia. Tanpa daftar, tanpa biaya tersembunyi — hanya file GPX.",
       },
       {
         title: "Semua Format URL",
@@ -103,7 +98,7 @@ export const id: Dictionary = {
     tagline: "Gratis selamanya. Dipercaya oleh pengguna di seluruh dunia.",
   },
   converterForm: {
-    placeholder: "Tempel URL rute Google Maps Anda di sini...",
+    placeholder: "Tempel tautan rute Google Maps",
     convertButton: "Ubah ke GPX",
     convertingButton: "Memproses...",
     stepLabels: {
@@ -122,6 +117,16 @@ export const id: Dictionary = {
     waypointsLabel: "Titik Rute",
     downloadButton: "Unduh GPX",
     newButton: "Baru",
+    legendTitle: "Rute Anda",
+    map: {
+      sampleLabel: "Contoh rute",
+      yourRoute: "Rute Anda",
+      start: "Mulai",
+      finish: "Selesai",
+      sampleAlt: "Ilustrasi contoh rute yang tercetak di lembar peta",
+      routeAlt: "Rute Anda yang sudah dikonversi, utara di atas, {km} km",
+      caption: "Utara di atas. Medan di belakang rute Anda hanya hiasan.",
+    },
   },
   feedbackForm: {
     ratingQuestion: "Bagaimana pengalaman Anda?",
@@ -141,6 +146,7 @@ export const id: Dictionary = {
     thanksHeading: "Terima kasih atas masukan Anda!",
     thanksSubtext: "Setiap pesan kami baca dan membantu membuat MapsToGPX lebih baik.",
     errorFallback: "Masukan gagal dikirim",
+    emptyError: "Pilih rating bintang atau tulis pesan terlebih dahulu.",
   },
   homeMeta: {
     title: "Konverter Rute Google Maps ke GPX",

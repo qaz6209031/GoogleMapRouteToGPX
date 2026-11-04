@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cycle Map Sheet sketch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,800;1,500&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --land:#e9efe1; --wood:#c9dcb8; --wood-edge:#a9c79a; --contour:#b5835a; --water:#3d86bf;
+    --route:#d4246f; --ink:#1d2422; --paper:#f7f9f3; --grid:#8aa08a;
+  }
+  *{box-sizing:border-box;margin:0}
+  html,body{width:1440px;height:900px;overflow:hidden;background:var(--land);font-family:Barlow,system-ui,sans-serif;color:var(--ink)}
+  .sheet{position:relative;width:1440px;height:900px}
+  svg.map{position:absolute;inset:0}
+  /* sheet margin */
+  .margin{position:absolute;inset:0;border:28px solid var(--paper);pointer-events:none}
+  .neatline{position:absolute;inset:28px;border:1.5px solid var(--ink);pointer-events:none}
+  .ticks{position:absolute;font:600 11px/1 "Barlow Condensed";letter-spacing:.08em;color:var(--ink)}
+  .ticks.top{top:9px;left:28px;right:28px;display:flex;justify-content:space-around}
+  .ticks.left{left:10px;top:28px;bottom:28px;display:flex;flex-direction:column;justify-content:space-around}
+  .ticks.right{right:10px;top:28px;bottom:28px;display:flex;flex-direction:column;justify-content:space-around}
+  header{position:absolute;top:28px;left:28px;right:28px;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:var(--paper);border-bottom:1.5px solid var(--ink)}
+  .mark{display:flex;align-items:center;gap:12px;font:800 22px/1 "Barlow Condensed";letter-spacing:.04em;text-transform:uppercase}
+  .mark i{font-style:normal;color:var(--route)}
+  nav{display:flex;gap:28px;font:600 15px/1 "Barlow Condensed";letter-spacing:.12em;text-transform:uppercase}
+  .title{position:absolute;left:84px;top:138px;width:560px}
+  .title .sheetno{font:600 14px/1 "Barlow Condensed";letter-spacing:.2em;text-transform:uppercase;color:var(--ink);display:flex;gap:14px;align-items:center}
+  .title .sheetno span{background:var(--ink);color:var(--paper);padding:5px 8px}
+  h1{margin-top:0;font:800 76px/.9 "Barlow Condensed";letter-spacing:-.005em;text-transform:uppercase}
+  h1 em{font-style:normal;color:var(--route)}
+  .sub{margin-top:20px;font:500 19px/1.45 Barlow;max-width:460px}
+  .legend{position:absolute;left:84px;top:540px;width:560px;background:var(--paper);border:1.5px solid var(--ink)}
+  .legend .lh{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1.5px solid var(--ink);font:700 13px/1 "Barlow Condensed";letter-spacing:.2em;text-transform:uppercase}
+  .legend .lb{padding:18px 16px 16px}
+  .field{display:flex;gap:6px;padding:6px;border:1.5px solid var(--ink);height:64px;background:#fff}
+  .field input{flex:1;border:0;background:#fff;padding:0 16px;font:500 16px Barlow;color:var(--ink)}
+  .field button{border:0;background:var(--route);color:#fff;padding:0 26px;font:800 22px/1 "Barlow Condensed";letter-spacing:.06em;text-transform:uppercase}
+  .stations{display:flex;gap:22px;margin-top:14px;font:600 13px/1 "Barlow Condensed";letter-spacing:.12em;text-transform:uppercase;color:#56615c}
+  .stations b{display:inline-block;width:10px;height:10px;border:1.5px solid currentColor;border-radius:50%;margin-right:7px;vertical-align:-1px}
+  .key{position:absolute;right:84px;bottom:66px;background:var(--paper);border:1.5px solid var(--ink);padding:12px 16px;display:grid;grid-template-columns:auto auto;gap:8px 14px;font:600 13px/1 "Barlow Condensed";letter-spacing:.1em;text-transform:uppercase;align-items:center}
+  .scale{position:absolute;left:84px;bottom:58px;display:flex;flex-direction:column;gap:6px;font:600 12px/1 "Barlow Condensed";letter-spacing:.12em}
+  .scale .bar{display:flex;height:8px;width:240px;border:1.5px solid var(--ink)}
+  .scale .bar span{flex:1}.scale .bar span:nth-child(odd){background:var(--ink)}
+  .foot{position:absolute;left:0;right:0;bottom:7px;text-align:center;font:600 12px/1 "Barlow Condensed";letter-spacing:.24em;text-transform:uppercase;color:var(--ink)}
+  .label{position:absolute;font:500 italic 17px/1 "Barlow Condensed";color:#245f8f;letter-spacing:.18em}
+  .place{position:absolute;font:600 15px/1 "Barlow Condensed";letter-spacing:.26em;text-transform:uppercase;color:#4d5a53}
+  .sample{position:absolute;right:300px;top:150px;font:700 12px/1 "Barlow Condensed";letter-spacing:.2em;text-transform:uppercase;color:var(--route);border:1.5px solid var(--route);padding:8px 12px;background:var(--paper)}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <svg class="map" id="map" width="1440" height="900" viewBox="0 0 1440 900"></svg>
+  <div class="margin"></div><div class="foot">Sheet 01 &nbsp;·&nbsp; Google Maps → GPX &nbsp;·&nbsp; Free, no sign-up</div><div class="neatline"></div>
+  <div class="ticks top"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
+  <div class="ticks left"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+  <div class="ticks right"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+  <header>
+    <div class="mark"><svg width="26" height="26" viewBox="0 0 26 26"><circle cx="6" cy="19" r="4" fill="none" stroke="#1d2422" stroke-width="2"/><path d="M6 19 C 10 6, 16 22, 21 7" fill="none" stroke="#d4246f" stroke-width="3" stroke-linecap="round"/><path d="M21 7 v-5 l4 2 -4 2" fill="#1d2422"/></svg>Maps<i>To</i>GPX</div>
+    <nav><span>How it works</span><span>FAQ</span><span>Feedback</span></nav>
+  </header>
+  <div class="title">
+    <h1>Your Google Maps route, <em>on your bike computer.</em></h1>
+    <p class="sub">Paste the directions link. You get back the exact same route — every drag, stop and avoid option — as a GPX track for Garmin, Wahoo, Bryton.</p>
+  </div>
+  <div class="legend">
+    <div class="lh"><span>Legend · Your route</span><span>Paste &amp; trace</span></div>
+    <div class="lb">
+      <div class="field"><input value="https://maps.app.goo.gl/…" readonly><button>Trace to GPX</button></div>
+      <div class="stations"><span><b></b>Link resolved</span><span><b></b>Route traced</span><span><b></b>Track ready</span></div>
+    </div>
+  </div>
+  <div class="sample">Sample route</div>
+  <div class="label" style="left:860px;top:640px">river ouse</div>
+  <div class="place" style="left:1000px;top:250px">High Moor</div>
+  <div class="place" style="left:760px;top:470px">Thornby</div>
+  <div class="key">
+    <svg width="34" height="10"><path d="M0 5 H34" stroke="#d4246f" stroke-width="5"/></svg><span>Your route</span>
+    <svg width="34" height="14"><circle cx="17" cy="7" r="5" fill="#f7f9f3" stroke="#1d2422" stroke-width="2.5"/></svg><span>Start</span>
+    <svg width="34" height="16"><path d="M13 15 V1 l10 4 -10 4" fill="#1d2422" stroke="#1d2422" stroke-width="2"/></svg><span>Finish</span>
+    <svg width="34" height="10"><path d="M0 5 H34" stroke="#b5835a" stroke-width="1.2"/></svg><span>Contour 10 m</span>
+  </div>
+  <div class="scale"><div class="bar"><span></span><span></span><span></span><span></span><span></span></div><span>0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10 KM</span></div>
+</div>
+<script>
+const svg=document.getElementById('map'),NS='http://www.w3.org/2000/svg';
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);svg.appendChild(e);return e}
+function rnd(s){return()=>{s=(s*16807)%2147483647;return s/2147483647}}
+const r=rnd(7);
+// woodland
+[[1180,330,150,90],[700,760,180,70],[1250,700,120,80],[980,120,110,50]].forEach(([x,y,a,b])=>{let d='';for(let i=0;i<=40;i++){const t=i/40*Math.PI*2,k=1+.18*Math.sin(t*5+x)+.1*Math.sin(t*9+y);d+=(i?'L':'M')+(x+Math.cos(t)*a*k).toFixed(1)+' '+(y+Math.sin(t)*b*k).toFixed(1)}el('path',{d:d+'Z',fill:'#c9dcb8',stroke:'#a9c79a','stroke-width':1.5})});
+// contours around hills
+[[1040,300,300,9],[820,560,230,7],[1300,820,200,6],[420,420,260,8]].forEach(([cx,cy,R,n],h)=>{for(let j=1;j<=n;j++){const rr=R*j/n;let d='';for(let i=0;i<=90;i++){const t=i/90*Math.PI*2,k=1+.16*Math.sin(t*3+h*2+j*.3)+.08*Math.sin(t*7+h)+.04*Math.sin(t*13+j);d+=(i?'L':'M')+(cx+Math.cos(t)*rr*k*1.25).toFixed(1)+' '+(cy+Math.sin(t)*rr*k*.85).toFixed(1)}el('path',{d:d+'Z',fill:'none',stroke:'#b5835a','stroke-width':j%5==0?1.6:.9,opacity:.75})}});
+// river
+el('path',{d:'M640 900 C 720 780, 860 720, 900 640 S 1020 520, 1120 560 S 1330 600, 1440 520',fill:'none',stroke:'#3d86bf','stroke-width':6,'stroke-linecap':'round',opacity:.85});
+// minor roads
+el('path',{d:'M700 120 C 820 260, 760 420, 900 520 S 1180 760, 1412 780',fill:'none',stroke:'#fff','stroke-width':5});
+el('path',{d:'M700 120 C 820 260, 760 420, 900 520 S 1180 760, 1412 780',fill:'none',stroke:'#6b6b6b','stroke-width':1,'stroke-dasharray':'0'});
+// grid
+for(let x=28;x<1412;x+=173)el('line',{x1:x,y1:28,x2:x,y2:872,stroke:'#8aa08a','stroke-width':.6,opacity:.5});
+for(let y=28;y<872;y+=169)el('line',{x1:28,y1:y,x2:1412,y2:y,stroke:'#8aa08a','stroke-width':.6,opacity:.5});
+// fold creases
+[388,748,1078].forEach(x=>{el('rect',{x:x-14,y:28,width:28,height:844,fill:'url(#fold)'})});
+const defs=document.createElementNS(NS,'defs');defs.innerHTML='<linearGradient id="fold" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".5" stop-color="#000" stop-opacity=".06"/><stop offset=".52" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>';svg.prepend(defs);
+// route overprint
+const route='M760 300 C 840 330, 860 260, 940 250 S 1080 300, 1110 380 S 1060 520, 1150 560 S 1300 520, 1330 640 S 1200 760, 1130 790';
+el('path',{d:route,fill:'none',stroke:'#fff','stroke-width':12,'stroke-linecap':'round','stroke-linejoin':'round',opacity:.85});
+const rp=el('path',{d:route,fill:'none',stroke:'#d4246f','stroke-width':6,'stroke-linecap':'round','stroke-linejoin':'round'});
+const L=rp.getTotalLength();for(let i=1;i<8;i++){const p=rp.getPointAtLength(L*i/8);el('circle',{cx:p.x,cy:p.y,r:3,fill:'#fff'});}
+el('circle',{cx:760,cy:300,r:10,fill:'#f7f9f3',stroke:'#1d2422','stroke-width':3.5});
+el('path',{d:'M1130 790 V752 l22 9 -22 9',fill:'#1d2422',stroke:'#1d2422','stroke-width':3,'stroke-linejoin':'round'});
+</script>
+</body>
+</html>

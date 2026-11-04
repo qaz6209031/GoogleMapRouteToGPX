@@ -29,7 +29,9 @@ for (const locale of LOCALES) {
     expect(html).toContain(`placeholder="${dict.converterForm.placeholder}"`);
     expect(html).toContain(dict.converterForm.convertButton);
     expect(html).toContain(dict.feedbackForm.sendButton);
-    expect(html).toContain(dict.donate.description);
+    expect(html).toContain(dict.converterForm.legendTitle);
+    // Donations are offered only after a successful conversion, not on first load.
+    expect(html).not.toContain(dict.donate.description);
   });
   for (const page of ["/", "/faq"] as const) {
     it(`${locale} ${page} switcher links to every equivalent page`, () => {

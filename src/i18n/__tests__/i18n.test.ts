@@ -19,9 +19,9 @@ describe("localized content and routes", () => {
     it(`${locale} has the complete English dictionary shape and FAQ count`, () => {
       expect(shape(DICTIONARIES[locale])).toEqual(shape(DICTIONARIES.en));
       expect(DICTIONARIES[locale].faqPage.entries).toHaveLength(DICTIONARIES.en.faqPage.entries.length);
-      expect(DICTIONARIES[locale].hero.badge).toContain("2K+");
+      expect(DICTIONARIES[locale].hero.badge).toContain("10K+");
       expect(DICTIONARIES[locale].hero.badge).toContain("50+");
-      expect(DICTIONARIES[locale].features.items[4].description).toContain("2,000+");
+      expect(DICTIONARIES[locale].features.items[4].description).toContain("10,000+");
     });
     for (const page of ["/", "/faq"] as const) {
       it(`${locale} ${page} has reciprocal metadata and sitemap alternates`, () => {

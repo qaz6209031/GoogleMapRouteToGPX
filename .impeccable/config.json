@@ -1,0 +1,35 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-03T21:39:17.053Z",
+        "reason": "decision-round sketch for a replacement visual world; fonts are proposals, not the incumbent system"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-03T21:39:17.201Z",
+        "reason": "decision-round sketch for a replacement visual world; fonts are proposals, not the incumbent system"
+      },
+      {
+        "rule": "oversized-h1",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-03T22:00:33.715Z",
+        "reason": "closed decision-round sketch kept as the finish-review critique reference; editing it would alter the reference the user chose"
+      }
+    ]
+  }
+}
