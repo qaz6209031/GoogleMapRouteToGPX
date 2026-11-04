@@ -7,6 +7,11 @@ export const ja: Dictionary = {
     feedback: "フィードバック",
     faq: "FAQ",
   },
+  announcement: {
+    badge: "新デザイン",
+    text: "MapsToGPXのデザインを一新しました。変換機能とルートの正確さはそのままです。",
+    link: "ご意見をお聞かせください",
+  },
   hero: {
     badge: "50+か国の10K+ユーザーが利用しています",
     titleLine1: "Google Mapsのルートを",

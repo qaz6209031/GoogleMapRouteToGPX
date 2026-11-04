@@ -7,6 +7,11 @@ export const es: Dictionary = {
     feedback: "Comentarios",
     faq: "FAQ",
   },
+  announcement: {
+    badge: "Nuevo",
+    text: "MapsToGPX estrena diseño. El mismo conversor, las mismas rutas exactas.",
+    link: "Cuéntanos qué te parece",
+  },
   hero: {
     badge: "Con la confianza de 10K+ usuarios en 50+ países",
     titleLine1: "Ruta de Google Maps",

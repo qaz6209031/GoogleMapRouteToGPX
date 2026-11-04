@@ -7,6 +7,11 @@ export const id: Dictionary = {
     feedback: "Masukan",
     faq: "FAQ",
   },
+  announcement: {
+    badge: "Baru",
+    text: "MapsToGPX punya tampilan baru. Konverter yang sama, rute yang tetap persis.",
+    link: "Beri tahu pendapatmu",
+  },
   hero: {
     badge: "Dipercaya oleh 10K+ pengguna di 50+ negara",
     titleLine1: "Rute Google Maps",

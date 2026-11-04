@@ -20,6 +20,12 @@ export interface Dictionary {
     feedback: string;
     faq: string;
   };
+  /** One-line notice under the header announcing the redesign. */
+  announcement: {
+    badge: string;
+    text: string;
+    link: string;
+  };
   hero: {
     badge: string;
     titleLine1: string;
