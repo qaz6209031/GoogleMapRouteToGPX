@@ -27,10 +27,6 @@ export interface Dictionary {
     subtitle: string;
     subtitleBold: string;
   };
-  announcement: {
-    badge: string;
-    text: string;
-  };
   trustBadges: {
     gpxStandard: string;
     exactRoute: string;
@@ -82,6 +78,20 @@ export interface Dictionary {
     waypointsLabel: string;
     downloadButton: string;
     newButton: string;
+    /** Title of the legend box that holds the converter. */
+    legendTitle: string;
+    map: {
+      sampleLabel: string;
+      yourRoute: string;
+      start: string;
+      finish: string;
+      /** Accessible description of the illustrative sample route. */
+      sampleAlt: string;
+      /** Accessible description of the converted route; "{km}" is replaced with the distance. */
+      routeAlt: string;
+      /** Shown under the converted route: north is up, the terrain is decorative. */
+      caption: string;
+    };
   };
   feedbackForm: {
     ratingQuestion: string;
@@ -102,6 +112,8 @@ export interface Dictionary {
     thanksHeading: string;
     thanksSubtext: string;
     errorFallback: string;
+    /** Shown when the form is sent with neither a rating nor a message. */
+    emptyError: string;
   };
   homeMeta: {
     title: string;

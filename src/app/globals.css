@@ -10,6 +10,25 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* Map sheet lettering. JP falls back to the platform's Japanese gothic. */
+  --font-lettering: var(--font-map-lettering), "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+  --font-maptext: var(--font-map-text), "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+}
+
+/* The cycle map sheet: printed-map palette. */
+@theme {
+  --color-paper: #f7f9f3;
+  --color-land: #e9efe1;
+  --color-wood: #c9dcb8;
+  --color-wood-edge: #a9c79a;
+  --color-contour: #b5835a;
+  --color-route: #d4246f;
+  --color-route-deep: #a8174f;
+  --color-ink: #1d2422;
+  --color-ink-soft: #4d5a53;
+  --color-grid: #8aa08a;
+  --color-water: #3d86bf;
+  --color-closure: #b3261e;
 }
 
 body {
@@ -18,43 +37,120 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-/* Gradient background for hero */
-.hero-gradient {
-  background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(59, 130, 246, 0.15), transparent),
-              radial-gradient(ellipse 60% 40% at 80% 50%, rgba(16, 185, 129, 0.08), transparent);
+/* ---------- Map sheet ---------- */
+
+.map-sheet {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-maptext);
+  caret-color: var(--color-route);
 }
 
-
-/* Subtle glass card effect */
-.glass-card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(228, 228, 231, 0.8);
+.map-sheet ::selection {
+  background: color-mix(in oklab, var(--color-route) 24%, transparent);
+  color: var(--color-ink);
 }
 
-
-/* Smooth pulse for progress */
-@keyframes pulse-slow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+/* Sheet grid printed across the whole map face, plus two fold creases. */
+.map-face {
+  background-color: var(--color-land);
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-grid) 32%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-grid) 32%, transparent) 1px, transparent 1px);
+  background-size: 172px 172px;
+  background-position: -1px -1px;
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 2s ease-in-out infinite;
+.map-fold {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  margin-left: -14px;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgb(0 0 0 / 0.045) 48%,
+    rgb(255 255 255 / 0.35) 52%,
+    transparent
+  );
 }
 
-/* Bicycle riding along a curved path */
-@keyframes ride-bike {
-  0% {
-    offset-distance: 0%;
+/* Contours part around the copy: the ground clears on the text side. */
+.map-ground {
+  mask-image: linear-gradient(to bottom, transparent 0, transparent 46%, black 62%);
+}
+
+@media (min-width: 1024px) {
+  .map-ground {
+    mask-image: linear-gradient(to right, transparent 0, transparent 34%, black 50%);
   }
-  100% {
-    offset-distance: 100%;
+}
+
+/* Lower sheet: the ground continues, clearing behind the left-hand copy. */
+.map-ground-quiet {
+  mask-image: linear-gradient(to right, transparent 0, black 30%);
+  opacity: 0.6;
+}
+
+@media (min-width: 1024px) {
+  .map-ground-quiet {
+    mask-image: linear-gradient(to right, transparent 0, transparent 28%, black 46%);
+    opacity: 1;
   }
 }
 
-.animate-ride-bike {
-  offset-path: path("M-40 45 C100 45, 120 20, 200 25 S350 50, 450 30 S550 20, 640 35");
-  offset-rotate: auto;
-  animation: ride-bike 6s linear infinite;
+/* Where copy stacks above the ground on small screens, clear the top instead. */
+@media (max-width: 1023.98px) {
+  .map-ground-quiet-stacked {
+    mask-image: linear-gradient(to bottom, transparent 0, transparent 32%, black 52%);
+  }
+}
+
+/* Japanese has no condensed cut: drop the caps tracking that suits Latin lettering. */
+html[lang="ja"] .map-sheet .font-lettering {
+  letter-spacing: 0.02em;
+}
+
+/* Focus ring in route ink, everywhere on the sheet. */
+.map-sheet :focus-visible {
+  outline: 2px solid var(--color-route);
+  outline-offset: 2px;
+}
+
+/* ---------- Route overprint: the one authored motion ---------- */
+
+.route-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: route-draw 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+}
+
+.route-after {
+  opacity: 0;
+  animation: route-after 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1.3s forwards;
+}
+
+@keyframes route-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes route-after {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .route-after {
+    animation: none;
+    opacity: 1;
+  }
 }

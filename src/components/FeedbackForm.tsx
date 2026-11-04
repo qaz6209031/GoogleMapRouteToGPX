@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 import type { Dictionary } from "@/i18n/dictionary";
+import { Closure, Tick } from "@/components/sheet/symbols";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -21,7 +22,12 @@ export default function FeedbackForm({ dict }: { dict: Dictionary["feedbackForm"
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!canSubmit) return;
+    if (status === "sending") return;
+    if (!canSubmit) {
+      setError(dict.emptyError);
+      setStatus("error");
+      return;
+    }
 
     setStatus("sending");
     setError("");
@@ -54,31 +60,18 @@ export default function FeedbackForm({ dict }: { dict: Dictionary["feedbackForm"
 
   if (status === "sent") {
     return (
-      <div className="glass-card rounded-2xl p-6 sm:p-8 text-center">
-        <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
-          <svg
-            className="w-6 h-6 text-emerald-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4.5 12.75l6 6 9-13.5"
-            />
-          </svg>
-        </div>
-        <h3 className="font-semibold text-zinc-900 mb-1.5">
+      <div className="px-5 py-8 text-center sm:px-8">
+        <span className="mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-ink text-paper">
+          <Tick className="h-6 w-6" />
+        </span>
+        <h3 className="font-lettering text-[22px] font-bold uppercase tracking-[0.03em]">
           {dict.thanksHeading}
         </h3>
-        <p className="text-sm text-zinc-500 mb-5">
-          {dict.thanksSubtext}
-        </p>
+        <p className="mt-1.5 text-[15px] text-ink-soft">{dict.thanksSubtext}</p>
         <button
+          type="button"
           onClick={handleReset}
-          className="px-4 py-2 rounded-lg border border-zinc-200 text-zinc-600 hover:bg-zinc-100 transition-colors text-sm font-medium"
+          className="mt-5 h-11 border-[1.5px] border-ink px-5 font-lettering text-[16px] font-semibold uppercase tracking-[0.08em] transition-colors hover:bg-land"
         >
           {dict.sendMoreButton}
         </button>
@@ -87,23 +80,20 @@ export default function FeedbackForm({ dict }: { dict: Dictionary["feedbackForm"
   }
 
   const shownRating = hoverRating ?? rating;
+  const labelClass =
+    "mb-2 block font-lettering text-[15px] font-semibold uppercase tracking-[0.1em] text-ink";
+  const hintClass = "font-maptext text-[14px] font-normal normal-case tracking-normal text-ink-soft";
+  const fieldClass =
+    "w-full border-[1.5px] border-ink bg-white px-3.5 py-3 text-base text-ink placeholder:text-ink-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-route";
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="glass-card rounded-2xl p-6 sm:p-8 space-y-5"
-    >
-      {/* Rating */}
-      <div>
-        <label className="block text-sm font-medium text-zinc-700 mb-2">
-          {dict.ratingQuestion}{" "}
-          <span className="font-normal text-zinc-400">{dict.optionalHint}</span>
-        </label>
+    <form onSubmit={handleSubmit} className="space-y-6 px-5 py-6 sm:px-8 sm:py-8">
+      <fieldset>
+        <legend className={labelClass}>
+          {dict.ratingQuestion} <span className={hintClass}>{dict.optionalHint}</span>
+        </legend>
         <div className="flex items-center gap-3">
-          <div
-            className="flex gap-1"
-            onMouseLeave={() => setHoverRating(null)}
-          >
+          <div className="flex gap-0.5" onMouseLeave={() => setHoverRating(null)}>
             {[1, 2, 3, 4, 5].map((value) => (
               <button
                 key={value}
@@ -115,16 +105,18 @@ export default function FeedbackForm({ dict }: { dict: Dictionary["feedbackForm"
                 aria-pressed={rating === value}
                 onClick={() => setRating(rating === value ? null : value)}
                 onMouseEnter={() => setHoverRating(value)}
-                className="p-1 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+                className="p-1"
               >
                 <svg
-                  className={`w-7 h-7 transition-colors ${
+                  aria-hidden="true"
+                  className={`h-7 w-7 transition-colors ${
                     shownRating !== null && value <= shownRating
-                      ? "text-amber-400"
-                      : "text-zinc-200"
+                      ? "fill-route stroke-route"
+                      : "fill-paper stroke-ink-soft"
                   }`}
                   viewBox="0 0 24 24"
-                  fill="currentColor"
+                  strokeWidth={1.5}
+                  strokeLinejoin="round"
                 >
                   <path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
                 </svg>
@@ -132,23 +124,16 @@ export default function FeedbackForm({ dict }: { dict: Dictionary["feedbackForm"
             ))}
           </div>
           {shownRating !== null && (
-            <span className="text-sm text-zinc-500">
+            <span className="font-lettering text-[15px] font-semibold uppercase tracking-[0.1em] text-ink-soft">
               {RATING_LABELS[shownRating - 1]}
             </span>
           )}
         </div>
-      </div>
+      </fieldset>
 
-      {/* Message */}
       <div>
-        <label
-          htmlFor="feedback-message"
-          className="block text-sm font-medium text-zinc-700 mb-2"
-        >
-          {dict.messageLabel}{" "}
-          <span className="font-normal text-zinc-400">
-            {dict.messageHint}
-          </span>
+        <label htmlFor="feedback-message" className={labelClass}>
+          {dict.messageLabel} <span className={hintClass}>{dict.messageHint}</span>
         </label>
         <textarea
           id="feedback-message"
@@ -157,20 +142,13 @@ export default function FeedbackForm({ dict }: { dict: Dictionary["feedbackForm"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder={dict.messagePlaceholder}
-          className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-white text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all text-sm resize-y"
+          className={`${fieldClass} resize-y`}
         />
       </div>
 
-      {/* Email */}
       <div>
-        <label
-          htmlFor="feedback-email"
-          className="block text-sm font-medium text-zinc-700 mb-2"
-        >
-          {dict.emailLabel}{" "}
-          <span className="font-normal text-zinc-400">
-            {dict.emailHint}
-          </span>
+        <label htmlFor="feedback-email" className={labelClass}>
+          {dict.emailLabel} <span className={hintClass}>{dict.emailHint}</span>
         </label>
         <input
           id="feedback-email"
@@ -179,7 +157,7 @@ export default function FeedbackForm({ dict }: { dict: Dictionary["feedbackForm"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder={dict.emailPlaceholder}
-          className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-white text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all text-sm"
+          className={fieldClass}
         />
       </div>
 
@@ -196,15 +174,16 @@ export default function FeedbackForm({ dict }: { dict: Dictionary["feedbackForm"
       />
 
       {status === "error" && error && (
-        <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
-          {error}
+        <div role="alert" className="flex items-start gap-3 border-[1.5px] border-closure bg-white px-4 py-3">
+          <Closure className="mt-0.5 h-5 w-5 shrink-0 text-closure" />
+          <p className="text-[15px] text-ink">{error}</p>
         </div>
       )}
 
       <button
         type="submit"
-        disabled={!canSubmit}
-        className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 active:scale-[0.99]"
+        disabled={status === "sending"}
+        className="h-12 w-full bg-route px-6 font-lettering text-[19px] font-bold uppercase tracking-[0.06em] text-white transition-colors hover:bg-route-deep disabled:cursor-wait disabled:bg-route-deep"
       >
         {status === "sending" ? dict.sendingButton : dict.sendButton}
       </button>

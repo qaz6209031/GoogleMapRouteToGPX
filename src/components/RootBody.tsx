@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import { geistSans, geistMono } from "@/lib/fonts";
+import { geistSans, geistMono, mapLettering, mapText } from "@/lib/fonts";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 const DESCRIPTION =
@@ -30,7 +30,7 @@ const webApplicationJsonLd = {
  */
 export default function RootBody({ children }: { children: ReactNode }) {
   return (
-    <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <body className={`${geistSans.variable} ${geistMono.variable} ${mapLettering.variable} ${mapText.variable} antialiased`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webApplicationJsonLd) }}

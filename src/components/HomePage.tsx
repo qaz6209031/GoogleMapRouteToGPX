@@ -1,662 +1,286 @@
 import Link from "next/link";
 import ConverterForm from "@/components/ConverterForm";
 import FeedbackForm from "@/components/FeedbackForm";
-import DonateLinks from "@/components/DonateLinks";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import MapGround from "@/components/sheet/MapGround";
+import {
+  FEATURE_SYMBOLS,
+  FinishFlag,
+  SiteMark,
+  StartRing,
+  ViaPoint,
+} from "@/components/sheet/symbols";
 import type { Dictionary } from "@/i18n/dictionary";
 import type { Locale } from "@/i18n/locales";
 import { localizedPath } from "@/i18n/paths";
 
-const FEATURE_ICONS = [
-  <svg
-    key="account"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-    />
-  </svg>,
-  <svg
-    key="exact"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-    />
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-    />
-  </svg>,
-  <svg
-    key="modes"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"
-    />
-  </svg>,
-  <svg
-    key="compat"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-    />
-  </svg>,
-  <svg
-    key="trusted"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
-    />
-  </svg>,
-  <svg
-    key="formats"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
-    />
-  </svg>,
+/** Decorative faces for the user-count badge (kept from the original design). */
+const BADGE_FACES = [
+  "https://randomuser.me/api/portraits/women/44.jpg",
+  "https://randomuser.me/api/portraits/men/32.jpg",
+  "https://randomuser.me/api/portraits/women/68.jpg",
+  "https://randomuser.me/api/portraits/men/75.jpg",
+  "https://randomuser.me/api/portraits/women/90.jpg",
 ];
+
+const GRID_LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H"];
+const STEP_MARKERS = [StartRing, ViaPoint, FinishFlag];
+
+const navLink =
+  "underline-offset-4 decoration-2 decoration-route transition-colors hover:text-route hover:underline";
+const sectionTitle =
+  "font-lettering text-[clamp(2rem,3.6vw,2.875rem)] font-extrabold uppercase leading-[0.95] tracking-[0.005em] text-balance";
 
 export default function HomePage({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const faqHref = localizedPath(locale, "/faq");
+  const homeHref = localizedPath(locale, "/");
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="w-full border-b border-zinc-200 bg-white/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-              <svg
-                className="w-4.5 h-4.5 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"
-                />
-              </svg>
-            </div>
-            <span className="font-semibold text-zinc-900 text-lg">
-              MapsToGPX
+    <div className="map-sheet relative min-h-screen p-2.5 sm:p-7">
+      <div className="map-face relative border-[1.5px] border-ink">
+        {/* Sheet grid letters in the top margin */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 -top-7 hidden h-7 items-center justify-around font-lettering text-[12px] font-semibold tracking-[0.1em] sm:flex"
+        >
+          {GRID_LETTERS.map((l) => (
+            <span key={l}>{l}</span>
+          ))}
+        </div>
+        <div aria-hidden="true" className="map-fold left-1/3 hidden lg:block" />
+        <div aria-hidden="true" className="map-fold left-2/3 hidden lg:block" />
+
+        <header className="sticky top-0 z-40 flex h-14 items-center justify-between gap-3 border-b-[1.5px] border-ink bg-paper px-3.5 sm:px-7">
+          <Link
+            href={homeHref}
+            className="flex items-center gap-2 font-lettering text-[19px] font-extrabold uppercase tracking-[0.04em] sm:gap-2.5 sm:text-[22px]"
+          >
+            <SiteMark className="h-6 w-6 sm:h-7 sm:w-7" />
+            <span>
+              Maps<span className="text-route">To</span>GPX
             </span>
-          </div>
-          <nav className="flex items-center gap-1">
-            <a
-              href="#how-it-works"
-              className="px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100"
-            >
+          </Link>
+          <nav className="flex items-center gap-3 font-lettering text-[13px] font-semibold uppercase tracking-[0.08em] sm:gap-7 sm:text-[15px] sm:tracking-[0.12em]">
+            <a href="#how-it-works" className={navLink}>
               {dict.nav.howItWorks}
             </a>
-            <a
-              href="#feedback"
-              className="px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100"
-            >
+            <a href="#feedback" className={navLink}>
               {dict.nav.feedback}
             </a>
-            <Link
-              href={faqHref}
-              className="px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100"
-            >
+            <Link href={faqHref} className={navLink}>
               {dict.nav.faq}
             </Link>
           </nav>
-        </div>
-      </header>
+        </header>
 
-      {/* Hero + Converter */}
-      <section className="hero-gradient flex-1">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-24">
-          {/* Hero text */}
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium mb-6">
-              <div className="flex -space-x-2">
-                <img
-                  src="https://randomuser.me/api/portraits/women/44.jpg"
-                  alt=""
-                  className="w-6 h-6 rounded-full border-2 border-white"
-                />
-                <img
-                  src="https://randomuser.me/api/portraits/men/32.jpg"
-                  alt=""
-                  className="w-6 h-6 rounded-full border-2 border-white"
-                />
-                <img
-                  src="https://randomuser.me/api/portraits/women/68.jpg"
-                  alt=""
-                  className="w-6 h-6 rounded-full border-2 border-white"
-                />
-                <img
-                  src="https://randomuser.me/api/portraits/men/75.jpg"
-                  alt=""
-                  className="w-6 h-6 rounded-full border-2 border-white"
-                />
-                <img
-                  src="https://randomuser.me/api/portraits/women/90.jpg"
-                  alt=""
-                  className="w-6 h-6 rounded-full border-2 border-white"
-                />
+        {/* First viewport: the sheet, the converter in its legend box, the route */}
+        <section className="relative overflow-hidden border-b-[1.5px] border-ink">
+          <MapGround className="map-ground absolute inset-0 h-full w-full" />
+          <div className="relative mx-auto max-w-[88rem] px-4 pb-8 pt-9 sm:px-10 sm:pt-12 lg:px-14 lg:pb-12 lg:pt-14">
+            <ConverterForm
+              dict={dict.converterForm}
+              donate={dict.donate}
+              donateLinks={dict.donateLinks}
+            >
+              <h1
+                className={`font-lettering font-extrabold uppercase text-balance ${
+                  locale === "ja"
+                    ? "text-[clamp(2.125rem,4.4vw,3.5rem)] leading-[1.15]"
+                    : "text-[clamp(2.75rem,6.2vw,4.75rem)] leading-[0.9] tracking-[-0.005em]"
+                }`}
+              >
+                {dict.hero.titleLine1}{" "}
+                <span className="block text-route">{dict.hero.titleLine2}</span>
+              </h1>
+              <p className="mt-5 max-w-[46ch] text-[18px] leading-relaxed sm:text-[19px]">
+                {dict.hero.subtitle}
+              </p>
+              <p className="mt-2 text-[17px] font-semibold">{dict.hero.subtitleBold}</p>
+              <div className="mt-5 inline-flex w-fit max-w-full self-start items-center gap-3 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-xs font-medium text-amber-700">
+                <div className="flex shrink-0 -space-x-2">
+                  {BADGE_FACES.map((src) => (
+                    // eslint-disable-next-line @next/next/no-img-element -- tiny decorative avatars, same as the original badge
+                    <img key={src} src={src} alt="" className="h-6 w-6 rounded-full border-2 border-white" />
+                  ))}
+                </div>
+                <span>{dict.hero.badge}</span>
               </div>
-              <span>{dict.hero.badge}</span>
-            </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-900 mb-4 leading-[1.1]">
-              {dict.hero.titleLine1}
-              <br />
-              <span className="bg-gradient-to-r from-blue-600 to-emerald-500 bg-clip-text text-transparent">
-                {dict.hero.titleLine2}
-              </span>
-            </h1>
-            <p className="text-lg text-zinc-500 max-w-lg mx-auto leading-relaxed">
-              {dict.hero.subtitle}
-              <span className="block mt-2 text-base font-medium text-zinc-700">
-                {dict.hero.subtitleBold}
-              </span>
-            </p>
+            </ConverterForm>
           </div>
+          <ul className="relative flex flex-wrap gap-x-6 gap-y-1.5 border-t-[1.5px] border-ink bg-paper px-4 py-2.5 font-lettering text-[13px] font-semibold uppercase tracking-[0.14em] sm:px-7">
+            {[
+              dict.trustBadges.gpxStandard,
+              dict.trustBadges.exactRoute,
+              dict.trustBadges.allModes,
+              dict.trustBadges.noSignup,
+            ].map((badge) => (
+              <li key={badge} className="flex items-center gap-2">
+                <span aria-hidden="true" className="h-1.5 w-1.5 bg-route" />
+                {badge}
+              </li>
+            ))}
+          </ul>
+        </section>
 
-          {/* Bicycle animation */}
-          <div className="relative w-full max-w-2xl mx-auto mb-10 h-16 overflow-hidden">
-            {/* Road path */}
-            <svg
-              className="absolute inset-0 w-full h-full"
-              viewBox="0 0 600 60"
-              fill="none"
-              preserveAspectRatio="none"
-            >
-              <path
-                d="M0 45 C100 45, 120 20, 200 25 S350 50, 450 30 S550 20, 600 35"
-                stroke="#e4e4e7"
-                strokeWidth="2"
-                strokeDasharray="6 4"
-                fill="none"
-              />
-            </svg>
-            {/* Bicycle riding along the path */}
-            <svg
-              className="absolute w-10 h-10 animate-ride-bike"
-              viewBox="0 0 64 64"
-              fill="none"
-              style={{ top: 0, left: 0 }}
-            >
-              {/* Rear wheel */}
-              <circle
-                cx="16"
-                cy="44"
-                r="10"
-                stroke="#3b82f6"
-                strokeWidth="2.5"
-                fill="none"
-              >
-                <animateTransform
-                  attributeName="transform"
-                  type="rotate"
-                  from="0 16 44"
-                  to="360 16 44"
-                  dur="0.6s"
-                  repeatCount="indefinite"
-                />
-              </circle>
-              <line
-                x1="16"
-                y1="34"
-                x2="16"
-                y2="54"
-                stroke="#3b82f6"
-                strokeWidth="1.5"
-              >
-                <animateTransform
-                  attributeName="transform"
-                  type="rotate"
-                  from="0 16 44"
-                  to="360 16 44"
-                  dur="0.6s"
-                  repeatCount="indefinite"
-                />
-              </line>
-              <line
-                x1="6"
-                y1="44"
-                x2="26"
-                y2="44"
-                stroke="#3b82f6"
-                strokeWidth="1.5"
-              >
-                <animateTransform
-                  attributeName="transform"
-                  type="rotate"
-                  from="0 16 44"
-                  to="360 16 44"
-                  dur="0.6s"
-                  repeatCount="indefinite"
-                />
-              </line>
-              {/* Front wheel */}
-              <circle
-                cx="48"
-                cy="44"
-                r="10"
-                stroke="#3b82f6"
-                strokeWidth="2.5"
-                fill="none"
-              >
-                <animateTransform
-                  attributeName="transform"
-                  type="rotate"
-                  from="0 48 44"
-                  to="360 48 44"
-                  dur="0.6s"
-                  repeatCount="indefinite"
-                />
-              </circle>
-              <line
-                x1="48"
-                y1="34"
-                x2="48"
-                y2="54"
-                stroke="#3b82f6"
-                strokeWidth="1.5"
-              >
-                <animateTransform
-                  attributeName="transform"
-                  type="rotate"
-                  from="0 48 44"
-                  to="360 48 44"
-                  dur="0.6s"
-                  repeatCount="indefinite"
-                />
-              </line>
-              <line
-                x1="38"
-                y1="44"
-                x2="58"
-                y2="44"
-                stroke="#3b82f6"
-                strokeWidth="1.5"
-              >
-                <animateTransform
-                  attributeName="transform"
-                  type="rotate"
-                  from="0 48 44"
-                  to="360 48 44"
-                  dur="0.6s"
-                  repeatCount="indefinite"
-                />
-              </line>
-              {/* Frame */}
-              <polyline
-                points="16,44 28,24 48,44 28,24 40,44"
-                stroke="#1e40af"
-                strokeWidth="2.5"
-                strokeLinejoin="round"
-                fill="none"
-              />
-              {/* Handlebar */}
-              <polyline
-                points="44,36 48,28 52,30"
-                stroke="#1e40af"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-              />
-              {/* Seat */}
-              <line
-                x1="24"
-                y1="22"
-                x2="32"
-                y2="22"
-                stroke="#1e40af"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              {/* Rider body */}
-              <circle cx="30" cy="12" r="5" fill="#3b82f6" /> {/* Head */}
-              <line
-                x1="30"
-                y1="17"
-                x2="28"
-                y2="26"
-                stroke="#3b82f6"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />{" "}
-              {/* Body */}
-              <polyline
-                points="22,30 28,26 36,32"
-                stroke="#3b82f6"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                fill="none"
-              />{" "}
-              {/* Arms */}
-              <polyline
-                points="20,40 28,26 16,44"
-                stroke="#3b82f6"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                fill="none"
-              />{" "}
-              {/* Legs */}
-            </svg>
-          </div>
-
-          {/* Announcement */}
-          <div className="w-full max-w-2xl mx-auto mb-4 flex items-start gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200">
-            <span className="shrink-0 mt-0.5 px-2 py-0.5 rounded-full bg-blue-600 text-white text-[11px] font-semibold uppercase tracking-wider">
-              {dict.announcement.badge}
-            </span>
-            <p className="text-sm text-blue-900 leading-relaxed">
-              {dict.announcement.text}
-            </p>
-          </div>
-
-          {/* Converter */}
-          <ConverterForm dict={dict.converterForm} />
-
-          {/* Trust badges */}
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mt-10 text-xs text-zinc-400">
-            <span className="flex items-center gap-1.5">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              {dict.trustBadges.gpxStandard}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              {dict.trustBadges.exactRoute}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              {dict.trustBadges.allModes}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              {dict.trustBadges.noSignup}
-            </span>
-          </div>
-        </div>
-
-        {/* Features */}
-        <div className="border-t border-zinc-200">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-20">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">
+        <div className="relative overflow-hidden">
+        <MapGround variant="quiet" className="map-ground-quiet absolute inset-0 h-full w-full" />
+        {/* The legend: why MapsToGPX */}
+        <section aria-labelledby="features-title" className="relative px-4 py-20 sm:px-10 lg:px-14 lg:py-28">
+          <div className="mx-auto max-w-[88rem] overflow-hidden border-[1.5px] border-ink bg-paper">
+            <div className="gap-10 border-b-[1.5px] border-ink px-5 py-6 sm:px-8 sm:py-7 lg:flex lg:items-end lg:justify-between">
+              <h2 id="features-title" className={sectionTitle}>
                 {dict.features.heading}
               </h2>
-              <p className="text-zinc-500 max-w-lg mx-auto">
+              <p className="mt-3 max-w-[48ch] text-[16px] leading-relaxed text-ink-soft lg:mt-0">
                 {dict.features.subheading}
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {dict.features.items.map((feature, i) => (
-                <div
-                  key={feature.title}
-                  className="glass-card rounded-2xl p-6 hover:shadow-md transition-shadow"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
-                    {FEATURE_ICONS[i]}
-                  </div>
-                  <h3 className="font-semibold text-zinc-900 mb-1.5">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-zinc-500 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-              ))}
-            </div>
+            <ul className="divide-y divide-ink/25">
+              {dict.features.items.map((feature, i) => {
+                const Symbol = FEATURE_SYMBOLS[i];
+                return (
+                  <li
+                    key={feature.title}
+                    className="grid grid-cols-[2.5rem_minmax(0,1fr)] items-start gap-x-4 gap-y-1 px-5 py-5 sm:px-8 lg:grid-cols-[2.5rem_minmax(0,17rem)_minmax(0,1fr)] lg:gap-x-8"
+                  >
+                    {Symbol && <Symbol className="row-span-2 h-10 w-10 lg:row-span-1" />}
+                    <h3 className="pt-1.5 font-lettering text-[20px] font-bold uppercase leading-tight tracking-[0.02em] lg:pt-2">
+                      {feature.title}
+                    </h3>
+                    <p className="max-w-[62ch] text-[15px] leading-relaxed text-ink-soft lg:pt-1.5">
+                      {feature.description}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
+        </section>
+
         </div>
 
-        {/* How it works */}
-        <div id="how-it-works" className="border-t border-zinc-200">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-20">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">
-                {dict.howItWorks.heading}
-              </h2>
-              <p className="text-zinc-500 max-w-lg mx-auto">
-                {dict.howItWorks.subheading}
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {dict.howItWorks.steps.map((item) => (
-                <div key={item.step} className="text-center">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-emerald-500 text-white font-bold text-lg flex items-center justify-center mx-auto mb-4">
-                    {item.step}
-                  </div>
-                  <h3 className="font-semibold text-zinc-900 mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-zinc-500 leading-relaxed max-w-xs mx-auto">
-                    {item.description}
-                  </p>
-                </div>
-              ))}
-            </div>
+        {/* The itinerary: how it works. Plain sheet, no ground: its copy spans every column. */}
+        <section
+          id="how-it-works"
+          aria-labelledby="how-title"
+          className="relative scroll-mt-16 px-4 pb-20 sm:px-10 lg:px-14 lg:pb-28"
+        >
+          <div className="mx-auto max-w-[88rem]">
+            <h2 id="how-title" className={sectionTitle}>
+              {dict.howItWorks.heading}
+            </h2>
+            <p className="mt-3 max-w-[48ch] text-[16px] leading-relaxed text-ink-soft">
+              {dict.howItWorks.subheading}
+            </p>
+            <ol className="relative mt-12 grid gap-10 md:grid-cols-3 md:gap-10">
+              <span
+                aria-hidden="true"
+                className="absolute bottom-6 left-[13px] top-3 w-1.5 bg-route md:bottom-auto md:left-3.5 md:right-[30%] md:top-[13px] md:h-1.5 md:w-auto"
+              />
+              {dict.howItWorks.steps.map((item, i) => {
+                const Marker = STEP_MARKERS[i] ?? ViaPoint;
+                return (
+                  <li key={item.step} className="relative pl-14 md:pl-0 md:pt-14">
+                    <Marker className="absolute left-0 top-0 h-8 w-8" />
+                    <h3 className="font-lettering text-[24px] font-bold uppercase leading-tight tracking-[0.02em]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 max-w-[38ch] text-[16px] leading-relaxed text-ink-soft">{item.description}</p>
+                  </li>
+                );
+              })}
+            </ol>
           </div>
-        </div>
+        </section>
 
-        {/* Feedback */}
-        <div id="feedback" className="border-t border-zinc-200 scroll-mt-16">
-          <div className="max-w-xl mx-auto px-4 sm:px-6 py-20">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-3">
+        {/* Map corrections: feedback */}
+        <div className="relative overflow-hidden">
+        <MapGround variant="quiet" className="map-ground-quiet map-ground-quiet-stacked absolute inset-0 h-full w-full" />
+        <section
+          id="feedback"
+          aria-labelledby="feedback-title"
+          className="relative scroll-mt-16 px-4 pb-20 sm:px-10 lg:px-14 lg:pb-28"
+        >
+          <div className="mx-auto grid max-w-[88rem] gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,38rem)] lg:items-start lg:gap-14">
+            <div>
+              <h2 id="feedback-title" className={sectionTitle}>
                 {dict.feedbackSection.heading}
               </h2>
-              <p className="text-zinc-500">
+              <p className="mt-3 max-w-[40ch] text-[16px] leading-relaxed text-ink-soft">
                 {dict.feedbackSection.subheading}
               </p>
             </div>
-            <FeedbackForm dict={dict.feedbackForm} />
+            <div className="border-[1.5px] border-ink bg-paper">
+              <FeedbackForm dict={dict.feedbackForm} />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Donate banner */}
-      <div className="border-t border-zinc-200 bg-blue-50">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 text-center">
-          <h3 className="text-lg font-semibold text-zinc-900 mb-2">
-            {dict.donate.heading}
-          </h3>
-          <p className="text-sm text-zinc-500 mb-4 max-w-md mx-auto">
-            {dict.donate.description}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <DonateLinks dict={dict.donateLinks} />
-          </div>
         </div>
-      </div>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-200 bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
-          <div className="flex flex-col items-center gap-5">
-            {/* Brand */}
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-md bg-blue-600 flex items-center justify-center">
-                <svg
-                  className="w-3.5 h-3.5 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
+        {/* Imprint */}
+        <footer className="relative border-t-[1.5px] border-ink bg-paper px-4 py-8 sm:px-7">
+          <div className="mx-auto flex max-w-[88rem] flex-col gap-7 lg:flex-row lg:items-start lg:justify-between">
+            <div className="space-y-3">
+              <p className="flex items-center gap-2 font-lettering text-[18px] font-extrabold uppercase tracking-[0.04em]">
+                <SiteMark className="h-6 w-6" />
+                <span>
+                  Maps<span className="text-route">To</span>GPX
+                </span>
+              </p>
+              <p className="text-[15px] text-ink-soft">
+                {dict.footer.builtBy}{" "}
+                <a
+                  href="https://kaichin.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-ink underline decoration-route decoration-2 underline-offset-4 hover:text-route"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"
-                  />
-                </svg>
+                  Kai-Chin Huang
+                </a>
+              </p>
+              <p className="flex gap-5 font-lettering text-[15px] font-semibold uppercase tracking-[0.1em]">
+                <a href="https://kaichin.dev/" target="_blank" rel="noopener noreferrer" className={navLink}>
+                  kaichin.dev
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/kai-chin-huang-6938b2170/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={navLink}
+                >
+                  LinkedIn
+                </a>
+              </p>
+            </div>
+            <div className="space-y-3 lg:text-right">
+              <p className="flex gap-5 font-lettering text-[15px] font-semibold uppercase tracking-[0.1em] lg:justify-end">
+                <Link href={faqHref} className={navLink}>
+                  {dict.footer.faqLink}
+                </Link>
+                <Link href="/privacy" className={navLink}>
+                  {dict.footer.privacyLink}
+                </Link>
+              </p>
+              <div className="lg:flex lg:justify-end">
+                <LanguageSwitcher
+                  currentLocale={locale}
+                  page="/"
+                  label={dict.languageSwitcherLabel}
+                  tone="sheet"
+                />
               </div>
-              <span className="text-sm font-medium text-zinc-600">
-                MapsToGPX
-              </span>
+              <p className="text-[13px] text-ink-soft">{dict.footer.tagline}</p>
             </div>
-
-            {/* Creator info */}
-            <p className="text-sm text-zinc-500">
-              {dict.footer.builtBy}{" "}
-              <a
-                href="https://kaichin.dev/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-zinc-700 hover:text-blue-600 underline underline-offset-2 transition-colors"
-              >
-                Kai-Chin Huang
-              </a>
-            </p>
-
-            {/* Links */}
-            <div className="flex items-center gap-3">
-              <a
-                href="https://kaichin.dev/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-zinc-100 transition-colors"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
-                  />
-                </svg>
-                kaichin.dev
-              </a>
-              <a
-                href="https://www.linkedin.com/in/kai-chin-huang-6938b2170/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2] transition-colors"
-              >
-                <svg
-                  className="w-4 h-4"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                </svg>
-                LinkedIn
-              </a>
-            </div>
-
-            {/* Legal links */}
-            <div className="flex items-center gap-4 text-sm text-zinc-500">
-              <Link href={faqHref} className="hover:text-blue-600 transition-colors">
-                {dict.footer.faqLink}
-              </Link>
-              <Link href="/privacy" className="hover:text-blue-600 transition-colors">
-                {dict.footer.privacyLink}
-              </Link>
-            </div>
-
-            <LanguageSwitcher currentLocale={locale} page="/" label={dict.languageSwitcherLabel} />
-
-            <p className="text-xs text-zinc-400">
-              {dict.footer.tagline}
-            </p>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
+      <p
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 hidden h-7 items-center justify-center font-lettering text-[12px] font-semibold uppercase tracking-[0.24em] sm:flex"
+      >
+        MapsToGPX &nbsp;·&nbsp; maptogpx.com
+      </p>
     </div>
   );
 }

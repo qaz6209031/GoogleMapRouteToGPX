@@ -8,17 +8,12 @@ export const en: Dictionary = {
     faq: "FAQ",
   },
   hero: {
-    badge: "Loved by 2K+ users in 50+ countries",
+    badge: "Loved by 10K+ users in 50+ countries",
     titleLine1: "Google Maps Route",
     titleLine2: "to GPX File",
     subtitle:
       "Convert any Google Maps directions URL into a GPX file for your GPS device — driving, cycling, or walking.",
     subtitleBold: "No sign-up. No email. Just paste and go.",
-  },
-  announcement: {
-    badge: "Fixed",
-    text:
-      "Routes you reshape by dragging on Google Maps are now kept in the GPX, along with “avoid highways / tolls / ferries” options. Thanks for the feedback!",
   },
   trustBadges: {
     gpxStandard: "GPX 1.1 Standard",
@@ -54,7 +49,7 @@ export const en: Dictionary = {
       {
         title: "Trusted by Thousands",
         description:
-          "Used by 2,000+ users worldwide. No sign-up, no hidden costs — just GPX files.",
+          "Used by 10,000+ users worldwide. No sign-up, no hidden costs — just GPX files.",
       },
       {
         title: "All URL Formats",
@@ -104,7 +99,7 @@ export const en: Dictionary = {
     tagline: "Free forever. Trusted by users worldwide.",
   },
   converterForm: {
-    placeholder: "Paste your Google Maps directions URL here...",
+    placeholder: "Paste a Google Maps directions link",
     convertButton: "Convert to GPX",
     convertingButton: "Converting...",
     stepLabels: {
@@ -123,6 +118,16 @@ export const en: Dictionary = {
     waypointsLabel: "Waypoints",
     downloadButton: "Download GPX",
     newButton: "New",
+    legendTitle: "Your route",
+    map: {
+      sampleLabel: "Sample route",
+      yourRoute: "Your route",
+      start: "Start",
+      finish: "Finish",
+      sampleAlt: "Illustration of a sample route printed on a map sheet",
+      routeAlt: "Your converted route, drawn north up, {km} km",
+      caption: "North up. The terrain behind your route is decorative.",
+    },
   },
   feedbackForm: {
     ratingQuestion: "How was your experience?",
@@ -143,6 +148,7 @@ export const en: Dictionary = {
     thanksSubtext:
       "Every message is read and helps make MapsToGPX better.",
     errorFallback: "Could not send feedback",
+    emptyError: "Pick a star rating or write a message first.",
   },
   homeMeta: {
     title: "Map to GPX – Convert Google Maps Route to GPX (Free)",

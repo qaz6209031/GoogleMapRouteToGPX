@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painted Road sketch</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@800;900&family=Barlow:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--tar:#3a3d40;--tar-deep:#26282a;--paint:#f4f1ea;--yellow:#ffd23f;--pink:#ff3d8b}
+  *{box-sizing:border-box;margin:0}
+  html,body{width:1440px;height:900px;overflow:hidden;font-family:Barlow,system-ui,sans-serif;color:var(--paint);
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,.05) 0 1px, transparent 2px) 0 0/7px 7px,
+      radial-gradient(circle at 70% 60%, rgba(0,0,0,.25) 0 1px, transparent 2px) 0 0/5px 5px,
+      linear-gradient(180deg,var(--tar),var(--tar-deep))}
+  header{position:absolute;top:0;left:0;right:0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 56px}
+  .mark{font:900 28px/1 "Big Shoulders Stencil Display";letter-spacing:.04em}
+  nav{display:flex;gap:32px;font:600 15px Barlow;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+  .edge{position:absolute;left:0;right:0;height:10px;background:var(--paint);opacity:.9}
+  .center{position:absolute;left:0;right:0;top:520px;height:0;border-top:8px dashed var(--yellow);opacity:.85}
+  h1{position:absolute;left:56px;top:120px;font:900 168px/.84 "Big Shoulders Stencil Display";letter-spacing:.01em;text-transform:uppercase;color:var(--paint);transform:skewX(-4deg)}
+  h1 span{color:var(--pink)}
+  .sub{position:absolute;left:60px;top:438px;width:560px;font:500 20px/1.45 Barlow;color:#e6e2d8}
+  .box{position:absolute;left:56px;top:600px;width:880px;padding:22px;border:6px solid var(--paint);display:flex;gap:16px;align-items:center}
+  .box input{flex:1;height:60px;background:rgba(0,0,0,.25);border:0;color:var(--paint);font:500 17px Barlow;padding:0 18px}
+  .box button{height:60px;padding:0 34px;border:0;background:var(--pink);color:#1a1a1a;font:900 30px/1 "Big Shoulders Stencil Display";letter-spacing:.06em;text-transform:uppercase}
+  .tag{position:absolute;left:56px;top:574px;background:var(--tar);padding:0 10px;font:600 13px Barlow;letter-spacing:.2em;text-transform:uppercase;color:var(--yellow)}
+  .arrow{position:absolute;right:120px;top:150px}
+  .km{position:absolute;right:140px;top:640px;font:900 64px/1 "Big Shoulders Stencil Display";color:var(--yellow);transform:rotate(-6deg)}
+  .km small{display:block;font:600 14px Barlow;letter-spacing:.2em;color:var(--paint)}
+</style>
+</head>
+<body>
+  <div class="edge" style="top:96px"></div>
+  <div class="edge" style="top:880px"></div>
+  <header><div class="mark">MAPSTOGPX</div><nav><span>How it works</span><span>FAQ</span><span>Feedback</span></nav></header>
+  <h1>Google Maps<br><span>→</span> GPX</h1>
+  <p class="sub">Paste the directions link. Ride the exact same route — every drag, stop and avoid option — on your Garmin, Wahoo or Bryton.</p>
+  <div class="box"><input value="https://maps.app.goo.gl/…" readonly><button>Convert</button></div>
+  <div class="tag">Paste your route here</div>
+  <svg class="arrow" width="380" height="420" viewBox="0 0 380 420"><path d="M70 400 C 70 250, 120 170, 230 130 L 210 70 L 360 150 L 240 250 L 236 190 C 170 220, 150 290, 150 400 Z" fill="#ff3d8b" opacity=".92"/><path d="M70 400 C 70 250, 120 170, 230 130" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="3" stroke-dasharray="2 9"/></svg>
+  <div class="km">SAMPLE · 42 KM<small>Painted route marker</small></div>
+</body>
+</html>

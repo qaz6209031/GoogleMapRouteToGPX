@@ -1,0 +1,411 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-03T00:00:00Z",
+  "title": "Design System: MapsToGPX",
+  "extensions": {
+    "colorMeta": {
+      "route": {
+        "role": "primary",
+        "displayName": "Overprint Magenta",
+        "canonical": "oklch(57.5% 0.213 2.0)",
+        "tonalRamp": [
+          "#260008",
+          "#51001f",
+          "#7f0038",
+          "#b10054",
+          "#d92b73",
+          "#f66595",
+          "#ff9fc0",
+          "#ffd3e9"
+        ]
+      },
+      "route-deep": {
+        "role": "primary",
+        "displayName": "Deep Overprint",
+        "canonical": "oklch(48.0% 0.179 5.4)",
+        "tonalRamp": [
+          "#230007",
+          "#4b001c",
+          "#780435",
+          "#a7194f",
+          "#cf426e",
+          "#eb7191",
+          "#ffa7bc",
+          "#ffd8e6"
+        ]
+      },
+      "land": {
+        "role": "secondary",
+        "displayName": "Land Tint",
+        "canonical": "oklch(94.4% 0.020 125.8)",
+        "tonalRamp": [
+          "#0a0c08",
+          "#22251f",
+          "#3e4138",
+          "#5b6054",
+          "#7a8073",
+          "#9ca095",
+          "#c5c9c0",
+          "#edf0e9"
+        ]
+      },
+      "wood": {
+        "role": "secondary",
+        "displayName": "Woodland",
+        "canonical": "oklch(87.1% 0.053 130.2)",
+        "tonalRamp": [
+          "#080d04",
+          "#1f2716",
+          "#38442c",
+          "#546445",
+          "#738463",
+          "#95a587",
+          "#c0ccb5",
+          "#e9f2e1"
+        ]
+      },
+      "wood-edge": {
+        "role": "secondary",
+        "displayName": "Woodland Edge",
+        "canonical": "oklch(79.6% 0.070 135.3)",
+        "tonalRamp": [
+          "#060e02",
+          "#1a2912",
+          "#324727",
+          "#4c663e",
+          "#6b875d",
+          "#8ea782",
+          "#bbceb1",
+          "#e5f4de"
+        ]
+      },
+      "contour": {
+        "role": "secondary",
+        "displayName": "Contour Brown",
+        "canonical": "oklch(65.0% 0.083 59.9)",
+        "tonalRamp": [
+          "#160700",
+          "#361d05",
+          "#5a3617",
+          "#7f522a",
+          "#a27148",
+          "#c09471",
+          "#e3c0a4",
+          "#ffe9d5"
+        ]
+      },
+      "water": {
+        "role": "secondary",
+        "displayName": "Stream Blue",
+        "canonical": "oklch(59.9% 0.113 245.0)",
+        "tonalRamp": [
+          "#000c1f",
+          "#002644",
+          "#01436d",
+          "#136298",
+          "#3a83bc",
+          "#68a5d7",
+          "#9fcdf5",
+          "#d2f3ff"
+        ]
+      },
+      "grid": {
+        "role": "secondary",
+        "displayName": "Grid Green",
+        "canonical": "oklch(68.2% 0.040 145.1)",
+        "tonalRamp": [
+          "#070d07",
+          "#1c271c",
+          "#354535",
+          "#506450",
+          "#6f846f",
+          "#92a591",
+          "#bdccbd",
+          "#e7f2e7"
+        ]
+      },
+      "closure": {
+        "role": "tertiary",
+        "displayName": "Closure Red",
+        "canonical": "oklch(50.1% 0.178 28.7)",
+        "tonalRamp": [
+          "#240000",
+          "#4d0000",
+          "#7b0907",
+          "#ab1f18",
+          "#d2463a",
+          "#ee7466",
+          "#ffaa9c",
+          "#ffdacf"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Map Paper",
+        "canonical": "oklch(97.9% 0.008 121.6)",
+        "tonalRamp": [
+          "#0b0b0a",
+          "#232422",
+          "#3f403c",
+          "#5d5e59",
+          "#7c7e79",
+          "#9d9f9a",
+          "#c7c8c4",
+          "#eeefec"
+        ]
+      },
+      "field": {
+        "role": "neutral",
+        "displayName": "Writing Field",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c7c7c7",
+          "#eeeeee"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Map Ink",
+        "canonical": "oklch(25.3% 0.011 176.3)",
+        "tonalRamp": [
+          "#090c0b",
+          "#212524",
+          "#3b413f",
+          "#58605d",
+          "#777f7d",
+          "#99a09e",
+          "#c3c9c7",
+          "#ebf0ee"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "oklch(45.4% 0.020 162.0)",
+        "tonalRamp": [
+          "#080c0a",
+          "#1f2622",
+          "#38423d",
+          "#54615a",
+          "#73817a",
+          "#96a29b",
+          "#c0cac5",
+          "#e9f0ed"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page headline only, caps; second line in magenta. Japanese: clamp(2.125rem, 4.4vw, 3.5rem) at 1.15."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles, caps."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Itinerary steps (24px) and legend rows (20px), caps."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Distance and waypoint readouts, tabular."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Primary action lettering, caps."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Nav, stations, key entries, field labels, trust strip; caps 13-15px, 0.1-0.16em."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Hero subtitle, max 46ch."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Section copy in soft ink, 38-62ch."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Warnings, map caption, hints, footer tagline."
+      }
+    },
+    "shadows": [
+      {
+        "name": "station-pulse",
+        "value": "0 0 0 4px color-mix(in oklab, var(--color-route) 22%, transparent)",
+        "purpose": "Pulsing ring on the active conversion station only; removed under reduced motion."
+      },
+      {
+        "name": "fold-crease",
+        "value": "linear-gradient(to right, transparent, rgb(0 0 0 / 0.045) 48%, rgb(255 255 255 / 0.35) 52%, transparent)",
+        "purpose": "28px paper fold crease at 1/3 and 2/3 of the sheet from 1024px. A background, not a shadow."
+      }
+    ],
+    "motion": [
+      {
+        "name": "route-draw",
+        "value": "1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s",
+        "purpose": "The route overprint draws itself via stroke-dashoffset. Reduced motion: shown drawn."
+      },
+      {
+        "name": "route-after",
+        "value": "0.5s cubic-bezier(0.16, 1, 0.3, 1) 1.3s",
+        "purpose": "Km ticks, finish flag and scale bar fade in after the draw. Reduced motion: shown at once."
+      },
+      {
+        "name": "station-pulse",
+        "value": "1.2s ease-in-out infinite",
+        "purpose": "Active station ring pulse. Reduced motion: none."
+      },
+      {
+        "name": "color-transition",
+        "value": "150ms cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Hover colour shifts on buttons and links (Tailwind transition-colors)."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Magenta route action: Convert, Download, Send.",
+      "html": "<button class=\"ds-btn-primary\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5v12m0 0-5-5m5 5 5-5M4 20.5h16\"/></svg>Download GPX</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 24px; background: var(--color-route, #d4246f); color: #fff; border: 0; border-radius: 0; font: 700 19px/1 var(--font-lettering), 'Barlow Condensed', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: background-color 150ms cubic-bezier(0.4,0,0.2,1); } .ds-btn-primary:hover { background: var(--color-route-deep, #a8174f); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-route, #d4246f); outline-offset: 2px; } .ds-btn-primary:disabled { background: var(--color-route-deep, #a8174f); cursor: wait; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined ink control: New, Send more, donation links.",
+      "html": "<button class=\"ds-btn-secondary\">New</button>",
+      "css": ".ds-btn-secondary { height: 48px; padding: 0 20px; background: var(--color-paper, #f7f9f3); color: var(--color-ink, #1d2422); border: 1.5px solid var(--color-ink, #1d2422); border-radius: 0; font: 600 16px/1 var(--font-lettering), 'Barlow Condensed', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: background-color 150ms cubic-bezier(0.4,0,0.2,1); } .ds-btn-secondary:hover { background: var(--color-land, #e9efe1); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--color-route, #d4246f); outline-offset: 2px; }"
+    },
+    {
+      "name": "URL Field Well",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "White writing well in the legend box with the Convert button inside.",
+      "html": "<form class=\"ds-well\" onsubmit=\"return false\"><input class=\"ds-well-input\" type=\"url\" placeholder=\"Paste your route link\" aria-label=\"Paste your route link\"><button class=\"ds-well-btn\">Convert to GPX</button></form>",
+      "css": ".ds-well { display: flex; gap: 6px; padding: 6px; background: #fff; border: 1.5px solid var(--color-ink, #1d2422); } .ds-well:focus-within { outline: 2px solid var(--color-route, #d4246f); outline-offset: 2px; } .ds-well-input { flex: 1; min-width: 0; height: 48px; padding: 0 12px; background: transparent; border: 0; color: var(--color-ink, #1d2422); font: 400 16px var(--font-maptext), 'Barlow', sans-serif; } .ds-well-input::placeholder { color: var(--color-ink-soft, #4d5a53); } .ds-well-input:focus-visible { outline: none; } .ds-well-btn { height: 48px; padding: 0 24px; background: var(--color-route, #d4246f); color: #fff; border: 0; font: 700 19px/1 var(--font-lettering), 'Barlow Condensed', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: background-color 150ms; } .ds-well-btn:hover { background: var(--color-route-deep, #a8174f); }"
+    },
+    {
+      "name": "Legend Box with Stations",
+      "kind": "card",
+      "refersTo": "legend-box",
+      "description": "Signature converter panel: titled paper box, ink rule, named stations with real states.",
+      "html": "<section class=\"ds-legend\"><div class=\"ds-legend-head\"><h2>Your route</h2><svg viewBox=\"0 0 36 12\" width=\"36\" height=\"12\" aria-hidden=\"true\"><path d=\"M2 6h32\" stroke=\"#d4246f\" stroke-width=\"5\" stroke-linecap=\"round\"/></svg></div><ol class=\"ds-stations\"><li class=\"is-done\"><span class=\"ds-st-done\"><svg viewBox=\"0 0 24 24\" width=\"12\" height=\"12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m5.5 12.5 4 4 9-9.5\"/></svg></span>Link resolved</li><li class=\"is-active\"><span class=\"ds-st-ring ds-st-active\"></span>Route traced</li><li class=\"is-pending\"><span class=\"ds-st-ring\"></span>Track ready</li></ol></section>",
+      "css": ".ds-legend { max-width: 560px; background: var(--color-paper, #f7f9f3); color: var(--color-ink, #1d2422); border: 1.5px solid var(--color-ink, #1d2422); } .ds-legend-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; border-bottom: 1.5px solid var(--color-ink, #1d2422); } .ds-legend-head h2 { margin: 0; font: 700 14px/1 var(--font-lettering), 'Barlow Condensed', sans-serif; letter-spacing: 0.16em; text-transform: uppercase; } .ds-stations { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 0; padding: 20px; list-style: none; font: 600 14px/1 var(--font-lettering), 'Barlow Condensed', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; } .ds-stations li { display: flex; align-items: center; gap: 8px; } .ds-stations .is-pending { color: var(--color-ink-soft, #4d5a53); } .ds-st-ring { width: 16px; height: 16px; border-radius: 50%; border: 2px solid currentColor; box-sizing: border-box; } .ds-st-active { border-color: var(--color-route, #d4246f); background: var(--color-paper, #f7f9f3); animation: ds-pulse 1.2s ease-in-out infinite; } .ds-st-done { display: flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: var(--color-ink, #1d2422); color: var(--color-paper, #f7f9f3); } @keyframes ds-pulse { 50% { box-shadow: 0 0 0 4px color-mix(in oklab, #d4246f 22%, transparent); } } @media (prefers-reduced-motion: reduce) { .ds-st-active { animation: none; } }"
+    },
+    {
+      "name": "Closure Alert",
+      "kind": "custom",
+      "refersTo": "alert-closure",
+      "description": "Error panel: closure symbol plus words, never colour alone.",
+      "html": "<div class=\"ds-alert\" role=\"alert\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\" stroke-width=\"1.75\"/><path d=\"M7 12h10\" stroke-width=\"2.5\"/></svg><p>That doesn't look like a Google Maps directions link.</p></div>",
+      "css": ".ds-alert { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: #fff; border: 1.5px solid var(--color-closure, #b3261e); } .ds-alert svg { flex-shrink: 0; margin-top: 2px; color: var(--color-closure, #b3261e); } .ds-alert p { margin: 0; font: 400 15px/1.625 var(--font-maptext), 'Barlow', sans-serif; color: var(--color-ink, #1d2422); }"
+    },
+    {
+      "name": "Map Key",
+      "kind": "custom",
+      "refersTo": "map-key",
+      "description": "Paper key box beside the route overprint: route, start, finish.",
+      "html": "<ul class=\"ds-key\"><li><svg viewBox=\"0 0 36 12\" width=\"36\" height=\"12\"><path d=\"M2 6h32\" stroke=\"#d4246f\" stroke-width=\"5\" stroke-linecap=\"round\"/></svg><span>Your route</span></li><li><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\"><circle cx=\"12\" cy=\"12\" r=\"6.5\" fill=\"#f7f9f3\" stroke=\"#1d2422\" stroke-width=\"2.5\"/></svg><span>Start</span></li><li><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\"><path d=\"M7 21V3.5l11 4.5-11 4.5\" fill=\"#1d2422\" stroke=\"#1d2422\" stroke-width=\"2\" stroke-linejoin=\"round\"/></svg><span>Finish</span></li></ul>",
+      "css": ".ds-key { display: grid; grid-template-columns: 36px auto; justify-content: start; align-items: center; gap: 8px 12px; width: fit-content; margin: 0; padding: 12px 16px; list-style: none; background: var(--color-paper, #f7f9f3); border: 1.5px solid var(--color-ink, #1d2422); font: 600 14px/1 var(--font-lettering), 'Barlow Condensed', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-ink, #1d2422); } .ds-key li { display: contents; } .ds-key svg { justify-self: center; }"
+    },
+    {
+      "name": "Sheet Header",
+      "kind": "nav",
+      "refersTo": "",
+      "description": "Paper header strip with wordmark and caps anchor links.",
+      "html": "<header class=\"ds-head\"><a class=\"ds-mark\" href=\"#\"><svg viewBox=\"0 0 28 28\" width=\"28\" height=\"28\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"6.5\" cy=\"21\" r=\"4\" fill=\"#f7f9f3\" stroke=\"#1d2422\" stroke-width=\"2.25\"/><path d=\"M8.5 17.5C12 7 16 23 21 8\" stroke=\"#d4246f\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M21 8V1.75l5 2.25-5 2.25\" fill=\"#1d2422\" stroke=\"#1d2422\" stroke-width=\"1.5\" stroke-linejoin=\"round\"/></svg><span>Maps<b>To</b>GPX</span></a><nav><a href=\"#\">How it works</a><a href=\"#\">Feedback</a><a href=\"#\">FAQ</a></nav></header>",
+      "css": ".ds-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 56px; padding: 0 28px; background: var(--color-paper, #f7f9f3); border-bottom: 1.5px solid var(--color-ink, #1d2422); color: var(--color-ink, #1d2422); } .ds-mark { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; font: 800 22px/1 var(--font-lettering), 'Barlow Condensed', sans-serif; letter-spacing: 0.04em; text-transform: uppercase; } .ds-mark b { font-weight: 800; color: var(--color-route, #d4246f); } .ds-head nav { display: flex; gap: 28px; font: 600 15px/1 var(--font-lettering), 'Barlow Condensed', sans-serif; letter-spacing: 0.12em; text-transform: uppercase; } .ds-head nav a { color: inherit; text-decoration: none; text-underline-offset: 4px; text-decoration-thickness: 2px; text-decoration-color: var(--color-route, #d4246f); transition: color 150ms; } .ds-head nav a:hover { color: var(--color-route, #d4246f); text-decoration-line: underline; } .ds-head a:focus-visible { outline: 2px solid var(--color-route, #d4246f); outline-offset: 2px; }"
+    },
+    {
+      "name": "Route Overprint",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Magenta route on a paper halo with km ticks, start ring and finish flag; draws itself once.",
+      "html": "<svg class=\"ds-route\" viewBox=\"0 0 800 600\" role=\"img\" aria-label=\"Sample route\"><path d=\"M118 438C188 468 204 366 284 352S404 398 432 314S470 196 560 204S690 282 700 362S652 470 594 484\" pathLength=\"1\" class=\"ds-draw\" fill=\"none\" stroke=\"#f7f9f3\" stroke-width=\"13\" stroke-linecap=\"round\" stroke-linejoin=\"round\" opacity=\"0.9\"/><path d=\"M118 438C188 468 204 366 284 352S404 398 432 314S470 196 560 204S690 282 700 362S652 470 594 484\" pathLength=\"1\" class=\"ds-draw\" fill=\"none\" stroke=\"#d4246f\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><g class=\"ds-after\"><path d=\"M594 484V446l22 9-22 9\" fill=\"#1d2422\" stroke=\"#1d2422\" stroke-width=\"3\" stroke-linejoin=\"round\"/></g><circle cx=\"118\" cy=\"438\" r=\"10\" fill=\"#f7f9f3\" stroke=\"#1d2422\" stroke-width=\"3.5\"/></svg>",
+      "css": ".ds-route { width: 100%; max-width: 480px; background: #e9efe1; } .ds-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: ds-draw 1.6s cubic-bezier(0.16,1,0.3,1) 0.1s forwards; } .ds-after { opacity: 0; animation: ds-after 0.5s cubic-bezier(0.16,1,0.3,1) 1.3s forwards; } @keyframes ds-draw { to { stroke-dashoffset: 0; } } @keyframes ds-after { to { opacity: 1; } } @media (prefers-reduced-motion: reduce) { .ds-draw { animation: none; stroke-dashoffset: 0; } .ds-after { animation: none; opacity: 1; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Cycle Map Sheet",
+    "overview": "The page is one printed cycling map, unfolded edge to edge. A pale paper margin with a black neatline frames the screen, sheet grid letters run along the top margin, the sheet title sits in the bottom margin, and two fold creases cross the face. Inside the neatline the land tint floods everything: woodland patches, brown contour linework, one unnamed blue stream. The user's route is the only thing overprinted in magenta. Panels are legend boxes printed on the sheet, never floating cards. Copy sits in clearings where the contours part around it.\n\nThe world is calm, legible and handmade rather than flashy or corporate. It reads like a tool a cyclist already trusts (a printed map and its key), not a SaaS landing page. The craft lives in the map conventions: the key, the start ring and finish flag, the km ticks, the scale bar, and the conversion running as named stations. Density is moderate. One working action sits in the first viewport, and everything else is set as the sheet's legend, itinerary and corrections panel.\n\nScope: the home page (`/`, `/id`, `/es`, `/ja`) carries this world. The FAQ and privacy pages have not adopted it yet and still render the previous look (Geist on `#fafafa`). Don't take tokens from them.",
+    "keyCharacteristics": [
+      "Map paper margin, ink neatline, land-tint face with a 172px printed grid and two fold creases.",
+      "Generated decorative ground (woodland, contours, one stream) that clears behind copy.",
+      "Magenta reserved for the route and for the actions that make or carry the route.",
+      "Square legend boxes with a 1.5px ink rule; circles only as map symbols.",
+      "Condensed caps map lettering for display, labels and controls, with a plain humanist sans for reading.",
+      "One authored motion: the route draws itself, then its start, finish and ticks appear."
+    ],
+    "rules": [
+      {
+        "name": "The One Overprint Rule",
+        "body": "Magenta means the route, or an action that makes, carries or sends it. Don't use it for decoration, section tints or illustration fills.",
+        "section": "colors"
+      },
+      {
+        "name": "The Never Colour Alone Rule",
+        "body": "Every state pairs its colour with a symbol and words: a ring, tick or closure bar next to each station, a closure symbol on errors, and a warning triangle on route warnings.",
+        "section": "colors"
+      },
+      {
+        "name": "The Lettering and Reading Rule",
+        "body": "Caps condensed lettering names things (headlines, labels, controls). Anything a person reads as a sentence is in Barlow, in sentence case.",
+        "section": "typography"
+      },
+      {
+        "name": "The Japanese Cut Rule",
+        "body": "Japanese has no condensed cut. Under `lang=\"ja\"`, lettering falls back to the platform gothic and caps tracking collapses to 0.02em. Don't fake condensing with transforms.",
+        "section": "typography"
+      },
+      {
+        "name": "The Printed Flat Rule",
+        "body": "Surfaces don't lift. A panel is a legend box printed on the sheet, separated by its ink rule, never by a shadow or blur.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep everything inside the neatline on the land tint, with the generated ground clearing behind copy (masks in globals.css).",
+      "Do build panels as legend boxes: paper fill, 1.5px ink rule, square corners, a caps title strip when the panel has a name.",
+      "Do reserve magenta for the route and route actions (The One Overprint Rule), and pair every state colour with a symbol and words.",
+      "Do draw new symbols in the shared stroke family (1.75 on 24, round caps, ink structure, magenta route) and inline them as SVG.",
+      "Do set names and controls in Barlow Condensed caps and sentences in Barlow, and honour the Japanese tracking override.",
+      "Do show the route already drawn under `prefers-reduced-motion`, and keep the route draw as the page's only authored motion."
+    ],
+    "donts": [
+      "Don't float white cards with shadows over the sheet. Depth is print layering and fold creases only (The Printed Flat Rule).",
+      "Don't put place names, water names or contour heights on the decorative ground, or a scale bar on the idle sample route. The user's real route is overprinted there, so invented geography or distance would read as real.",
+      "Don't round panel corners. Circles are for map symbols only.",
+      "Don't add gradient headlines, glow or flashy motion. The world must not feel flashy, big-company SaaS, too technical or impersonal.",
+      "Don't add an announcement banner, or show donation prompts anywhere except after a successful conversion.",
+      "Don't move the converter out of the first viewport."
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Category standard sketch</title>
+<style>
+  *{box-sizing:border-box;margin:0}
+  html,body{width:1440px;height:900px;overflow:hidden;background:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#111827}
+  header{height:72px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 120px}
+  .mark{font:700 20px/1 system-ui}
+  nav{display:flex;gap:28px;font:500 15px system-ui;color:#4b5563}
+  main{text-align:center;padding-top:110px}
+  h1{font:800 64px/1.05 system-ui;letter-spacing:-.02em}
+  p{margin:22px auto 0;width:620px;font:400 20px/1.5 system-ui;color:#4b5563}
+  .form{margin:44px auto 0;width:720px;display:flex;gap:12px}
+  .form input{flex:1;height:58px;border:1px solid #d1d5db;border-radius:12px;padding:0 18px;font:400 16px system-ui}
+  .form button{height:58px;padding:0 30px;border:0;border-radius:12px;background:#2563eb;color:#fff;font:600 17px system-ui}
+  .steps{margin:90px auto 0;width:1000px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .steps div{border:1px solid #e5e7eb;border-radius:16px;padding:28px;text-align:left}
+  .steps b{display:inline-flex;width:36px;height:36px;border-radius:10px;background:#eff6ff;color:#2563eb;align-items:center;justify-content:center;font:700 16px system-ui}
+  .steps h2{margin-top:16px;font:600 22px system-ui}
+</style>
+</head>
+<body>
+  <header><div class="mark">MapsToGPX</div><nav><span>How it works</span><span>FAQ</span><span>Feedback</span></nav></header>
+  <main>
+    <h1>Convert Google Maps routes<br>to GPX files</h1>
+    <p>Paste a directions URL and download a GPX track for your GPS device. Free, no sign-up.</p>
+    <div class="form"><input placeholder="Paste your Google Maps directions URL here…"><button>Convert to GPX</button></div>
+    <div class="steps"><div><b>1</b><h2>Plan your route</h2></div><div><b>2</b><h2>Paste the link</h2></div><div><b>3</b><h2>Download GPX</h2></div></div>
+  </main>
+</body>
+</html>
