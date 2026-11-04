@@ -23,7 +23,6 @@ const BADGE_FACES = [
   "https://randomuser.me/api/portraits/women/90.jpg",
 ];
 
-const GRID_LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const STEP_MARKERS = [StartRing, ViaPoint, FinishFlag];
 
 const navLink =
@@ -38,15 +37,6 @@ export default function HomePage({ locale, dict }: { locale: Locale; dict: Dicti
   return (
     <div className="map-sheet relative min-h-screen p-2.5 sm:p-7">
       <div className="map-face relative border-[1.5px] border-ink">
-        {/* Sheet grid letters in the top margin */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 -top-7 hidden h-7 items-center justify-around font-lettering text-[12px] font-semibold tracking-[0.1em] sm:flex"
-        >
-          {GRID_LETTERS.map((l) => (
-            <span key={l}>{l}</span>
-          ))}
-        </div>
         <div aria-hidden="true" className="map-fold left-1/3 hidden lg:block" />
         <div aria-hidden="true" className="map-fold left-2/3 hidden lg:block" />
 
