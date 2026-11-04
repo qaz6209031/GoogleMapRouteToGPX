@@ -73,6 +73,20 @@ export default function HomePage({ locale, dict }: { locale: Locale; dict: Dicti
           </nav>
         </header>
 
+        {/* Redesign notice: one quiet strip, pointing at the feedback form */}
+        <p className="relative flex flex-wrap items-center gap-x-3 gap-y-1 border-b-[1.5px] border-ink bg-paper px-3.5 py-2 text-[14px] leading-snug sm:px-7">
+          <span className="bg-route px-1.5 py-0.5 font-lettering text-[12px] font-bold uppercase tracking-[0.12em] text-white">
+            {dict.announcement.badge}
+          </span>
+          <span>{dict.announcement.text}</span>
+          <a
+            href="#feedback"
+            className="font-semibold underline decoration-route decoration-2 underline-offset-4 transition-colors hover:text-route"
+          >
+            {dict.announcement.link}
+          </a>
+        </p>
+
         {/* First viewport: the sheet, the converter in its legend box, the route */}
         <section className="relative overflow-hidden border-b-[1.5px] border-ink">
           <MapGround className="map-ground absolute inset-0 h-full w-full" />
