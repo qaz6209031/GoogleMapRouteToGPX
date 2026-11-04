@@ -10,7 +10,7 @@ export const es: Dictionary = {
   announcement: {
     badge: "Nuevo",
     text: "MapsToGPX estrena diseño. El mismo conversor, las mismas rutas exactas.",
-    link: "Cuéntanos qué te parece",
+    link: "Cuéntame qué te parece",
   },
   hero: {
     badge: "Con la confianza de 10K+ usuarios en 50+ países",
