@@ -104,7 +104,8 @@ export const en: Dictionary = {
     tagline: "Free forever. Trusted by users worldwide.",
   },
   converterForm: {
-    placeholder: "Paste a Google Maps directions link",
+    inputLabel: "Paste your Google Maps link here",
+    placeholder: "https://maps.app.goo.gl/…",
     convertButton: "Convert to GPX",
     convertingButton: "Converting...",
     stepLabels: {

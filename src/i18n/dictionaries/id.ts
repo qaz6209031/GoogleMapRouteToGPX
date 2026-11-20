@@ -103,7 +103,8 @@ export const id: Dictionary = {
     tagline: "Gratis selamanya. Dipercaya oleh pengguna di seluruh dunia.",
   },
   converterForm: {
-    placeholder: "Tempel tautan rute Google Maps",
+    inputLabel: "Tempel tautan Google Maps kamu di sini",
+    placeholder: "https://maps.app.goo.gl/…",
     convertButton: "Ubah ke GPX",
     convertingButton: "Memproses...",
     stepLabels: {

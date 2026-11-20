@@ -65,6 +65,8 @@ export interface Dictionary {
     tagline: string;
   };
   converterForm: {
+    /** Visible label above the link field. */
+    inputLabel: string;
     placeholder: string;
     convertButton: string;
     convertingButton: string;

@@ -21,7 +21,7 @@ export default function LanguageSwitcher({
       aria-label={label}
       className={
         sheet
-          ? "flex flex-wrap items-center gap-x-2 gap-y-1 font-lettering text-[14px] font-semibold uppercase tracking-[0.1em] text-ink-soft"
+          ? "flex flex-wrap items-center gap-x-2 gap-y-0 font-lettering text-[14px] font-semibold uppercase tracking-[0.1em] text-ink-soft"
           : "flex items-center justify-center gap-x-2 gap-y-1 flex-wrap text-xs text-zinc-400"
       }
     >
@@ -36,11 +36,11 @@ export default function LanguageSwitcher({
             className={
               sheet
                 ? locale === currentLocale
-                  ? "text-ink underline decoration-route decoration-2 underline-offset-4"
-                  : "transition-colors hover:text-route"
+                  ? "inline-flex min-h-11 items-center text-ink underline decoration-route decoration-2 underline-offset-4"
+                  : "inline-flex min-h-11 items-center transition-colors hover:text-route"
                 : locale === currentLocale
-                  ? "text-zinc-600 font-medium"
-                  : "hover:text-blue-600 transition-colors"
+                  ? "inline-flex min-h-11 items-center text-zinc-600 font-medium"
+                  : "inline-flex min-h-11 items-center hover:text-blue-600 transition-colors"
             }
           >
             {LOCALE_LABELS[locale]}

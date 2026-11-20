@@ -179,32 +179,33 @@ export default function ConverterForm({
 
           <div className="px-4 py-4 sm:px-5 sm:py-5">
             {step !== "done" && (
-              <form
-                onSubmit={handleConvert}
-                className="flex flex-col gap-1.5 border-[1.5px] border-ink bg-white p-1.5 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-route sm:flex-row"
-              >
-                <input
-                  id="maps-url"
-                  type="url"
-                  inputMode="url"
-                  autoComplete="off"
-                  aria-label={dict.placeholder}
-                  placeholder={dict.placeholder}
-                  value={url}
-                  onChange={(e) => {
-                    setUrl(e.target.value);
-                    if (step === "error") setStep("idle");
-                  }}
-                  disabled={isLoading}
-                  className="h-12 min-w-0 flex-1 bg-transparent px-3 text-base text-ink placeholder:text-ink-soft focus-visible:outline-none disabled:opacity-60"
-                />
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="h-12 shrink-0 bg-route px-6 font-lettering text-[19px] font-bold uppercase tracking-[0.06em] text-white transition-colors hover:bg-route-deep disabled:cursor-wait disabled:bg-route-deep"
-                >
-                  {isLoading ? dict.convertingButton : dict.convertButton}
-                </button>
+              <form onSubmit={handleConvert}>
+                <label htmlFor="maps-url" className="mb-2 block text-[16px] font-semibold text-ink">
+                  {dict.inputLabel}
+                </label>
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <input
+                    id="maps-url"
+                    type="url"
+                    inputMode="url"
+                    autoComplete="off"
+                    placeholder={dict.placeholder}
+                    value={url}
+                    onChange={(e) => {
+                      setUrl(e.target.value);
+                      if (step === "error") setStep("idle");
+                    }}
+                    disabled={isLoading}
+                    className="h-13 w-full min-w-0 shrink-0 border-2 border-ink bg-white px-3.5 text-base text-ink placeholder:text-ink-soft focus-visible:border-route disabled:opacity-60 sm:w-auto sm:flex-1"
+                  />
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="h-13 shrink-0 bg-route px-6 font-lettering text-[19px] font-bold uppercase tracking-[0.06em] text-white transition-colors hover:bg-route-deep disabled:cursor-wait disabled:bg-route-deep"
+                  >
+                    {isLoading ? dict.convertingButton : dict.convertButton}
+                  </button>
+                </div>
               </form>
             )}
 

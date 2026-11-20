@@ -103,7 +103,8 @@ export const ja: Dictionary = {
     tagline: "永久に無料。世界中のユーザーに利用されています。",
   },
   converterForm: {
-    placeholder: "ルートのリンクを貼り付け",
+    inputLabel: "Google マップのリンクをここに貼り付け",
+    placeholder: "https://maps.app.goo.gl/…",
     convertButton: "GPXに変換",
     convertingButton: "変換中...",
     stepLabels: {
