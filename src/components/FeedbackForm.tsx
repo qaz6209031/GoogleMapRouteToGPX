@@ -105,7 +105,7 @@ export default function FeedbackForm({ dict }: { dict: Dictionary["feedbackForm"
                 aria-pressed={rating === value}
                 onClick={() => setRating(rating === value ? null : value)}
                 onMouseEnter={() => setHoverRating(value)}
-                className="p-1"
+                className="p-2"
               >
                 <svg
                   aria-hidden="true"

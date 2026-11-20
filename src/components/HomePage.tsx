@@ -26,7 +26,7 @@ const BADGE_FACES = [
 const STEP_MARKERS = [StartRing, ViaPoint, FinishFlag];
 
 const navLink =
-  "underline-offset-4 decoration-2 decoration-route transition-colors hover:text-route hover:underline";
+  "inline-flex min-h-11 items-center whitespace-nowrap underline-offset-4 decoration-2 decoration-route transition-colors hover:text-route hover:underline";
 const sectionTitle =
   "font-lettering text-[clamp(2rem,3.6vw,2.875rem)] font-extrabold uppercase leading-[0.95] tracking-[0.005em] text-balance";
 
@@ -43,15 +43,15 @@ export default function HomePage({ locale, dict }: { locale: Locale; dict: Dicti
         <header className="sticky top-0 z-40 flex h-14 items-center justify-between gap-3 border-b-[1.5px] border-ink bg-paper px-3.5 sm:px-7">
           <Link
             href={homeHref}
-            className="flex items-center gap-2 font-lettering text-[19px] font-extrabold uppercase tracking-[0.04em] sm:gap-2.5 sm:text-[22px]"
+            className="flex min-h-11 shrink-0 items-center gap-2 font-lettering text-[19px] font-extrabold uppercase tracking-[0.04em] sm:gap-2.5 sm:text-[22px]"
           >
             <SiteMark className="h-6 w-6 sm:h-7 sm:w-7" />
             <span>
               Maps<span className="text-route">To</span>GPX
             </span>
           </Link>
-          <nav className="flex items-center gap-3 font-lettering text-[13px] font-semibold uppercase tracking-[0.08em] sm:gap-7 sm:text-[15px] sm:tracking-[0.12em]">
-            <a href="#how-it-works" className={navLink}>
+          <nav className="flex items-center gap-2.5 font-lettering text-[13px] font-semibold uppercase tracking-[0.06em] sm:gap-7 sm:text-[15px] sm:tracking-[0.12em]">
+            <a href="#how-it-works" className={`${navLink} max-[359px]:hidden`}>
               {dict.nav.howItWorks}
             </a>
             <a href="#feedback" className={navLink}>
@@ -96,18 +96,21 @@ export default function HomePage({ locale, dict }: { locale: Locale; dict: Dicti
                 {dict.hero.titleLine1}{" "}
                 <span className="block text-route">{dict.hero.titleLine2}</span>
               </h1>
-              <p className="mt-5 max-w-[46ch] text-[18px] leading-relaxed sm:text-[19px]">
-                {dict.hero.subtitle}
-              </p>
-              <p className="mt-2 text-[17px] font-semibold">{dict.hero.subtitleBold}</p>
-              <div className="mt-5 inline-flex w-fit max-w-full self-start items-center gap-3 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-xs font-medium text-amber-700">
-                <div className="flex shrink-0 -space-x-2">
-                  {BADGE_FACES.map((src) => (
-                    // eslint-disable-next-line @next/next/no-img-element -- tiny decorative avatars, same as the original badge
-                    <img key={src} src={src} alt="" className="h-6 w-6 rounded-full border-2 border-white" />
-                  ))}
+              {/* On phones the converter comes straight after the headline; this copy follows it. */}
+              <div className="flex flex-col max-sm:order-last max-sm:mt-3">
+                <p className="mt-5 max-w-[46ch] text-[18px] leading-relaxed sm:text-[19px]">
+                  {dict.hero.subtitle}
+                </p>
+                <p className="mt-2 text-[17px] font-semibold">{dict.hero.subtitleBold}</p>
+                <div className="mt-5 inline-flex w-fit max-w-full self-start items-center gap-3 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-xs font-medium text-amber-700">
+                  <div className="flex shrink-0 -space-x-2">
+                    {BADGE_FACES.map((src) => (
+                      // eslint-disable-next-line @next/next/no-img-element -- tiny decorative avatars, same as the original badge
+                      <img key={src} src={src} alt="" className="h-6 w-6 rounded-full border-2 border-white" />
+                    ))}
+                  </div>
+                  <span>{dict.hero.badge}</span>
                 </div>
-                <span>{dict.hero.badge}</span>
               </div>
             </ConverterForm>
           </div>

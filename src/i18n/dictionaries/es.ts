@@ -104,7 +104,8 @@ export const es: Dictionary = {
     tagline: "Gratis para siempre. Con la confianza de usuarios en todo el mundo.",
   },
   converterForm: {
-    placeholder: "Pega el enlace de tu ruta",
+    inputLabel: "Pega aquí tu enlace de Google Maps",
+    placeholder: "https://maps.app.goo.gl/…",
     convertButton: "Convertir a GPX",
     convertingButton: "Convirtiendo...",
     stepLabels: {
