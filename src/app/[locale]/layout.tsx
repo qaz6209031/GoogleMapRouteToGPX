@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import AdSenseScript from "@/components/AdSenseScript";
 import RootBody from "@/components/RootBody";
 import { baseMetadata } from "@/lib/site";
 import { LOCALES, isLocale } from "@/i18n/locales";
@@ -27,6 +28,9 @@ export default async function LocaleRootLayout({
 
   return (
     <html lang={locale}>
+      <head>
+        <AdSenseScript />
+      </head>
       <RootBody>{children}</RootBody>
     </html>
   );
